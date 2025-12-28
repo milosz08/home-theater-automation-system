@@ -1,0 +1,42 @@
+{
+  "editor.fontSize": 13,
+  "editor.formatOnSave": true,
+  "editor.indentSize": "tabSize",
+  "editor.minimap.enabled": false,
+  "editor.renderWhitespace": "all",
+  "editor.rulers": [
+    120
+  ],
+  "editor.stickyScroll.enabled": false,
+  "editor.stickyScroll.scrollWithEditor": false,
+  "editor.tabSize": 2,
+  "explorer.autoReveal": false,
+  "explorer.compactFolders": false,
+  "files.insertFinalNewline": true,
+  "git.autofetch": false,
+  "terminal.integrated.profiles.windows": {
+    "ESP-IDF PowerShell": {
+      "source": "PowerShell",
+      "icon": "chip",
+      "args": [
+        "-NoExit",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "D:\\programs\\espressif\\Initialize-Idf.ps1",
+        "-IdfId",
+        "esp-idf-2f7c37af3bab0e366d21130bb3c49645",
+      ]
+    }
+  },
+  "workbench.colorTheme": "Default Dark Modern",
+  "workbench.editor.enablePreview": false,
+  "workbench.iconTheme": "vsc-jetbrains-icons-enhanced",
+  "workbench.startupEditor": "none",
+  "workbench.tree.enableStickyScroll": false,
+  "workbench.tree.indent": 20,
+  "workbench.tree.renderIndentGuides": "always",
+  "idf.pythonInstallPath": "D:\\programs\\espressif\\tools\\idf-python\\3.11.2\\python.exe",
+  "idf.espIdfPathWin": "D:/programs/espressif/frameworks/esp-idf-v5.5.2-2/",
+  "idf.toolsPathWin": "D:\\programs\\espressif",
+}

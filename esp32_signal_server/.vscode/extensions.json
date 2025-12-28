@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "brennondenny.vsc-jetbrains-icons-enhanced",
+    "espressif.esp-idf-extension",
+    "k--kato.intellij-idea-keybindings",
+    "ms-vscode.cmake-tools"
+  ]
+}
