@@ -25,11 +25,11 @@ static void eth_event_handler(void *arg, esp_event_base_t event_base,
     {
       case ETHERNET_EVENT_CONNECTED:
         ESP_LOGI(TAG, "Ethernet Link UP");
-        led_set_link(true);
+        led_eth_set_link(true);
         break;
       case ETHERNET_EVENT_DISCONNECTED:
         ESP_LOGI(TAG, "Ethernet Link DOWN");
-        led_set_link(false);
+        led_eth_set_link(false);
         break;
     }
   }
@@ -42,7 +42,7 @@ static void eth_event_handler(void *arg, esp_event_base_t event_base,
 
 static esp_err_t pkt_eth_input_proxy(esp_eth_handle_t eth_handle, uint8_t *buffer, uint32_t length, void *priv)
 {
-  led_blink_activity();
+  led_eth_packet_activity();
   return esp_netif_receive((esp_netif_t *)priv, buffer, length, NULL);
 }
 
