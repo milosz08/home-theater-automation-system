@@ -1,6 +1,7 @@
 #include "eth_w5500.h"
 #include "rest_server.h"
 #include "reset_button.h"
+#include "led_ind.h"
 
 #include "esp_netif.h"
 #include "esp_event.h"
@@ -38,6 +39,8 @@ void app_main(void)
     ret = nvs_flash_init();
   }
   ESP_ERROR_CHECK(ret);
+
+  led_init();
 
   // init global system services
   ESP_ERROR_CHECK(esp_netif_init());

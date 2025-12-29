@@ -1,4 +1,5 @@
 #include "eth_w5500.h"
+#include "led_ind.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -24,9 +25,11 @@ static void eth_event_handler(void *arg, esp_event_base_t event_base,
     {
       case ETHERNET_EVENT_CONNECTED:
         ESP_LOGI(TAG, "Ethernet Link UP");
+        led_set_link(true);
         break;
       case ETHERNET_EVENT_DISCONNECTED:
         ESP_LOGI(TAG, "Ethernet Link DOWN");
+        led_set_link(false);
         break;
     }
   }
@@ -35,6 +38,12 @@ static void eth_event_handler(void *arg, esp_event_base_t event_base,
     ip_event_got_ip_t *event = (ip_event_got_ip_t *) event_data;
     ESP_LOGI(TAG, "Assigned IP: " IPSTR, IP2STR(&event->ip_info.ip));
   }
+}
+
+static esp_err_t pkt_eth_input_proxy(esp_eth_handle_t eth_handle, uint8_t *buffer, uint32_t length, void *priv)
+{
+  led_blink_activity();
+  return esp_netif_receive((esp_netif_t *)priv, buffer, length, NULL);
 }
 
 #ifdef ENABLE_STATIC_IP
@@ -116,6 +125,8 @@ void eth_init_w5500(void)
   // reigster handlers
   ESP_ERROR_CHECK(esp_event_handler_register(ETH_EVENT, ESP_EVENT_ANY_ID, &eth_event_handler, NULL));
   ESP_ERROR_CHECK(esp_event_handler_register(IP_EVENT, IP_EVENT_ETH_GOT_IP, &eth_event_handler, NULL));
+
+  esp_eth_update_input_path(eth_handle, pkt_eth_input_proxy, eth_netif);
 
   ESP_ERROR_CHECK(esp_eth_start(eth_handle));
 }
