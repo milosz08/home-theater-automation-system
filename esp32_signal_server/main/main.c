@@ -49,4 +49,5 @@ void app_main(void)
   ESP_ERROR_CHECK(esp_event_handler_register(ETH_EVENT, ETHERNET_EVENT_DISCONNECTED, &server_connection_handler, NULL));
 
   eth_init_w5500(); // init ethernet
+  init_reset_button();
 }
