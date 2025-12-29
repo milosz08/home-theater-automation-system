@@ -1,6 +1,7 @@
 #include "rest_handlers.h"
 #include "auth_nvs.h"
 #include "utils.h"
+#include "led_ind.h"
 
 #include <string.h>
 
@@ -91,8 +92,9 @@ esp_err_t password_post_handler(httpd_req_t *req) {
   }
   if (set_new_password(new_pass_val) == ESP_OK)
   {
-      ESP_LOGI(TAG, "Password has successfully changed");
-      return silent_response(req);
+    led_io_cmd_execution(CMD_TYPE_IN);
+    ESP_LOGI(TAG, "Password has successfully changed");
+    return silent_response(req);
   }
   ESP_LOGE(TAG, "Unable to change password");
   return silent_error_handler(req, HTTPD_500_INTERNAL_SERVER_ERROR);
