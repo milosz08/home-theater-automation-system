@@ -11,6 +11,15 @@ static void turn_off_act_led_callback(TimerHandle_t xTimer)
   gpio_set_level(PIN_LED_ACT, 0);
 }
 
+static void check_leds(void)
+{
+  gpio_set_level(PIN_LED_LINK, 1);
+  gpio_set_level(PIN_LED_ACT, 1);
+  vTaskDelay(pdMS_TO_TICKS(200));
+  gpio_set_level(PIN_LED_LINK, 0);
+  gpio_set_level(PIN_LED_ACT, 0);
+}
+
 void led_init(void)
 {
   // ETH orange
@@ -21,10 +30,13 @@ void led_init(void)
   // ETH green
   gpio_reset_pin(PIN_LED_ACT);
   gpio_set_direction(PIN_LED_ACT, GPIO_MODE_OUTPUT);
-  gpio_set_level(PIN_LED_ACT, 1);
+  gpio_set_level(PIN_LED_ACT, 0);
 
   act_led_timer = xTimerCreate("LedTimer", pdMS_TO_TICKS(LED_ACT_TICK), pdFALSE, (void*)0, turn_off_act_led_callback);
   ESP_LOGI(TAG_LED_IND, "LEDs initialized");
+
+  // check if leds are ok
+  check_leds();
 }
 
 void led_set_link(bool on)
