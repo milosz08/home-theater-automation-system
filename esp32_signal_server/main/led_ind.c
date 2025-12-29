@@ -22,6 +22,20 @@ static void turn_off_led_callback(TimerHandle_t xTimer)
   gpio_set_level(gpio_pin, 0);
 }
 
+static void led_heartbeat_task(void *pvParameters)
+{
+  while (1)
+  {
+    if (xTimerIsTimerActive(cmd_led_timer) == pdFALSE)
+    {
+      gpio_set_level(PIN_LED_CMD, 1);
+      vTaskDelay(pdMS_TO_TICKS(LED_BLINK_HOLD_TIME_MS));
+      gpio_set_level(PIN_LED_CMD, 0);
+    }
+    vTaskDelay(pdMS_TO_TICKS(LED_HEARTBEAT_TIME_MS));
+  }
+}
+
 static void check_leds(void)
 {
   size_t led_count = sizeof(ALL_LEDS) / sizeof(ALL_LEDS[0]);
@@ -56,12 +70,6 @@ static void set_led_activity(TimerHandle_t timer, gpio_num_t pin)
   }
 }
 
-static void set_led_delayed(TickType_t xDelayTicks, gpio_num_t pin, bool on)
-{
-  gpio_set_level(pin, on ? 1 : 0);
-  vTaskDelay(xDelayTicks);
-}
-
 void led_init(void)
 {
   prepare_leds();
@@ -75,6 +83,8 @@ void led_init(void)
   cmd_led_timer = xTimerCreate("CmdTmr", xDelayTicks, pdFALSE, (void*)PIN_LED_CMD, turn_off_led_callback);
 
   check_leds();
+
+  xTaskCreate(led_heartbeat_task, "led_heartbeat", 2048, NULL, 1, NULL);
   ESP_LOGI(TAG_LED_IND, "LEDs initialized");
 }
 
@@ -88,18 +98,15 @@ void led_eth_packet_activity(void)
   set_led_activity(act_led_timer, PIN_LED_ETH_ACT);
 }
 
-void led_io_cmd_execution(led_cmd_type_t type)
+void led_io_cmd_execution(void)
 {
-  if (type == CMD_TYPE_IN)
+  xTimerStop(cmd_led_timer, 0); // turn off heartbeat timer
+  const TickType_t blink_delay = pdMS_TO_TICKS(LED_BLINK_HOLD_TIME_MS);
+  for (int i = 0; i < 2; i++)
   {
-    set_led_activity(cmd_led_timer, PIN_LED_CMD);
-  }
-  else if (type == CMD_TYPE_OUT)
-  {
-    TickType_t xDelayTicks = pdMS_TO_TICKS(LED_BLINK_HOLD_TIME_MS);
-    set_led_delayed(xDelayTicks, PIN_LED_CMD, 1);
-    set_led_delayed(xDelayTicks, PIN_LED_CMD, 0);
-    set_led_delayed(xDelayTicks, PIN_LED_CMD, 1);
-    set_led_delayed(xDelayTicks, PIN_LED_CMD, 0);
+    gpio_set_level(PIN_LED_CMD, 1);
+    vTaskDelay(blink_delay);
+    gpio_set_level(PIN_LED_CMD, 0);
+    vTaskDelay(blink_delay);
   }
 }

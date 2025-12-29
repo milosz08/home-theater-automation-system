@@ -9,13 +9,9 @@
 
 #define LED_HOLD_TIME_MS        100           // time (ms) after turn off LED
 #define LED_BLINK_HOLD_TIME_MS  50            // time (ms) between LED blinks
-
-typedef enum {
-  CMD_TYPE_IN,
-  CMD_TYPE_OUT
-} led_cmd_type_t;
+#define LED_HEARTBEAT_TIME_MS   3000          // heartbeat time (ms)
 
 void led_init(void);
 void led_eth_set_link(bool on);
 void led_eth_packet_activity(void);
-void led_io_cmd_execution(led_cmd_type_t type);
+void led_io_cmd_execution();

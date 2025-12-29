@@ -92,7 +92,7 @@ esp_err_t password_post_handler(httpd_req_t *req) {
   }
   if (set_new_password(new_pass_val) == ESP_OK)
   {
-    led_io_cmd_execution(CMD_TYPE_IN);
+    led_io_cmd_execution();
     ESP_LOGI(TAG, "Password has successfully changed");
     return silent_response(req);
   }
