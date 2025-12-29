@@ -5,13 +5,11 @@
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-
 #include "esp_netif.h"
 #include "esp_eth.h"
 #include "esp_event.h"
 #include "esp_log.h"
 #include "esp_mac.h"
-
 #include "driver/gpio.h"
 #include "driver/spi_master.h"
 
@@ -39,31 +37,37 @@ static void eth_event_handler(void *arg, esp_event_base_t event_base,
   }
 }
 
+#ifdef ENABLE_STATIC_IP
 static void set_static_ip(esp_netif_t *netif)
 {
   ESP_ERROR_CHECK(esp_netif_dhcpc_stop(netif)); // disable DHCP client
 
   esp_netif_ip_info_t ip_info;
-  esp_netif_str_to_ip4(STATIC_IP_ADDR, &ip_info.ip);
-  esp_netif_str_to_ip4(STATIC_IP_GW, &ip_info.gw);
-  esp_netif_str_to_ip4(STATIC_IP_NETMASK, &ip_info.netmask);
+  esp_netif_str_to_ip4(ESP_IP_ADDRESS, &ip_info.ip);
+  esp_netif_str_to_ip4(ESP_IP_DEFAULT_GATEWAY, &ip_info.gw);
+  esp_netif_str_to_ip4(ESP_IP_SUBNET_MASK, &ip_info.netmask);
   ESP_ERROR_CHECK(esp_netif_set_ip_info(netif, &ip_info));
 
   // DNS config
   esp_netif_dns_info_t dns_info = {};
   dns_info.ip.type = ESP_IPADDR_TYPE_V4;
-  esp_netif_str_to_ip4(STATIC_DNS_SERVER, &dns_info.ip.u_addr.ip4);
+  esp_netif_str_to_ip4(ESP_IP_DNS_ADDRESS, &dns_info.ip.u_addr.ip4);
 
   ESP_ERROR_CHECK(esp_netif_set_dns_info(netif, ESP_NETIF_DNS_MAIN, &dns_info));
-  ESP_LOGI(TAG, "IP: %s, DNS: %s", STATIC_IP_ADDR, STATIC_DNS_SERVER);
+  ESP_LOGI(TAG, "IP: %s, DNS: %s", ESP_IP_ADDRESS, ESP_IP_DNS_ADDRESS);
 }
+#endif
 
 void eth_init_w5500(void)
 {
   esp_netif_config_t cfg = ESP_NETIF_DEFAULT_ETH();
   esp_netif_t *eth_netif = esp_netif_new(&cfg);
 
-  set_static_ip(eth_netif);
+  #ifdef ENABLE_STATIC_IP
+    set_static_ip(eth_netif);
+  #else
+    ESP_LOGW(TAG, "Missing static IP config - switching to DHCP");
+  #endif
 
   spi_bus_config_t buscfg = {
     .miso_io_num = ETH_SPI_MISO_GPIO,
