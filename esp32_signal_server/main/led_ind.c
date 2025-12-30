@@ -29,7 +29,7 @@ static void led_heartbeat_task(void *pvParameters)
     if (xTimerIsTimerActive(cmd_led_timer) == pdFALSE)
     {
       gpio_set_level(PIN_LED_CMD, 1);
-      vTaskDelay(pdMS_TO_TICKS(LED_BLINK_HOLD_TIME_MS));
+      vTaskDelay(pdMS_TO_TICKS(LED_HOLD_TIME_MS));
       gpio_set_level(PIN_LED_CMD, 0);
     }
     vTaskDelay(pdMS_TO_TICKS(LED_HEARTBEAT_TIME_MS));
