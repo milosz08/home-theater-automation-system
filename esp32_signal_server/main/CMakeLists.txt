@@ -6,6 +6,7 @@ idf_component_register(SRCS "main.c"
                             "reset_button.c"
                             "utils.c"
                             "led_ind.c"
+                            "uart_bus.c"
                        INCLUDE_DIRS "."
                        REQUIRES esp_eth esp_netif esp_event driver nvs_flash esp_https_server mbedtls)
 
