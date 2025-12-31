@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# load variables from .env
+if [ -f .env ]; then
+  export $(echo $(grep -v '^#' .env | xargs))
+else
+  echo "error: .env file missing"
+  exit 1
+fi
+
+DATA_DIR="data"
+
+# clean or create data directory
+if [ -d "$DATA_DIR" ]; then
+  echo "cleaning $DATA_DIR..."
+  rm -rf "${DATA_DIR:?}/*"
+else
+  mkdir -p "$DATA_DIR"
+fi
+
+echo "generating ssl certs..."
+openssl req -x509 -newkey rsa:2048 -keyout $DATA_DIR/prvtkey.pem -out $DATA_DIR/cacert.pem \
+  -nodes -days 3650 -subj "/CN=$ESP_IP_ADDRESS" 2>/dev/null
+
+if [ $? -eq 0 ]; then
+  echo "saved: certs in $DATA_DIR"
+else
+  echo "error: openssl failed"
+fi
+
+echo "generating config.json..."
+cat <<EOF > $DATA_DIR/config.json
+{
+  "ip": "$ESP_IP_ADDRESS",
+  "gateway": "$ESP_GATEWAY",
+  "netmask": "$ESP_NETMASK",
+  "dns": "$ESP_DNS",
+  "port": $ESP_PORT,
+  "default_password": "$ESP_DEFAULT_PASSWORD"
+}
+EOF
+
+echo "saved: config.json"
+echo "done: run 'make flash-data' to update device"
