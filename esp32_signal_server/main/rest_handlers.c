@@ -1,6 +1,6 @@
 #include "rest_handlers.h"
 #include "auth_nvs.h"
-#include "utils.h"
+#include "util.h"
 #include "led_ind.h"
 
 #include <string.h>
@@ -43,7 +43,7 @@ esp_err_t auth_middleware(httpd_req_t *req) {
   if (!is_authorized(req))
   {
     ESP_LOGW(TAG, "Unauthorized access attempt to: %s", req->uri);
-    return silent_error_handler(req, HTTPD_401_UNAUTHORIZED);
+    return util_silent_error_handler(req, HTTPD_401_UNAUTHORIZED);
   }
   httpd_handler_func_t real_handler = (httpd_handler_func_t)req->user_ctx;
   if (real_handler)
@@ -51,11 +51,11 @@ esp_err_t auth_middleware(httpd_req_t *req) {
     return real_handler(req);
   }
   ESP_LOGE(TAG, "Middleware Error: No real handler found in user_ctx");
-  return silent_error_handler(req, HTTPD_500_INTERNAL_SERVER_ERROR);
+  return util_silent_error_handler(req, HTTPD_500_INTERNAL_SERVER_ERROR);
 }
 
 esp_err_t no_content_get_handler(httpd_req_t *req) {
-  return silent_response(req);
+  return util_silent_response(req);
 }
 
 esp_err_t password_post_handler(httpd_req_t *req) {
@@ -63,13 +63,13 @@ esp_err_t password_post_handler(httpd_req_t *req) {
   int ret, remaining = req->content_len;
   if (remaining >= sizeof(buf))
   {
-    return silent_error_handler(req, HTTPD_400_BAD_REQUEST);
+    return util_silent_error_handler(req, HTTPD_400_BAD_REQUEST);
   }
   if ((ret = httpd_req_recv(req, buf, remaining)) <= 0)
   {
     if (ret == HTTPD_SOCK_ERR_TIMEOUT)
     {
-      return silent_error_handler(req, HTTPD_408_REQ_TIMEOUT);
+      return util_silent_error_handler(req, HTTPD_408_REQ_TIMEOUT);
     }
     return ESP_FAIL;
   }
@@ -81,21 +81,21 @@ esp_err_t password_post_handler(httpd_req_t *req) {
   if (httpd_query_key_value(buf, "old", old_pass_val, sizeof(old_pass_val)) != ESP_OK ||
       httpd_query_key_value(buf, "new", new_pass_val, sizeof(new_pass_val)) != ESP_OK)
   {
-    return silent_error_handler(req, HTTPD_400_BAD_REQUEST);
+    return util_silent_error_handler(req, HTTPD_400_BAD_REQUEST);
   }
   char current_pass_storage[64]= {0};
   get_current_password(current_pass_storage, sizeof(current_pass_storage));
 
-  if (secure_memcmp(old_pass_val, current_pass_storage, sizeof(current_pass_storage)) != 0)
+  if (util_secure_memcmp(old_pass_val, current_pass_storage, sizeof(current_pass_storage)) != 0)
   {
-    return silent_error_handler(req, HTTPD_403_FORBIDDEN);
+    return util_silent_error_handler(req, HTTPD_403_FORBIDDEN);
   }
   if (set_new_password(new_pass_val) == ESP_OK)
   {
     led_io_cmd_execution();
     ESP_LOGI(TAG, "Password has successfully changed");
-    return silent_response(req);
+    return util_silent_response(req);
   }
   ESP_LOGE(TAG, "Unable to change password");
-  return silent_error_handler(req, HTTPD_500_INTERNAL_SERVER_ERROR);
+  return util_silent_error_handler(req, HTTPD_500_INTERNAL_SERVER_ERROR);
 }

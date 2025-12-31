@@ -1,6 +1,7 @@
-#include "utils.h"
+#include "util.h"
+#include "ui.h"
 
-int secure_memcmp(const void *s1, const void *s2, size_t n) {
+int util_secure_memcmp(const void *s1, const void *s2, size_t n) {
   const unsigned char *p1 = s1, *p2 = s2;
   int ret = 0;
   for (size_t i = 0; i < n; i++) {
@@ -9,7 +10,7 @@ int secure_memcmp(const void *s1, const void *s2, size_t n) {
   return ret;
 }
 
-esp_err_t silent_error_handler(httpd_req_t *req, httpd_err_code_t err)
+esp_err_t util_silent_error_handler(httpd_req_t *req, httpd_err_code_t err)
 {
   switch (err) {
     // 4xx
@@ -31,8 +32,21 @@ esp_err_t silent_error_handler(httpd_req_t *req, httpd_err_code_t err)
   return httpd_resp_send(req, NULL, 0);
 }
 
-esp_err_t silent_response(httpd_req_t *req)
+esp_err_t util_silent_response(httpd_req_t *req)
 {
   httpd_resp_set_status(req, "204 No Content");
   return httpd_resp_send(req, NULL, 0);
+}
+
+void util_show_network_connection(void)
+{
+  esp_netif_ip_info_t ip_info;
+  memset(&ip_info, 0, sizeof(esp_netif_ip_info_t));
+  if (netif != NULL)
+  {
+    esp_netif_get_ip_info(netif, &ip_info);
+  }
+  uint8_t mac[6] = {0};
+  esp_read_mac(mac, ESP_MAC_ETH);
+  ui_show_network_dashboard(&ip_info, mac);
 }

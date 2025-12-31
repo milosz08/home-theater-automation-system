@@ -1,6 +1,6 @@
 #include "rest_server.h"
 #include "rest_handlers.h"
-#include "utils.h"
+#include "util.h"
 
 #include "esp_log.h"
 
@@ -53,7 +53,7 @@ esp_err_t start_rest_server(void)
   // silent error handlers
   size_t err_count = sizeof(errors_to_catch) / sizeof(errors_to_catch[0]);
   for (int i = 0; i < err_count; i++) {
-    httpd_register_err_handler(server, errors_to_catch[i], silent_error_handler);
+    httpd_register_err_handler(server, errors_to_catch[i], util_silent_error_handler);
   }
   httpd_uri_t favicon_uri = {
     .uri       = "/favicon.ico",
