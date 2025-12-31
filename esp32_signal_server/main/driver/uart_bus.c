@@ -53,7 +53,7 @@ esp_err_t rs485_init(void)
   return ESP_OK;
 }
 
-int rs485_send(const uint8_t* data, uint16_t len)
+int rs485_send(const uint8_t *data, uint16_t len)
 {
   return uart_write_bytes(RS485_UART_PORT, (const char*)data, len);;
 }
@@ -86,12 +86,12 @@ esp_err_t rs232_init(void) {
   return ESP_OK;
 }
 
-int rs232_send(const uint8_t* data, uint16_t len)
+int rs232_send(const uint8_t *data, uint16_t len)
 {
   return uart_write_bytes(RS232_UART_PORT, (const char*)data, len);
 }
 
-int rs232_read(uint8_t* buf, uint32_t len, uint32_t timeout_ms)
+int rs232_read(uint8_t *buf, uint32_t len, uint32_t timeout_ms)
 {
   return uart_read_bytes(RS232_UART_PORT, buf, len, pdMS_TO_TICKS(timeout_ms));
 }

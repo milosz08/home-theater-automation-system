@@ -59,7 +59,7 @@ void lcd_cmd(uint8_t cmd)
   lcd_send_byte(cmd, 0);
 }
 
-void lcd_print(const char* str)
+void lcd_print(const char *str)
 {
   while (*str)
   {

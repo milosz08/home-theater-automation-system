@@ -1,7 +1,7 @@
 #pragma once
 
 #include <stddef.h>
-#include "driver/gpio.h"
+#include <stdbool.h>
 
 // pin definitions on pcf8574 expander (0-7)
 #define PCF_PIN_LED_CMD         0       // p0: command invocation (red)
