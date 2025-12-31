@@ -1,18 +1,28 @@
 idf_component_register(SRCS "main.c"
-                            "eth_w5500.c"
-                            "rest_server.c"
-                            "rest_handlers.c"
-                            "auth_nvs.c"
-                            "reset_button.c"
+                            "driver/eth_w5500.c"
+                            "driver/i2c_bus.c"
+                            "driver/uart_bus.c"
+                            "network/auth_nvs.c"
+                            "network/rest_handlers.c"
+                            "network/rest_server.c"
+                            "system/led_ind.c"
+                            "system/reset_button.c"
+                            "ui/lcd_driver.c"
+                            "ui/lcd_icons.c"
+                            "ui/ui.c"
                             "util.c"
-                            "led_ind.c"
-                            "uart_bus.c"
-                            "i2c_bus.c"
-                            "lcd_driver.c"
-                            "lcd_icons.c"
-                            "ui.c"
                        INCLUDE_DIRS "."
-                       REQUIRES esp_eth esp_netif esp_event driver nvs_flash esp_https_server mbedtls)
+                                    "driver"
+                                    "network"
+                                    "system"
+                                    "ui"
+                       REQUIRES esp_eth
+                                esp_netif
+                                esp_event
+                                driver
+                                nvs_flash
+                                esp_https_server
+                                mbedtls)
 
 target_add_binary_data(${COMPONENT_TARGET} "certs/cacert.pem" TEXT)
 target_add_binary_data(${COMPONENT_TARGET} "certs/prvtkey.pem" TEXT)
