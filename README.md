@@ -26,8 +26,10 @@
 
 * ESP32 WROOM DevKit,
 * ESP-IDF, C, CMake, Make,
-* RS3232 MAX, RS3485 MAX, W5500 (LAN)
-* Android (Kotlin)
+* MAX3232 (TTL <-> RS232), MAX3485 (TTL <-> RS485), W5500 (LAN),
+* I2C, PCF8574, LCD 1602 HD44780 (FFSTN),
+* PKI with CA (MITM attacks protection), basic auth,
+* Android (Kotlin).
 
 ## Author
 
