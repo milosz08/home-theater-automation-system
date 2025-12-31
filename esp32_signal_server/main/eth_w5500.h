@@ -1,5 +1,7 @@
 #pragma once
 
+#include "esp_err.h"
+
 // w5500 pinouts setup
 #define ETH_SPI_HOST        SPI3_HOST
 #define ETH_SPI_SCLK_GPIO   18          // SPI clock
@@ -18,4 +20,4 @@
   #endif
 #endif
 
-void eth_init_w5500(void);
+esp_err_t eth_init_w5500(void);

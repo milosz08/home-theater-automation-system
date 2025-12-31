@@ -1,8 +1,8 @@
 #pragma once
 
+#include "esp_err.h"
 #include "driver/gpio.h"
 #include "driver/uart.h"
-#include "esp_err.h"
 
 // rs485
 #define RS485_UART_PORT       UART_NUM_2
@@ -19,9 +19,9 @@
 #define RS232_BAUD_RATE       115200
 #define RS232_BUF_SIZE        1024
 
-void rs485_init(void);
+esp_err_t rs485_init(void);
 int rs485_send(const uint8_t* data, uint16_t len);
 
-void rs232_init(void);
+esp_err_t rs232_init(void);
 int rs232_send(const uint8_t* data, uint16_t len);
 int rs232_read(uint8_t* buf, uint32_t len, uint32_t timeout_ms);
