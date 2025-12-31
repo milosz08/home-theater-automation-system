@@ -1,10 +1,16 @@
 #include "util.h"
 #include "ui.h"
 
+#include <string.h>
+
+#include "esp_netif.h"
+#include "esp_mac.h"
+
 int util_secure_memcmp(const void *s1, const void *s2, size_t n) {
   const unsigned char *p1 = s1, *p2 = s2;
   int ret = 0;
-  for (size_t i = 0; i < n; i++) {
+  for (size_t i = 0; i < n; i++)
+  {
     ret |= p1[i] ^ p2[i];
   }
   return ret;
@@ -12,7 +18,8 @@ int util_secure_memcmp(const void *s1, const void *s2, size_t n) {
 
 esp_err_t util_silent_error_handler(httpd_req_t *req, httpd_err_code_t err)
 {
-  switch (err) {
+  switch (err)
+  {
     // 4xx
     case HTTPD_400_BAD_REQUEST:               httpd_resp_set_status(req, "400 Bad Request"); break;
     case HTTPD_401_UNAUTHORIZED:              httpd_resp_set_status(req, "401 Unauthorized"); break;
@@ -40,6 +47,7 @@ esp_err_t util_silent_response(httpd_req_t *req)
 
 void util_show_network_connection(void)
 {
+  esp_netif_t *netif = esp_netif_next_unsafe(NULL); // safe, because only for UI
   esp_netif_ip_info_t ip_info;
   memset(&ip_info, 0, sizeof(esp_netif_ip_info_t));
   if (netif != NULL)
