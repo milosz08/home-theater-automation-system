@@ -1,4 +1,5 @@
 #include "auth_nvs.h"
+#include "storage.h"
 
 #include <string.h>
 
@@ -21,7 +22,7 @@ void get_current_password(char *buf, size_t len)
   // if not found in NVS or other issue, get hardcored password
   if (err != ESP_OK)
   {
-    strncpy(buf, ESP_DEFAULT_PASSWORD, len);
+    strncpy(buf, g_config.default_password, len);
     ESP_LOGD(TAG, "Using default password");
   }
 }

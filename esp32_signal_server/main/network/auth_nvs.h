@@ -4,11 +4,6 @@
 
 #include "esp_err.h"
 
-// password come from CMake
-#ifndef ESP_DEFAULT_PASSWORD
-#define ESP_DEFAULT_PASSWORD "cinema123"
-#endif
-
 #define STORAGE_NAMESPACE   "storage"
 #define NVS_KEY_PASS        "server_pass"
 

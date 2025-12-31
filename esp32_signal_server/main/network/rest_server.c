@@ -1,17 +1,15 @@
 #include "rest_server.h"
 #include "rest_handlers.h"
 #include "util.h"
+#include "storage.h"
 
 #include "esp_log.h"
 
 static const char *TAG = "REST_SERVER";
-static httpd_handle_t server = NULL;
 
-// self-signed certificate
-extern const unsigned char cacert_pem_start[]   asm("_binary_cacert_pem_start");
-extern const unsigned char cacert_pem_end[]     asm("_binary_cacert_pem_end");
-extern const unsigned char prvtkey_pem_start[]  asm("_binary_prvtkey_pem_start");
-extern const unsigned char prvtkey_pem_end[]    asm("_binary_prvtkey_pem_end");
+static httpd_handle_t server = NULL;
+static char *cert_buffer = NULL;
+static char *key_buffer = NULL;
 
 httpd_err_code_t errors_to_catch[] = {
   HTTPD_404_NOT_FOUND,
@@ -28,21 +26,30 @@ esp_err_t start_rest_server(void)
 {
   httpd_ssl_config_t conf = HTTPD_SSL_CONFIG_DEFAULT();
 
-  conf.servercert = cacert_pem_start;
-  conf.servercert_len = cacert_pem_end - cacert_pem_start;
-  conf.prvtkey_pem = prvtkey_pem_start;
-  conf.prvtkey_len = prvtkey_pem_end - prvtkey_pem_start;
-  conf.port_secure = atoi(ESP_HTTPS_SERVER_PORT);
+  cert_buffer = read_file_to_buffer("/storage/cacert.pem");
+  key_buffer = read_file_to_buffer("/storage/prvtkey.pem");
 
-  if (conf.servercert_len == 0 || conf.prvtkey_len == 0)
+  if (cert_buffer == NULL || key_buffer == NULL)
   {
     ESP_LOGE(TAG, "Unable to read cert files!");
+    free(cert_buffer);
+    free(key_buffer);
+    cert_buffer = NULL;
+    key_buffer = NULL;
     return ESP_FAIL;
   }
+
+  conf.servercert = (const unsigned char*)cert_buffer;
+  conf.servercert_len = strlen(cert_buffer);
+  conf.prvtkey_pem = (const unsigned char*)key_buffer;
+  conf.prvtkey_len = strlen(key_buffer);
+
+  conf.port_secure = g_config.https_port;;
+
   conf.httpd.stack_size = 10240;
   conf.httpd.max_uri_handlers = 10;
 
-  ESP_LOGI(TAG, "Starting HTTPS Server");
+  ESP_LOGI(TAG, "Starting HTTPS server");
   esp_err_t ret = httpd_ssl_start(&server, &conf);
 
   if (ESP_OK != ret)
@@ -87,5 +94,17 @@ void stop_rest_server(void)
   if (server)
   {
     httpd_ssl_stop(server);
+    server = NULL;
+    if (cert_buffer)
+    {
+      free(cert_buffer);
+      cert_buffer = NULL;
+    }
+    if (key_buffer)
+    {
+      free(key_buffer);
+      key_buffer = NULL;
+    }
+    ESP_LOGI(TAG, "HTTPS server stopped");
   }
 }

@@ -1,10 +1,15 @@
 #include "util.h"
 #include "ui.h"
 
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "esp_netif.h"
+#include "esp_log.h"
 #include "esp_mac.h"
+
+static const char *TAG = "UTIL";
 
 int util_secure_memcmp(const void *s1, const void *s2, size_t n) {
   const unsigned char *p1 = s1, *p2 = s2;
@@ -57,4 +62,26 @@ void util_show_network_connection(void)
   uint8_t mac[6] = {0};
   esp_read_mac(mac, ESP_MAC_ETH);
   ui_show_network_dashboard(&ip_info, mac);
+}
+
+char *read_file_to_buffer(const char *path)
+{
+  FILE *f = fopen(path, "r");
+  if (f == NULL)
+  {
+    ESP_LOGE(TAG, "Failed to open file: %s", path);
+    return NULL;
+  }
+  fseek(f, 0, SEEK_END);
+  long fsize = ftell(f);
+  fseek(f, 0, SEEK_SET);
+
+  char *buffer = malloc(fsize + 1);
+  if (buffer)
+  {
+    fread(buffer, 1, fsize, f);
+    buffer[fsize] = '\0';
+  }
+  fclose(f);
+  return buffer;
 }

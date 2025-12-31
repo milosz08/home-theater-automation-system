@@ -7,6 +7,7 @@
 #include "lcd_driver.h"
 #include "ui.h"
 #include "util.h"
+#include "storage.h"
 
 #include "esp_netif.h"
 #include "esp_event.h"
@@ -75,7 +76,13 @@ void app_main(void)
     ui_show_critical_error("NVS Fail", ret);
   }
 
-  ui_show_boot_progress("Config IO ports", 30);
+  ui_show_boot_progress("Mounting Storage", 20);
+  CHECK_CRITICAL(init_spiffs_storage(), "SPIFFS Fail");
+
+  ui_show_boot_progress("Loading Config", 30);
+  CHECK_CRITICAL(load_system_config(), "Config Fail");
+
+  ui_show_boot_progress("Config IO ports", 40);
 
   led_init();
   CHECK_CRITICAL(rs485_init(), "RS485 init");
@@ -84,20 +91,20 @@ void app_main(void)
   vTaskDelay(pdMS_TO_TICKS(100));
 
   // init global system services
-  ui_show_boot_progress("Start services", 50);
+  ui_show_boot_progress("Start services", 60);
 
   CHECK_CRITICAL(esp_netif_init(), "Netif init");
   CHECK_CRITICAL(esp_event_loop_create_default(), "EventLoop");
   CHECK_CRITICAL(gpio_install_isr_service(0), "GPIO ISR"); // enable interrupts
 
-  ui_show_boot_progress("Register events", 60);
+  ui_show_boot_progress("Register events", 75);
   CHECK_CRITICAL(esp_event_handler_register(IP_EVENT, IP_EVENT_ETH_GOT_IP, &srv_conn_h, NULL), "Evt IP reg");
   CHECK_CRITICAL(esp_event_handler_register(ETH_EVENT, ETHERNET_EVENT_DISCONNECTED, &srv_conn_h, NULL), "Evt Eth reg");
 
-  ui_show_boot_progress("Init Ethernet", 75);
+  ui_show_boot_progress("Init Ethernet", 85);
   CHECK_CRITICAL(eth_init_w5500(), "Eth init"); // init ethernet
 
-  ui_show_boot_progress("Init buttons", 90);
+  ui_show_boot_progress("Init buttons", 95);
   init_reset_button();
 
   ui_show_boot_progress("System ready!", 100);

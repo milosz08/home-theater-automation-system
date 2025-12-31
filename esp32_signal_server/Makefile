@@ -3,7 +3,7 @@ PROJECT_NAME := esp32_signal_server
 PORT ?= COM3 # communication port for ESP32 board
 BAUD ?= 921600 # flashing speed
 
-.PHONY: all build rebuild flash flash-app monitor run clean erase menuconfig help
+.PHONY: all build rebuild flash flash-app flash-data monitor run clean erase menuconfig help
 
 all: build
 
@@ -11,18 +11,22 @@ all: build
 build:
 	idf.py build
 
-# full rebuild (change .env file or CMakeLists.txt)
+# full rebuild (CMakeLists.txt or partition structure)
 rebuild:
 	idf.py reconfigure
 	idf.py build
 
-# flash with high speed
+# flash with high speed (app, bootloader, partition table, storage)
 flash: build
 	idf.py -p $(PORT) -b $(BAUD) flash
 
-# flash only app
+# flash only app (without SPIFFS)
 flash-app: build
 	idf.py -p $(PORT) -b $(BAUD) app-flash
+
+# change some content inside data directory
+flash-data:
+	idf.py -p $(PORT) -b $(BAUD) storage-flash
 
 # monitor with decoder
 monitor:
@@ -31,11 +35,14 @@ monitor:
 # flash and run
 run: flash monitor
 
+# fast refresh
+run-data: flash-data monitor
+
 # clean output files
 clean:
 	idf.py fullclean
 
-# clean flash (remove NVS)
+# clean flash (remove NVS and SPIFFS)
 erase:
 	idf.py -p $(PORT) erase-flash
 

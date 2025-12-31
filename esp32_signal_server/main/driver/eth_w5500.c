@@ -1,5 +1,6 @@
 #include "eth_w5500.h"
 #include "led_ind.h"
+#include "storage.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -46,9 +47,13 @@ static esp_err_t pkt_eth_input_proxy(esp_eth_handle_t eth_handle, uint8_t *buffe
   return esp_netif_receive((esp_netif_t *)priv, buffer, length, NULL);
 }
 
-#ifdef ENABLE_STATIC_IP
 static esp_err_t set_static_ip(esp_netif_t *netif)
 {
+  if (strlen(g_config.ip) == 0)
+  {
+    ESP_LOGW(TAG, "Static IP not configured, skipping...");
+    return ESP_OK;
+  }
   esp_err_t err = esp_netif_dhcpc_stop(netif);   // disable DHCP client
   if (err != ESP_OK && err != ESP_ERR_ESP_NETIF_DHCP_ALREADY_STOPPED)
   {
@@ -56,9 +61,9 @@ static esp_err_t set_static_ip(esp_netif_t *netif)
   }
 
   esp_netif_ip_info_t ip_info;
-  esp_netif_str_to_ip4(ESP_IP_ADDRESS, &ip_info.ip);
-  esp_netif_str_to_ip4(ESP_IP_DEFAULT_GATEWAY, &ip_info.gw);
-  esp_netif_str_to_ip4(ESP_IP_SUBNET_MASK, &ip_info.netmask);
+  esp_netif_str_to_ip4(g_config.ip, &ip_info.ip);
+  esp_netif_str_to_ip4(g_config.gateway, &ip_info.gw);
+  esp_netif_str_to_ip4(g_config.netmask, &ip_info.netmask);
   err = esp_netif_set_ip_info(netif, &ip_info);
   if (err != ESP_OK)
   {
@@ -67,32 +72,30 @@ static esp_err_t set_static_ip(esp_netif_t *netif)
   // DNS config
   esp_netif_dns_info_t dns_info = {};
   dns_info.ip.type = ESP_IPADDR_TYPE_V4;
-  esp_netif_str_to_ip4(ESP_IP_DNS_ADDRESS, &dns_info.ip.u_addr.ip4);
+
+  // cloudflare fallback, if empty
+  const char *dns_addr = (strlen(g_config.dns) > 0) ? g_config.dns : "1.1.1.1";
+  esp_netif_str_to_ip4(dns_addr, &dns_info.ip.u_addr.ip4);
 
   err = esp_netif_set_dns_info(netif, ESP_NETIF_DNS_MAIN, &dns_info);
   if (err != ESP_OK)
   {
     return err;
   }
-  ESP_LOGI(TAG, "IP: %s, DNS: %s", ESP_IP_ADDRESS, ESP_IP_DNS_ADDRESS);
+  ESP_LOGI(TAG, "Static IP applied: %s, GW: %s, DNS: %s", g_config.ip, g_config.gateway, dns_addr);
   return ESP_OK;
 }
-#endif
 
 esp_err_t eth_init_w5500(void)
 {
   esp_netif_config_t cfg = ESP_NETIF_DEFAULT_ETH();
   esp_netif_t *eth_netif = esp_netif_new(&cfg);
 
-  #ifdef ENABLE_STATIC_IP
-    esp_err_t err = set_static_ip(eth_netif);
-    if (err != ESP_OK)
-    {
-      return err;
-    }
-  #else
-    ESP_LOGW(TAG, "Missing static IP config - switching to DHCP");
-  #endif
+  esp_err_t err = set_static_ip(eth_netif);
+  if (err != ESP_OK)
+  {
+    return err;
+  }
 
   spi_bus_config_t buscfg = {
     .miso_io_num = ETH_SPI_MISO_GPIO,
