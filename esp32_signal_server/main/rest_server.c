@@ -47,7 +47,6 @@ esp_err_t start_rest_server(void)
 
   if (ESP_OK != ret)
   {
-    ESP_LOGE(TAG, "Error starting server!");
     return ret;
   }
   // silent error handlers
