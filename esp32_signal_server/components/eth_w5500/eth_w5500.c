@@ -187,7 +187,7 @@ esp_err_t eth_w5500_init(const eth_config_t *config, const eth_callbacks_t *call
   err = esp_event_handler_register(IP_EVENT, IP_EVENT_ETH_GOT_IP, &eth_event_handler, ctx);
   if (err != ESP_OK) return err;
 
-  // proxy input for LED activity
+  // proxy input for packets activity callback function
   err = esp_eth_update_input_path(eth_handle, pkt_eth_input_proxy, ctx);
   if (err != ESP_OK) return err;
 
