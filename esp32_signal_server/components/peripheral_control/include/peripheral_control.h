@@ -1,0 +1,6 @@
+#ifndef PERIPHERAL_CONTROL_H_
+#define PERIPHERAL_CONTROL_H_
+
+// TODO
+
+#endif
