@@ -18,8 +18,8 @@
 static const char *TAG = "ETH_W5500";
 
 typedef struct {
-    eth_callbacks_t callbacks;
-    esp_netif_t *netif;
+  eth_callbacks_t callbacks;
+  esp_netif_t *netif;
 } eth_context_t;
 
 static void eth_event_handler(void *arg, esp_event_base_t event_base, int32_t event_id, void *event_data)
