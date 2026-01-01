@@ -1,0 +1,30 @@
+#ifndef UART_BUS_H_
+#define UART_BUS_H_
+
+#include "driver/gpio.h"
+#include "driver/uart.h"
+#include "esp_err.h"
+
+// rs485
+#define RS485_UART_PORT       UART_NUM_2
+#define RS485_TX_PIN          GPIO_NUM_17
+#define RS485_RX_PIN          GPIO_NUM_16
+#define RS485_EN_PIN          GPIO_NUM_14
+#define RS485_BAUD_RATE       2400
+#define RS485_BUF_SIZE        2048
+
+// rs232
+#define RS232_UART_PORT       UART_NUM_1
+#define RS232_TX_PIN          GPIO_NUM_21
+#define RS232_RX_PIN          GPIO_NUM_22
+#define RS232_BAUD_RATE       115200
+#define RS232_BUF_SIZE        1024
+
+esp_err_t uart_bus_rs485_init(void);
+int uart_bus_rs485_send(const uint8_t *data, uint16_t len);
+
+esp_err_t uart_bus_rs232_init(void);
+int uart_bus_rs232_send(const uint8_t *data, uint16_t len);
+int uart_bus_rs232_read(uint8_t *buf, uint32_t len, uint32_t timeout_ms);
+
+#endif
