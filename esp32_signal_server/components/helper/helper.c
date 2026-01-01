@@ -60,7 +60,7 @@ void helper_format_uptime(uint32_t total_seconds, char *dest, size_t max_len)
   uint32_t days = total_seconds / 86400;
   uint32_t hours = (total_seconds % 86400) / 3600;
   uint32_t minutes = (total_seconds % 3600) / 60;
-  snprintf(dest, max_len, "%02u:%02u:%02u",
+  snprintf(dest, max_len, "%03u:%02u:%02u",
            (unsigned int)days,
            (unsigned int)hours,
            (unsigned int)minutes);
