@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "esp32-provisioning-tool"
+version = "0.0.0"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [{ name = "Miłosz Gilga", email = "miloszgilga@gmail.com" }]
+dependencies = [
+  "qrcode[pil]>=7.4.2",
+  "Pillow>=10.0.0",
+  "requests>=2.31.0",
+  "esptool>=4.6.2",
+  "cryptography>=41.0.0",
+  "python-dotenv>=1.2.1",
+  "pyserial>=3.5",
+  "littlefs-python>=0.16.0",
+]
+
+[project.scripts]
+provisioning-tool = "main:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
