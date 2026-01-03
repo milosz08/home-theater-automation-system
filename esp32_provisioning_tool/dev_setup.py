@@ -18,7 +18,7 @@ print(f"load config from: {env_path}")
 
 LOCAL_STAGING_DIR = "../setup_data"
 ANDROID_PROJECT_ROOT = "../android_control_client"
-ESP_DATA_DIR = "../esp32_signal_server/data"
+ESP_DATA_DIR = "../esp32_firmare/data"
 
 ESP_IP = os.getenv("ESP_IP_ADDRESS", "192.168.0.2")
 ESP_GATEWAY = os.getenv("ESP_GATEWAY", "192.168.0.1")
