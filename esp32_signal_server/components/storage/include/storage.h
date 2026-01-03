@@ -12,7 +12,7 @@ typedef struct {
   char default_password[64];
 } system_config_t;
 
-esp_err_t storage_spiffs_init(void);
+esp_err_t storage_init(void);
 esp_err_t storage_load_system_config(system_config_t *config);
 
 #endif

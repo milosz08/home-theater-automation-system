@@ -9,6 +9,6 @@ idf_component_register(
     esp_common
     json
     log
-    spiffs
+    littlefs
     helper
 )

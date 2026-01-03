@@ -122,9 +122,9 @@ void app_main(void)
 
   vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS));
 
-  // 4. filesystem (spiffs)
+  // 4. filesystem (storage)
   ui_show_boot_progress("Mounting storage", ++current_step, TOTAL_STEPS);
-  CHECK_CRITICAL(storage_spiffs_init(), "SPIFFS fail");
+  CHECK_CRITICAL(storage_init(), "Storage fail");
   vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS));
 
   // 5. config

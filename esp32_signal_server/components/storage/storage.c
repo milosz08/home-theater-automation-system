@@ -7,7 +7,7 @@
 
 #include "cJSON.h"
 #include "esp_log.h"
-#include "esp_spiffs.h"
+#include "esp_littlefs.h"
 
 #include "helper.h"
 
@@ -17,20 +17,20 @@ static const char *TAG = "STORAGE";
 
 // public api ----------------------------------------------------------------------------------------------------------
 
-esp_err_t storage_spiffs_init(void)
+esp_err_t storage_init(void)
 {
-  esp_vfs_spiffs_conf_t conf = {
-    .base_path                = "/storage",   // mounting point
-    .partition_label          = "storage",    // same as in partitions.csv
-    .max_files                = 5,            // max open files
-    .format_if_mount_failed   = true
+  esp_vfs_littlefs_conf_t conf = {
+    .base_path                = "/storage",    // mounting point
+    .partition_label          = "littlefs",    // same as in partitions.csv
+    .format_if_mount_failed   = true,
+    .dont_mount               = false
   };
 
-  esp_err_t ret = esp_vfs_spiffs_register(&conf);
+  esp_err_t ret = esp_vfs_littlefs_register(&conf);
   if (ret != ESP_OK) return ret;
 
   size_t total = 0, used = 0;
-  ret = esp_spiffs_info(conf.partition_label, &total, &used);
+  ret = esp_littlefs_info(conf.partition_label, &total, &used);
   if (ret != ESP_OK) return ret;
   
   ESP_LOGI(TAG, "partition size: total: %d, used: %d", total, used);
