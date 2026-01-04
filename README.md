@@ -14,7 +14,11 @@
 
 ## Software
 
-### ESP32 signal sender/receiver and rest API server
+### ESP32 firmare
+
+[TBD]
+
+### Provisioning tool (certgen and ESP32 flashing)
 
 [TBD]
 
