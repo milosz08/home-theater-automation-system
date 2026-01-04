@@ -1,4 +1,4 @@
-PROJECT_NAME := esp32_firmare
+PROJECT_NAME := esp32_firmware
 
 PORT ?= COM3 # communication port for ESP32 board
 BAUD ?= 921600 # flashing speed

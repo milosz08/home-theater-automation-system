@@ -14,7 +14,7 @@
 
 ## Software
 
-### ESP32 firmare
+### ESP32 firmware
 
 [TBD]
 
