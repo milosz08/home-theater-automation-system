@@ -39,7 +39,12 @@ esp_err_t uart_bus_rs485_init(void)
 
 int uart_bus_rs485_send(const uint8_t *data, uint16_t len)
 {
-  return uart_write_bytes(RS485_UART_PORT, (const char*)data, len);;
+  return uart_write_bytes(RS485_UART_PORT, (const char*)data, len);
+}
+
+int uart_bus_rs485_read(uint8_t *buf, uint32_t len, uint32_t timeout_ms)
+{
+  return uart_read_bytes(RS485_UART_PORT, buf, len, pdMS_TO_TICKS(timeout_ms));
 }
 
 esp_err_t uart_bus_rs232_init(void) {
