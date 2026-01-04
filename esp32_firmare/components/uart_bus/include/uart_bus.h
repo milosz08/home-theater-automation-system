@@ -9,7 +9,6 @@
 #define RS485_UART_PORT       UART_NUM_2
 #define RS485_TX_PIN          GPIO_NUM_17
 #define RS485_RX_PIN          GPIO_NUM_16
-#define RS485_EN_PIN          GPIO_NUM_14
 #define RS485_BAUD_RATE       2400
 #define RS485_BUF_SIZE        2048
 

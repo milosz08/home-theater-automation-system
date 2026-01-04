@@ -29,17 +29,8 @@ esp_err_t uart_bus_rs485_init(void)
   err = uart_driver_install(RS485_UART_PORT, RS485_BUF_SIZE, 0, 0, NULL, 0);
   if (err != ESP_OK) return err;
 
-  err = uart_set_mode(RS485_UART_PORT, UART_MODE_UART); // do not check RX before send
-  if (err != ESP_OK) return err;
-
-  // rs485 only for send data, receiving is disabled
-  err = gpio_reset_pin(RS485_EN_PIN);
-  if (err != ESP_OK) return err;
-
-  err = gpio_set_direction(RS485_EN_PIN, GPIO_MODE_OUTPUT);
-  if (err != ESP_OK) return err;
-
-  err = gpio_set_level(RS485_EN_PIN, 1);
+  // half-duplex controlled by external chip on RS485 translation module (for ESP32 it is a regular serial)
+  err = uart_set_mode(RS485_UART_PORT, UART_MODE_UART); 
   if (err != ESP_OK) return err;
 
   ESP_LOGI(TAG, "init rs485 interface, TX:%d RX:%d", RS485_TX_PIN, RS485_RX_PIN);
