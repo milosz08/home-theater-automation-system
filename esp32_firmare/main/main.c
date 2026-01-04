@@ -191,14 +191,4 @@ void app_main(void)
   vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS * 5));
 
   CHECK_CRITICAL(ui_manager_init(), "UI manager fail");
-
-  /////////////////////// TODO: test signal ///////////////////////
-  while(1)
-  {
-    // uint32_t free_heap = esp_get_free_heap_size() / 1024;
-    // uint32_t min_free_heap = esp_get_minimum_free_heap_size() / 1024;
-    // ESP_LOGI(TAG, "RAM: %luKB Min: %luKB", free_heap, min_free_heap);
-    vTaskDelay(pdMS_TO_TICKS(1000));
-  }
-  /////////////////////// TODO: test signal ///////////////////////
 }
