@@ -3,7 +3,8 @@
 
 #include "esp_err.h"
 
-#define PROGRESS_BAR_CHAR 0x01
+#define PROGRESS_BAR_CHAR   0x01
+#define DEGREE_CHAR         0x02
 
 esp_err_t ui_init(void);
 void ui_set_text(const char *line0, const char *line1);

@@ -49,6 +49,9 @@ esp_err_t ui_init(void)
   err = lcd_driver_create_char(1, lcd_icon_rectangle_full);
   if (err != ESP_OK) return err;
 
+  err = lcd_driver_create_char(2, lcd_icon_degree);
+  if (err != ESP_OK) return err;
+
   ui_temp_msg_timer = xTimerCreate("UiTmr", pdMS_TO_TICKS(2000), pdFALSE, NULL, ui_restore_timer_callback);
 
   lcd_driver_clear();

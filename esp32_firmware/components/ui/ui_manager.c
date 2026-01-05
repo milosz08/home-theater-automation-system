@@ -2,6 +2,7 @@
 #include "eth_w5500.h"
 #include "helper.h"
 #include "ui.h"
+#include "env_sensor.h"
 
 #include "esp_log.h"
 #include "esp_timer.h"
@@ -15,6 +16,7 @@ static const char *TAG = "UI_MGR";
 typedef enum {
   PAGE_SYSTEM,
   PAGE_NETWORK,
+  PAGE_ENV,
   PAGE_RESOURCES,
   PAGE_COUNT
 } ui_page_t;
@@ -40,6 +42,23 @@ static void render_network_page(void)
   ui_show_network_dashboard(ip_buf, mac_buf);
 }
 
+static void render_env_page(void)
+{
+  env_data_t data;
+  static char line0[17], line1[17];
+  if (env_sensors_read_all(&data) == ESP_OK)
+  {
+    snprintf(line0, sizeof(line0), "T:%.1f%cC H:%.0f%%", data.temp_aht, DEGREE_CHAR, data.hum_aht);
+    snprintf(line1, sizeof(line1), "P:%.1fhPa", data.pres_bmp);
+  }
+  else
+  {
+    snprintf(line0, sizeof(line0), "T:--%cC H:--%%", DEGREE_CHAR);
+    snprintf(line1, sizeof(line1), "P:----hPa");
+  }
+  ui_set_text(line0, line1);
+}
+
 static void render_resources_page(void)
 {
   uint32_t free_heap = esp_get_free_heap_size() / 1024;
@@ -57,6 +76,7 @@ static void render_current_page(void)
   {
     case PAGE_SYSTEM:     render_system_page();     break;
     case PAGE_NETWORK:    render_network_page();    break;
+    case PAGE_ENV:        render_env_page();        break;
     case PAGE_RESOURCES:  render_resources_page();  break;
     default: break;
   }

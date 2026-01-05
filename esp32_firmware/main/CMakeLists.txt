@@ -13,6 +13,7 @@ idf_component_register(
     log
     freertos
     app_api
+    env_sensor
     eth_w5500
     https_server
     i2c_bus

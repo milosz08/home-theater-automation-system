@@ -1,4 +1,5 @@
 #include "app_api.h"
+#include "env_sensor.h"
 #include "eth_w5500.h"
 #include "https_server.h"
 #include "i2c_bus.h"
@@ -31,7 +32,7 @@
 } while(0)
 
 #define PROGRESS_BAR_COOLDOWN_MS  100   // time between next steps
-#define TOTAL_STEPS               9     // total steps
+#define TOTAL_STEPS               10    // total steps
 #define REQ_MESS_DURATION_MS      2000  // request success message duration
 
 // pcf8574 expander buttons and other io inputs (4-7)
@@ -116,18 +117,22 @@ void app_main(void)
   ui_show_boot_progress("Booting...", ++current_step, TOTAL_STEPS);
   vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS));
 
-  // 3. flash + auto-recovery
-  ui_show_boot_progress("Init NVS flash", ++current_step, TOTAL_STEPS);
-  CHECK_CRITICAL(nvs_manager_init(), "NVS init fail");
-
+  // 3. env sensors
+  ui_show_boot_progress("Init env sensors", ++current_step, TOTAL_STEPS);
+  CHECK_CRITICAL(env_sensors_init(), "Env sensors fail");
   vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS));
 
-  // 4. filesystem (storage)
+  // 4. flash + auto-recovery
+  ui_show_boot_progress("Init NVS flash", ++current_step, TOTAL_STEPS);
+  CHECK_CRITICAL(nvs_manager_init(), "NVS init fail");
+  vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS));
+
+  // 5. filesystem (storage)
   ui_show_boot_progress("Mounting storage", ++current_step, TOTAL_STEPS);
   CHECK_CRITICAL(storage_init(), "Storage fail");
   vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS));
 
-  // 5. config
+  // 6. config
   ui_show_boot_progress("Loading config", ++current_step, TOTAL_STEPS);
   CHECK_CRITICAL(storage_load_system_config(&s_config), "Config fail");
   const nvs_entry_t nvs_entries[] = {
@@ -138,7 +143,7 @@ void app_main(void)
                                                 sizeof(nvs_entries) / sizeof(nvs_entries[0])), "NVS persist fail");
   vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS));
 
-  // 6. IO and peripherals
+  // 7. IO and peripherals
   ui_show_boot_progress("Config IO ports", ++current_step, TOTAL_STEPS);
   const io_input_config_t inputs[] = {
     { .pin = PCF_PIN_IN_BTN_RESET, .callback = on_reset_btn_click, .name = "RESET" },
@@ -149,14 +154,14 @@ void app_main(void)
   CHECK_CRITICAL(uart_bus_rs232_init(), "RS232 fail");
   vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS));
 
-  // 7. system services
+  // 8. system services
   ui_show_boot_progress("Start services", ++current_step, TOTAL_STEPS);
   CHECK_CRITICAL(esp_netif_init(), "Netif fail");
   CHECK_CRITICAL(esp_event_loop_create_default(), "EventLoop fail");
   CHECK_CRITICAL(gpio_install_isr_service(0), "GPIO ISR fail"); // enable interrupts
   vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS));
 
-  // 8. http service
+  // 9. http service
   ui_show_boot_progress("Config HTTPS", ++current_step, TOTAL_STEPS);
   https_server_config_t https_cfg = {
     .port               = s_config.https_port,
@@ -172,7 +177,7 @@ void app_main(void)
   CHECK_CRITICAL(https_server_service_init(&https_cfg), "HTTPS fail");
   vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS));
 
-  // 9. ethernet (w5500)
+  // 10. ethernet (w5500)
   ui_show_boot_progress("Init Ethernet", ++current_step, TOTAL_STEPS);
   eth_config_t eth_cfg = {
     .ip       = s_config.ip,
