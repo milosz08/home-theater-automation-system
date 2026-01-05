@@ -20,4 +20,4 @@ esp_err_t ws_queue_init(void);
 bool ws_queue_send(const char *event_name, const char *json_data);
 bool ws_queue_receive(ws_msg_t *out_msg, uint32_t ticks_to_wait);
 
-#endif
+#endif // WS_QUEUE_H_

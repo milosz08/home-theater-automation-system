@@ -10,4 +10,4 @@ esp_err_t app_api_auth_change_password(httpd_req_t *req);
 // control
 esp_err_t app_api_ws_handler(httpd_req_t *req);
 
-#endif
+#endif // APP_API_HANDLERS_H_

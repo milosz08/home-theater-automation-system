@@ -22,4 +22,4 @@ void led_ind_eth_packet_activity(void);
 void led_ind_io_cmd_execution(void);
 void led_ind_set_error(bool active);
 
-#endif
+#endif // LED_IND_H_

@@ -20,4 +20,4 @@ esp_err_t lcd_driver_print(const char *str);
 esp_err_t lcd_driver_set_cursor(uint8_t col, uint8_t row);
 esp_err_t lcd_driver_clear(void);
 
-#endif
+#endif // LCD_DRIVER_H_

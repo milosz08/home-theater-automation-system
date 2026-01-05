@@ -8,4 +8,4 @@ esp_err_t ws_dispatcher_init(void);
 void ws_dispatcher_add_client(httpd_handle_t server_handle, int new_sockfd);
 void ws_dispatcher_remove_client(int sockfd);
 
-#endif
+#endif // WS_DISPATCHER_H_

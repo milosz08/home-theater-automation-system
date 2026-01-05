@@ -8,4 +8,4 @@
 const https_endpoint_t *app_api_get_endpoints(void);
 size_t app_api_get_endpoints_count(void);
 
-#endif
+#endif // APP_API_H_

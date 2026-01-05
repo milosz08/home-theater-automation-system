@@ -15,4 +15,4 @@ typedef struct {
 esp_err_t storage_init(void);
 esp_err_t storage_load_system_config(system_config_t *config);
 
-#endif
+#endif // STORAGE_H_

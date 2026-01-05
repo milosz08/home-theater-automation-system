@@ -10,4 +10,4 @@ void ws_cmd_screen_down(const cJSON *payload);
 void ws_cmd_screen_stop(const cJSON *payload);
 void ws_cmd_screen_up(const cJSON *payload);
 
-#endif
+#endif // WS_CMD_HANDLERS_H_

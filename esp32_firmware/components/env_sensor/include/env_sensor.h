@@ -17,4 +17,4 @@ typedef struct {
 esp_err_t env_sensors_init(void);
 esp_err_t env_sensors_read_all(env_data_t *data);
 
-#endif
+#endif // ENV_SENSOR_H_

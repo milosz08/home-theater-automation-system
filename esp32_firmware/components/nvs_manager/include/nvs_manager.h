@@ -16,4 +16,4 @@ esp_err_t nvs_manager_save_strings_batch(const char *ns, const nvs_entry_t *entr
 esp_err_t nvs_manager_save_str(const char *ns, const char *key, const char *value);
 esp_err_t nvs_manager_load_str(const char *ns, const char *key, char *out_buf, size_t max_len);
 
-#endif
+#endif // NVS_MANAGER_H_

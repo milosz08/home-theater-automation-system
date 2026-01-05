@@ -23,4 +23,4 @@ typedef struct {
 
 esp_err_t io_input_init(const io_input_config_t *config, size_t num_buttons);
 
-#endif
+#endif // IO_INPUT_H_

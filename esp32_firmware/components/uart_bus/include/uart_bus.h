@@ -27,4 +27,4 @@ esp_err_t uart_bus_rs232_init(void);
 int uart_bus_rs232_send(const uint8_t *data, uint16_t len);
 int uart_bus_rs232_read(uint8_t *buf, uint32_t len, uint32_t timeout_ms);
 
-#endif
+#endif // UART_BUS_H_

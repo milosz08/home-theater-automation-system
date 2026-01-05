@@ -16,4 +16,4 @@ void ui_show_network_dashboard(const char *ip_str, const uint8_t *mac_addr);
 void ui_show_temp_message(const char *text, uint32_t duration_ms);
 void ui_show_temp_cmd_message(const char *text, uint32_t duration_ms);
 
-#endif
+#endif // UI_H_

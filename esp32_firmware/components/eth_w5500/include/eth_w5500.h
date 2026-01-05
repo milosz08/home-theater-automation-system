@@ -29,4 +29,4 @@ typedef struct {
 esp_err_t eth_w5500_init(const eth_config_t *config, const eth_callbacks_t *callbacks);
 void eth_w5500_network_info(char *out_ip, uint8_t *out_mac);
 
-#endif
+#endif // EHT_W5500_H_

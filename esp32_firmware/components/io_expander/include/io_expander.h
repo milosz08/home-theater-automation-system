@@ -11,4 +11,4 @@ esp_err_t io_expander_init(uint8_t input_mask);
 esp_err_t io_expander_set_level(int pin, int level);        // thread-safe
 esp_err_t io_expander_get_level(int pin, uint8_t *level);   // thread-safe
 
-#endif
+#endif // IO_EXPANDER_H_

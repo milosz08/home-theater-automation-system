@@ -7,4 +7,4 @@ esp_err_t ui_manager_init(void);
 void ui_manager_switch_mode(void);
 void ui_manager_manual_mode(void);
 
-#endif
+#endif // UI_MANAGER_H_

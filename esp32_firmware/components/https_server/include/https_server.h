@@ -42,4 +42,4 @@ typedef struct {
 
 esp_err_t https_server_service_init(const https_server_config_t *config);
 
-#endif
+#endif // HTTPS_SERVER_H_
