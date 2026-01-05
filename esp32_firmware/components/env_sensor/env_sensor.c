@@ -10,7 +10,8 @@
 static const char *TAG = "ENV_SENSORS";
 
 // calibrating data for BMP280
-typedef struct {
+typedef struct
+{
   uint16_t dig_T1;
   int16_t dig_T2;
   int16_t dig_T3;

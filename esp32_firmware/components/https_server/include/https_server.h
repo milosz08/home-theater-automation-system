@@ -17,7 +17,8 @@ typedef void (*https_on_stop_t)(void);
 typedef void (*https_on_error_t)(esp_err_t err);
 typedef void (*https_post_handler_cb_t)(const char *endpoint_name);
 
-typedef struct {
+typedef struct
+{
   const char *uri;
   httpd_method_t method;
   esp_err_t (*handler)(httpd_req_t *r);
@@ -26,7 +27,8 @@ typedef struct {
   char *name;
 } https_endpoint_t;
 
-typedef struct {
+typedef struct
+{
   uint16_t port;
   const char *cacert_path;
   const char *prvtkey_path;

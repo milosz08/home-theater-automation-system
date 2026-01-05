@@ -22,7 +22,8 @@ static char *cert_buffer = NULL,
 
 typedef esp_err_t (*httpd_handler_func_t)(httpd_req_t *req);
 
-typedef struct {
+typedef struct
+{
   https_post_handler_cb_t on_success;
 } server_context_t;
 

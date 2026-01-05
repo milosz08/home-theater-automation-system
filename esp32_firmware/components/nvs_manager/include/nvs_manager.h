@@ -6,7 +6,8 @@
 
 #include "esp_err.h"
 
-typedef struct {
+typedef struct
+{
   const char *key;
   const char *value;
 } nvs_entry_t;

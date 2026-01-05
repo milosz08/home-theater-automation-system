@@ -11,7 +11,8 @@
 // event names
 #define WS_EVENT_TYPE_ENV_UPDATE "env"
 
-typedef struct {
+typedef struct
+{
   char event[WS_EVENT_NAME_MAX];
   char *payload;
 } ws_msg_t;

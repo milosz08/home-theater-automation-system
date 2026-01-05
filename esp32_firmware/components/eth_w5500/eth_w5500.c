@@ -17,7 +17,8 @@
 
 static const char *TAG = "ETH_W5500";
 
-typedef struct {
+typedef struct
+{
   eth_callbacks_t callbacks;
   esp_netif_t *netif;
 } eth_context_t;

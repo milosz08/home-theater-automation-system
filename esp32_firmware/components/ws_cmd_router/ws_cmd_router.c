@@ -9,7 +9,8 @@
 
 static const char *TAG = "WS_CMD_ROUTER";
 
-typedef struct {
+typedef struct
+{
   const char *name;
   ws_cmd_cb_t cb;
 } cmd_entry_t;

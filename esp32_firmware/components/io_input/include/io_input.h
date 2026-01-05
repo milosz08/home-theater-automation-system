@@ -7,7 +7,8 @@
 #define BTN_TIME_LONG     2000  // threshold for long click
 #define BTN_TIME_FACTORY  5000  // threshold for fabric-reset
 
-typedef enum {
+typedef enum
+{
   BTN_CLICK_SHORT,
   BTN_CLICK_LONG,
   BTN_CLICK_FACTORY
@@ -15,7 +16,8 @@ typedef enum {
 
 typedef void (*io_input_callback_t)(io_input_action_t action);
 
-typedef struct {
+typedef struct
+{
   int pin;
   io_input_callback_t callback;
   const char *name;

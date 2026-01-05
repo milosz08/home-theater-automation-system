@@ -13,7 +13,8 @@
 
 static const char *TAG = "UI_MGR";
 
-typedef enum {
+typedef enum
+{
   PAGE_SYSTEM,
   PAGE_NETWORK,
   PAGE_ENV,

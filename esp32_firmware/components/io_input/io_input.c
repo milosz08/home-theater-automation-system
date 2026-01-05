@@ -12,7 +12,8 @@
 
 static const char *TAG = "IO_INPUT";
 
-typedef struct {
+typedef struct
+{
   io_input_config_t cfg;
   int hold_timer;
 } btn_internal_t;

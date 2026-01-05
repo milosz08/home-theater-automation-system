@@ -7,7 +7,8 @@
 #define AHT20_ADDR    0x38  // temp + humidity
 #define BMP280_ADDR   0x77  // temp + pressure
 
-typedef struct {
+typedef struct
+{
   float temp_aht;
   float hum_aht;
   float temp_bmp;

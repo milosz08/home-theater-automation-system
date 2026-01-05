@@ -3,7 +3,8 @@
 
 #include "esp_err.h"
 
-typedef struct {
+typedef struct
+{
   char ip[16];
   char gateway[16];
   char netmask[16];

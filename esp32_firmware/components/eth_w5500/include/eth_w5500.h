@@ -14,14 +14,16 @@
 #define ETH_SPI_CLOCK_MHZ   16            // clock speed
 #define ETH_SPI_RST_GPIO    GPIO_NUM_32   // reset
 
-typedef struct {
+typedef struct
+{
   const char *ip;
   const char *gateway;
   const char *netmask;
   const char *dns;
 } eth_config_t;
 
-typedef struct {
+typedef struct
+{
   void (*on_link_state_changed)(bool is_up);
   void (*on_packet_received)(void);
 } eth_callbacks_t;
