@@ -65,10 +65,10 @@ static void on_server_error(esp_err_t err)
   ui_show_error("Server fail");
 }
 
-static void on_server_req_success(const char *endpoint_name)
+static void on_command_action(const char *friendly_name)
 {
   led_ind_io_cmd_execution();
-  if (endpoint_name != NULL) ui_show_temp_cmd_message(endpoint_name, REQ_MESS_DURATION_MS);
+  if (friendly_name != NULL) ui_show_temp_cmd_message(friendly_name, REQ_MESS_DURATION_MS);
 }
 
 static void on_eth_link_state_changed(bool is_up)
@@ -176,11 +176,11 @@ void app_main(void)
     .on_running         = on_server_running,
     .on_stop            = on_server_stop,
     .on_error           = on_server_error,
-    .on_request_success = on_server_req_success
+    .on_request_success = on_command_action
   };
   CHECK_CRITICAL(ws_queue_init(), "WS queue fail");
   CHECK_CRITICAL(ws_dispatcher_init(), "WS disp fail");
-  CHECK_CRITICAL(ws_cmd_router_init(), "WS router fail");
+  CHECK_CRITICAL(ws_cmd_router_init(on_command_action), "WS router fail");
   CHECK_CRITICAL(https_server_service_init(&https_cfg), "HTTPS fail");
   vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS));
 
