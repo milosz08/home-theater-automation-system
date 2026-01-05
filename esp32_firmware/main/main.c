@@ -12,6 +12,9 @@
 #include "uart_bus.h"
 #include "ui_manager.h"
 #include "ui.h"
+#include "ws_cmd_router.h"
+#include "ws_dispatcher.h"
+#include "ws_queue.h"
 
 #include <stddef.h>
 #include <stdio.h>
@@ -175,6 +178,9 @@ void app_main(void)
     .on_error           = on_server_error,
     .on_request_success = on_server_req_success
   };
+  CHECK_CRITICAL(ws_queue_init(), "WS queue fail");
+  CHECK_CRITICAL(ws_dispatcher_init(), "WS disp fail");
+  CHECK_CRITICAL(ws_cmd_router_init(), "WS router fail");
   CHECK_CRITICAL(https_server_service_init(&https_cfg), "HTTPS fail");
   vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS));
 
