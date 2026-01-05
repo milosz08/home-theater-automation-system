@@ -3,3 +3,4 @@ data/
 managed_components/
 .env
 sdkconfig
+sdkconfig.old
