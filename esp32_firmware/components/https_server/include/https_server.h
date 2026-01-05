@@ -22,6 +22,7 @@ typedef struct {
   httpd_method_t method;
   esp_err_t (*handler)(httpd_req_t *r);
   bool is_public;
+  bool is_ws;
   char *name;
 } https_endpoint_t;
 

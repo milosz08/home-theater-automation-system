@@ -2,6 +2,7 @@ idf_component_register(
   SRCS 
     "app_api_auth.c"
     "app_api_registry.c"
+    "app_api_ws.c"
 
   INCLUDE_DIRS
     "include"
@@ -15,4 +16,6 @@ idf_component_register(
     helper
     https_server
     nvs_manager
+    ws_cmd_router
+    ws_dispatcher
 )

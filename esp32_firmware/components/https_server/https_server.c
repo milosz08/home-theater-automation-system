@@ -28,33 +28,36 @@ typedef struct {
 
 static bool is_authorized(httpd_req_t *req)
 {
-  char received_pass[64];
+  char token_buf[64] = {0};
   size_t header_len = httpd_req_get_hdr_value_len(req, AUTH_HEADER);
 
-  if (header_len == 0) return false;
-  if (header_len >= sizeof(received_pass)) return false;
-  if (httpd_req_get_hdr_value_str(req, AUTH_HEADER, received_pass, sizeof(received_pass)) != ESP_OK) return false;
+  if (header_len == 0 || header_len >= sizeof(token_buf)) return false;
+  if (httpd_req_get_hdr_value_str(req, AUTH_HEADER, token_buf, sizeof(token_buf)) != ESP_OK) return false;
 
-  char current_pass[64];
+  char current_pass[64] = {0};
   esp_err_t err = nvs_manager_load_str(AUTH_NVS_NS, AUTH_NVS_KEY, current_pass, sizeof(current_pass));
-  if (err != ESP_OK && err != ESP_ERR_NVS_NOT_FOUND) return false;
+  if (err != ESP_OK) return false;
 
   size_t cur_len = strlen(current_pass);
-  size_t rcv_len = strlen(received_pass);
+  size_t rcv_len = strlen(token_buf);
 
-  if (cur_len != rcv_len) return false;
-  if (helper_secure_memcmp(received_pass, current_pass, cur_len) == 0) return true;
+  if (cur_len == 0 || cur_len != rcv_len) return false;
+  if (helper_secure_memcmp(token_buf, current_pass, cur_len) == 0) return true;
 
   return false;
 }
 
-static esp_err_t auth_middleware(httpd_req_t *req)
+static esp_err_t ws_auth_callback(httpd_req_t *req)
+{
+  return is_authorized(req) ? ESP_OK : ESP_FAIL;
+}
+
+static esp_err_t http_middleware(httpd_req_t *req)
 {
   const https_endpoint_t *ep = (const https_endpoint_t *)req->user_ctx;
   if (!ep || !ep->handler) return httpd_resp_send_err(req, HTTPD_500_INTERNAL_SERVER_ERROR, NULL);
 
   server_context_t *ctx = (server_context_t *)httpd_get_global_user_ctx(req->handle);
-
   if (!ep->is_public && !is_authorized(req))
   {
     httpd_resp_send_err(req, HTTPD_401_UNAUTHORIZED, NULL);
@@ -142,12 +145,25 @@ static esp_err_t https_server_start(const https_server_config_t *cfg)
     {
       const https_endpoint_t *ep = &endpoints_arr[i];
       httpd_uri_t uri_conf = {
-        .uri       = ep->uri,
-        .method    = ep->method,
-        .handler   = auth_middleware,
-        .user_ctx  = (void *)ep
+        .uri          = ep->uri,
+        .method       = ep->method,
+        .is_websocket = ep->is_ws
       };
-      ESP_LOGI(TAG, "registering %s URI: %s", ep->is_public ? "PUBLIC" : "SECURE", ep->uri);
+      if (ep->is_ws)
+      {
+        uri_conf.handler = ep->handler;
+        uri_conf.user_ctx = NULL;
+        if (!ep->is_public) uri_conf.ws_pre_handshake_cb = ws_auth_callback;
+      }
+      else
+      {
+        uri_conf.handler = http_middleware;
+        uri_conf.user_ctx = (void *)ep;
+      }
+      ESP_LOGI(TAG, "registering %s URI: %s [%s]",
+               ep->is_public ? "PUBLIC" : "SECURE",
+               ep->uri,
+               ep->is_ws ? "WS" : "HTTP");
       httpd_register_uri_handler(server, &uri_conf);
     }
   }

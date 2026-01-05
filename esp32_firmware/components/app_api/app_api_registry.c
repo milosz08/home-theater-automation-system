@@ -12,6 +12,14 @@ static const https_endpoint_t s_endpoints[] = {
     .is_public  = false,
     .name       = "Change password"
   },
+  // control (ws)
+  {
+    .uri        = "/ws/control",
+    .method     = HTTP_GET,
+    .handler    = app_api_ws_handler,
+    .is_public  = false,
+    .is_ws      = true
+  },
 };
 
 // public api ----------------------------------------------------------------------------------------------------------
