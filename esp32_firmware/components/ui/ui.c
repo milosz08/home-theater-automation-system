@@ -189,7 +189,7 @@ void ui_show_temp_message(const char *text, uint32_t duration_ms)
 
 void ui_show_temp_cmd_message(const char *text, uint32_t duration_ms)
 {
-  char formatted_msg[64];
-  snprintf(formatted_msg, sizeof(formatted_msg), "CMD: %s", text);
+  char formatted_msg[33];
+  snprintf(formatted_msg, sizeof(formatted_msg), "%-16s%s", "CMD:", text);
   ui_show_temp_message(formatted_msg, duration_ms);
 }
