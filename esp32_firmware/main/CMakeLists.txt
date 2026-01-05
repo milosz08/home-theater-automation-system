@@ -13,6 +13,7 @@ idf_component_register(
     log
     freertos
     app_api
+    cyclic_task
     env_sensor
     eth_w5500
     https_server

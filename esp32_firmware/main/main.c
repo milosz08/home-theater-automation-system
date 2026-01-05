@@ -1,4 +1,5 @@
 #include "app_api.h"
+#include "cyclic_task.h"
 #include "env_sensor.h"
 #include "eth_w5500.h"
 #include "https_server.h"
@@ -32,7 +33,7 @@
 } while(0)
 
 #define PROGRESS_BAR_COOLDOWN_MS  100   // time between next steps
-#define TOTAL_STEPS               10    // total steps
+#define TOTAL_STEPS               11    // total steps
 #define REQ_MESS_DURATION_MS      2000  // request success message duration
 
 // pcf8574 expander buttons and other io inputs (4-7)
@@ -190,6 +191,11 @@ void app_main(void)
     .on_packet_received = on_eth_packet_received
   };
   CHECK_CRITICAL(eth_w5500_init(&eth_cfg, &eth_callbacks), "Ethernet fail");
+  vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS));
+
+  // 11. cyclic tasks
+  ui_show_boot_progress("Init tasks", ++current_step, TOTAL_STEPS);
+  CHECK_CRITICAL(cyclic_task_env_init(), "Tasks fail");
   vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS));
 
   ui_show_boot_progress("System ready!", ++current_step, TOTAL_STEPS);
