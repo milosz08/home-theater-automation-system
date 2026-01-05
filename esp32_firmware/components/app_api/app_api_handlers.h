@@ -7,7 +7,4 @@
 // auth
 esp_err_t app_api_auth_change_password(httpd_req_t *req);
 
-// system
-esp_err_t app_api_system_health(httpd_req_t *req);
-
 #endif

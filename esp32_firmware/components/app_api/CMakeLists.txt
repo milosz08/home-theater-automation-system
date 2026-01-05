@@ -2,7 +2,6 @@ idf_component_register(
   SRCS 
     "app_api_auth.c"
     "app_api_registry.c"
-    "app_api_system.c"
 
   INCLUDE_DIRS
     "include"
@@ -15,4 +14,5 @@ idf_component_register(
     log
     helper
     https_server
+    nvs_manager
 )

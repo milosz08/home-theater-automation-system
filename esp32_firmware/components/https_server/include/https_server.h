@@ -40,6 +40,5 @@ typedef struct {
 } https_server_config_t;
 
 esp_err_t https_server_service_init(const https_server_config_t *config);
-esp_err_t https_server_silent_response(httpd_req_t *req);
 
 #endif

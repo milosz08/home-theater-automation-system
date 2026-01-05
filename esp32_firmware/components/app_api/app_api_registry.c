@@ -12,14 +12,6 @@ static const https_endpoint_t s_endpoints[] = {
     .is_public  = false,
     .name       = "Change password"
   },
-  // system
-  {
-    .uri        = "/api/health",
-    .method     = HTTP_GET,
-    .handler    = app_api_system_health,
-    .is_public  = true,
-    .name       = NULL
-  },
 };
 
 // public api ----------------------------------------------------------------------------------------------------------

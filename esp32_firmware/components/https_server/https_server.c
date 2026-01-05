@@ -58,7 +58,7 @@ static esp_err_t auth_middleware(httpd_req_t *req)
   if (!ep->is_public && !is_authorized(req))
   {
     httpd_resp_send_err(req, HTTPD_401_UNAUTHORIZED, NULL);
-    return ESP_OK;
+    return ESP_FAIL;
   }
   esp_err_t res = ep->handler(req);
 
@@ -134,14 +134,6 @@ static esp_err_t https_server_start(const https_server_config_t *cfg)
   free(key_buffer);
   key_buffer = NULL;
 
-  httpd_uri_t favicon_uri = {
-    .uri       = "/favicon.ico",
-    .method    = HTTP_GET,
-    .handler   = https_server_silent_response,
-    .user_ctx  = NULL
-  };
-  httpd_register_uri_handler(server, &favicon_uri);
-
   // endpoints registration
   if (cfg->endpoints && cfg->num_endpoints > 0)
   {
@@ -214,10 +206,4 @@ esp_err_t https_server_service_init(const https_server_config_t *cfg)
 
   ESP_LOGI(TAG, "service init, waiting for IP to start server...");
   return ESP_OK;
-}
-
-esp_err_t https_server_silent_response(httpd_req_t *req)
-{
-  httpd_resp_set_status(req, "204 No Content");
-  return httpd_resp_send(req, NULL, 0);
 }
