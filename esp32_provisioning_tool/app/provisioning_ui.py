@@ -57,7 +57,7 @@ class ProvisioningUI:
     self.left_panel = ttk.Frame(top_section)
     self.left_panel.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-    op_frame = ttk.LabelFrame(self.left_panel, text=" Firmware & Operations ", padding="10")
+    op_frame = ttk.LabelFrame(self.left_panel, text=" Firmware & operations ", padding="10")
     op_frame.pack(fill=tk.X, pady=(0, 5))
 
     # left panel: select .bin file
