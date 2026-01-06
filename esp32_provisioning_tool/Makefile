@@ -31,7 +31,7 @@ build: venv
 		--onefile \
 		--windowed \
 		--icon="res/icon.png" \
-		--add-data "res/icon.png;." \
+		--add-data "res/icon.png;res" \
 		--collect-all esptool \
 		--name $(APP_NAME) \
 		$(MAIN_FILE)
