@@ -11,7 +11,7 @@ class LogRedirector:
     self.ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
 
   def write(self, text):
-    clean_text = self.ansi_escape.sub('', text)
+    clean_text = self.ansi_escape.sub("", text)
     clean_text = clean_text.strip()
     if clean_text:
       self.callback(clean_text)
