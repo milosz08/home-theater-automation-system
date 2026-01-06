@@ -30,6 +30,8 @@ build: venv
 	$(PYINSTALLER) --noconfirm \
 		--onefile \
 		--windowed \
+		--icon="res/icon.png" \
+		--add-data "res/icon.png;." \
 		--collect-all esptool \
 		--name $(APP_NAME) \
 		$(MAIN_FILE)

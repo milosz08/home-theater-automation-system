@@ -6,6 +6,7 @@ import threading
 import shutil
 import datetime
 from pathlib import Path
+import sys
 
 from .provisioning_generator import ProvisioningGenerator
 from .esp_device_manager import EspDeviceManager
@@ -16,6 +17,7 @@ class ProvisioningUI:
     self.root.title("ESP32 provisioning tool (by Miłosz Gilga)")
     self.root.resizable(False, True)
     self.root.geometry("900x700")
+    self.root.iconphoto(True, tk.PhotoImage(file=self.resource_path("res/icon.png")))
 
     self.device_mgr = EspDeviceManager()
 
@@ -46,6 +48,13 @@ class ProvisioningUI:
 
     self.current_qr_pil = None
     self.current_qr_payload = None
+
+  def resource_path(self, relative_path):
+    try:
+      base_path = sys._MEIPASS
+    except Exception:
+      base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
   def setup_ui(self):
     self.main_container = ttk.Frame(self.root, padding="15")
