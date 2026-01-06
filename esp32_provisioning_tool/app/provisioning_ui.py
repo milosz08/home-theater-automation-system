@@ -113,12 +113,12 @@ class ProvisioningUI:
     config_frame.pack(fill=tk.X, pady=5)
 
     inputs = [
-      ("IP Address:", self.esp_ip, "ip"),
+      ("IP address:", self.esp_ip, "ip"),
       ("Gateway:", self.esp_gateway, "gateway"),
       ("Netmask:", self.esp_netmask, "netmask"),
-      ("DNS Server:", self.esp_dns, "dns"),
-      ("Server Port:", self.esp_port, "port"),
-      ("Default Password:", self.esp_password, "password"),
+      ("DNS server:", self.esp_dns, "dns"),
+      ("Server port:", self.esp_port, "port"),
+      ("Default password:", self.esp_password, "password"),
     ]
     for _, (label_text, var, d_key) in enumerate(inputs):
       cell = ttk.Frame(config_frame)
