@@ -16,7 +16,17 @@
 
 ### ESP32 firmware
 
-[TBD]
+The software was developed directly within the ESP-IDF framework, utilizing FreeRTOS, while the Arduino
+ecosystem was bypassed to ensure complete control over system resources and performance optimization. A
+modular CMake architecture was adopted, wherein hardware drivers remain strictly separated from business
+logic, facilitating communication exclusively through callback mechanisms. Regarding network connectivity,
+a hybrid approach was implemented in which REST APIs manage critical configuration updates and authorization,
+while WebSockets are utilized for real-time control to eliminate input lag. Server-Sent Events (SSE) were
+explicitly rejected due to the limitations imposed by the single-threaded nature of the HTTP server, which
+poses significant concurrency challenges, as well as to avoid the cumulative latency inherent in standard
+REST-based interactions. Furthermore, to prevent slower bus operations, such as those involving UART or I2C
+interfaces, from blocking the network thread, asynchronous processing is enforced via queues utilizing a
+Producer-Consumer model.
 
 ### Provisioning tool (certgen and ESP32 flashing)
 
