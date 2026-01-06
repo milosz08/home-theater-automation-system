@@ -38,7 +38,7 @@ generated on the fly based on your input and the partition table (located in `es
 * MAX3232 (TTL <-> RS232), MAX3485 (TTL <-> RS485), W5500 (LAN),
 * I2C, PCF8574, LCD 1602 HD44780 (FFSTN),
 * LM2596S DC-DC Step-Down 12V -> 5V, AMS1117 DC-DC Step-Down 5V -> 3.3V (power section),
-* AHT20 + BMP280, BMT1206UXLF
+* AHT20 + BMP280, BMT1206UXLF,
 * 2N7000 (diode), 1N4007 (transistor),
 * ESP-IDF, ESP-LittleFS, C, CMake, Make,
 * PKI with CA (MITM attacks protection), basic auth,
