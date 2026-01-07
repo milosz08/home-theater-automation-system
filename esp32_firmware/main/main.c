@@ -50,7 +50,7 @@
 
 static const char *TAG = "MAIN";
 
-static volatile bool lcd_backlight_on = true;
+static volatile bool lcd_backlight_off = false;
 
 static void on_server_running(void)
 {
@@ -103,8 +103,8 @@ static void on_lcd_toggle_backlight(io_input_action_t action)
 {
   if (action == BTN_CLICK_SHORT)
   {
-    sys_ind_lcd_backlight_set(lcd_backlight_on);
-    lcd_backlight_on = !lcd_backlight_on;
+    sys_ind_lcd_backlight_set(lcd_backlight_off);
+    lcd_backlight_off = !lcd_backlight_off;
   }
 }
 
