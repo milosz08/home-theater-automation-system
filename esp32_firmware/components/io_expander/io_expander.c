@@ -10,14 +10,13 @@
 static const char *TAG = "IO_EXP";
 
 static uint8_t port_shadow = 0xFF;          // shadow register (remmeber state of all pins)
-static uint8_t input_pins_mask = 0x00;      // input mask
 static SemaphoreHandle_t io_mutex = NULL;   // mutex for I2C protection
 
 static esp_err_t commit_to_hardware(void)
 {
   // io_mutex protect port_shadow and i2c_bus_lock protect physical bus
   if (io_mutex == NULL) return ESP_ERR_INVALID_STATE;
-  uint8_t data_to_write = port_shadow | input_pins_mask;
+  uint8_t data_to_write = port_shadow | EXPANDER_INIT_PINS_MASK;
 
   i2c_bus_lock();
   esp_err_t err = i2c_bus_pcf8574_write_byte(EXPANDER_ADDR, data_to_write);
@@ -28,13 +27,12 @@ static esp_err_t commit_to_hardware(void)
 
 // public api ----------------------------------------------------------------------------------------------------------
 
-esp_err_t io_expander_init(uint8_t input_mask)
+esp_err_t io_expander_init()
 {
   io_mutex = xSemaphoreCreateMutex();
   if (io_mutex == NULL) return ESP_FAIL;
 
-  input_pins_mask = input_mask;
-  port_shadow = 0xFF; // init with high state
+  port_shadow = EXPANDER_PORT_SHADOW;
 
   xSemaphoreTake(io_mutex, portMAX_DELAY);
   esp_err_t err = commit_to_hardware();
@@ -47,7 +45,7 @@ esp_err_t io_expander_init(uint8_t input_mask)
     return err;
   }
 
-  ESP_LOGI(TAG, "I2C expander initialized, input mask: 0x%02X", input_mask);
+  ESP_LOGI(TAG, "I2C expander initialized, input mask: 0x%02X", EXPANDER_INIT_PINS_MASK);
   return ESP_OK;
 }
 
