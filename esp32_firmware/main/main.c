@@ -78,16 +78,6 @@ static void on_command_action(const char *friendly_name)
   if (friendly_name != NULL) ui_show_temp_cmd_message(friendly_name, REQ_MESS_DURATION_MS);
 }
 
-static void on_eth_link_state_changed(bool is_up)
-{
-  sys_ind_led_eth_set_link(is_up);
-}
-
-static void on_eth_packet_received(void)
-{
-  sys_ind_led_eth_packet_activity();
-}
-
 static void on_reset_btn_click(io_input_action_t action)
 {
   if (action == BTN_CLICK_LONG)
@@ -210,8 +200,8 @@ void app_main(void)
     .dns      = s_config.dns
   };
   eth_callbacks_t eth_callbacks = {
-    .on_link_state_changed = on_eth_link_state_changed,
-    .on_packet_received = on_eth_packet_received
+    .on_link_state_changed = sys_ind_led_eth_set_link,
+    .on_packet_received = sys_ind_led_eth_packet_activity
   };
   CHECK_CRITICAL(eth_w5500_init(&eth_cfg, &eth_callbacks), "Ethernet fail");
   vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS));
