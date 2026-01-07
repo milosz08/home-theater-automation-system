@@ -65,7 +65,7 @@ esp_err_t io_input_init(const io_input_config_t *config, size_t num_buttons)
     btns[i].cfg = config[i];
     btns[i].hold_timer = 0;
   }
-  xTaskCreate(io_input_task, "io_input_task", 3072, NULL, 5, NULL);
+  xTaskCreate(io_input_task, "IoInput", 3072, NULL, 5, NULL);
 
   ESP_LOGI(TAG, "init %d button(s) on I2C expander", (int)num_buttons);
   for(size_t i = 0; i < num_buttons; i++)
