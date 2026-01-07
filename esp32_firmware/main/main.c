@@ -6,7 +6,7 @@
 #include "i2c_bus.h"
 #include "io_expander.h"
 #include "io_input.h"
-#include "led_ind.h"
+#include "sys_ind.h"
 #include "nvs_manager.h"
 #include "storage.h"
 #include "uart_bus.h"
@@ -49,7 +49,7 @@ static const char *TAG = "MAIN";
 
 static void on_server_running(void)
 {
-  led_ind_set_error(false);
+  sys_ind_set_error(false);
   ui_restore_screen();
 }
 
@@ -61,24 +61,25 @@ static void on_server_stop(void)
 
 static void on_server_error(esp_err_t err)
 {
-  led_ind_set_error(true);
+  sys_ind_set_error(true);
+  sys_ind_buzzer_sound(2, BUZZER_PERIOD_MS);
   ui_show_error("Server fail");
 }
 
 static void on_command_action(const char *friendly_name)
 {
-  led_ind_io_cmd_execution();
+  sys_ind_led_io_cmd_execution();
   if (friendly_name != NULL) ui_show_temp_cmd_message(friendly_name, REQ_MESS_DURATION_MS);
 }
 
 static void on_eth_link_state_changed(bool is_up)
 {
-  led_ind_eth_set_link(is_up);
+  sys_ind_led_eth_set_link(is_up);
 }
 
 static void on_eth_packet_received(void)
 {
-  led_ind_eth_packet_activity();
+  sys_ind_led_eth_packet_activity();
 }
 
 static void on_reset_btn_click(io_input_action_t action)
@@ -113,8 +114,8 @@ void app_main(void)
 
   // 1. I2C bus and expander init (before LCD)
   ESP_ERROR_CHECK(i2c_bus_init());
-  ESP_ERROR_CHECK(io_expander_init(0xF0)); // 11110000 (in: 7,6,5,4; out: 3,2,1,0)
-  ESP_ERROR_CHECK(led_ind_init());
+  ESP_ERROR_CHECK(io_expander_init());
+  ESP_ERROR_CHECK(sys_ind_init());
 
   // 2. UI and LCD init (init driver and load icons)
   ESP_ERROR_CHECK(ui_init());

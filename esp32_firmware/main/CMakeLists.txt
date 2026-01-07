@@ -20,7 +20,7 @@ idf_component_register(
     i2c_bus
     io_expander
     io_input
-    led_ind
+    sys_ind
     nvs_manager
     storage
     uart_bus

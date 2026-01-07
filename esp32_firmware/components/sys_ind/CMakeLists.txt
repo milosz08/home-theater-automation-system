@@ -1,6 +1,6 @@
 idf_component_register(
   SRCS
-    "led_ind.c"
+    "sys_ind.c"
 
   INCLUDE_DIRS
     "include"
