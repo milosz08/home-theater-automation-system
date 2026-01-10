@@ -5,6 +5,7 @@
 #include "https_server.h"
 #include "i2c_bus.h"
 #include "io_expander.h"
+#include "io_button.h"
 #include "io_input.h"
 #include "sys_ind.h"
 #include "nvs_manager.h"
@@ -27,6 +28,9 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
+#define PROGRESS_BAR_COOLDOWN_MS  100 // time between next steps
+#define TOTAL_STEPS               11  // total steps
+
 #define CHECK_CRITICAL(x, msg) do { \
   esp_err_t err_rc = (x); \
   if (err_rc != ESP_OK) { \
@@ -36,21 +40,9 @@
   } \
 } while(0)
 
-#define PROGRESS_BAR_COOLDOWN_MS  100   // time between next steps
-#define TOTAL_STEPS               11    // total steps
-#define REQ_MESS_DURATION_MS      2000  // request success message duration
-#define BUZZER_PERIOD_MS          400   // buzzer sound duration
-
-// pcf8574 expander buttons and other io inputs (5-7)
-#define PCF_PIN_IN_BTN_RESET          5
-#define PCF_PIN_IN_BTN_MENU           6
-#define PCF_PIN_IN_BTN_LCD_BACKLIGHT  7
-
 // private api ---------------------------------------------------------------------------------------------------------
 
 static const char *TAG = "MAIN";
-
-static volatile bool lcd_backlight_off = false;
 
 static void on_server_running(void)
 {
@@ -75,37 +67,7 @@ static void on_server_error(esp_err_t err)
 static void on_command_action(const char *friendly_name)
 {
   sys_ind_led_io_cmd_execution();
-  if (friendly_name != NULL) ui_show_temp_cmd_message(friendly_name, REQ_MESS_DURATION_MS);
-}
-
-static void on_reset_btn_click(io_input_action_t action)
-{
-  if (action == BTN_CLICK_LONG)
-  {
-    char default_password[64] = {0};
-    esp_err_t err = nvs_manager_load_str(AUTH_NVS_NS, AUTH_NVS_DEFAULT_KEY, default_password, sizeof(default_password));
-    if (err != ESP_OK) return;
-
-    err = nvs_manager_save_str(AUTH_NVS_NS, AUTH_NVS_KEY, default_password);
-    if (err != ESP_OK) return;
-
-    ui_show_temp_cmd_message("Password reset", REQ_MESS_DURATION_MS);
-  }
-}
-
-static void on_menu_btn_click(io_input_action_t action)
-{
-  if (action == BTN_CLICK_LONG) ui_manager_switch_mode();
-  else if (action == BTN_CLICK_SHORT) ui_manager_manual_mode();
-}
-
-static void on_lcd_toggle_backlight(io_input_action_t action)
-{
-  if (action == BTN_CLICK_SHORT)
-  {
-    sys_ind_lcd_backlight_set(lcd_backlight_off);
-    lcd_backlight_off = !lcd_backlight_off;
-  }
+  if (friendly_name != NULL) ui_show_fixed_temp_cmd_message(friendly_name);
 }
 
 // public api ----------------------------------------------------------------------------------------------------------
@@ -155,12 +117,7 @@ void app_main(void)
 
   // 7. IO and peripherals
   ui_show_boot_progress("Config IO ports", ++current_step, TOTAL_STEPS);
-  const io_input_config_t inputs[] = {
-    { .pin = PCF_PIN_IN_BTN_RESET,          .callback = on_reset_btn_click,       .name = "RESET" },
-    { .pin = PCF_PIN_IN_BTN_MENU,           .callback = on_menu_btn_click,        .name = "MENU" },
-    { .pin = PCF_PIN_IN_BTN_LCD_BACKLIGHT,  .callback = on_lcd_toggle_backlight,  .name = "BACKLIGHT" }
-  };
-  CHECK_CRITICAL(io_input_init(inputs, sizeof(inputs) / sizeof(inputs[0])), "IO input fail");
+  CHECK_CRITICAL(io_input_init(io_button_get_buttons(), io_button_get_buttons_count()), "IO input fail");
   CHECK_CRITICAL(uart_bus_rs485_init(), "RS485 fail");
   CHECK_CRITICAL(uart_bus_rs232_init(), "RS232 fail");
   vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS));

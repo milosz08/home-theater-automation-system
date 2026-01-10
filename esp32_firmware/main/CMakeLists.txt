@@ -19,6 +19,7 @@ idf_component_register(
     https_server
     i2c_bus
     io_expander
+    io_button
     io_input
     sys_ind
     nvs_manager
