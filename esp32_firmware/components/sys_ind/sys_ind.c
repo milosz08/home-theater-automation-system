@@ -162,3 +162,8 @@ void sys_ind_buzzer_sound(int count, uint32_t period_ms)
     xTimerReset(buzzer_timer, 0);
   }
 }
+
+void sys_ind_fixed_buzzer_sound(int count)
+{
+  sys_ind_buzzer_sound(count, BUZZER_PERIOD_MS);
+}

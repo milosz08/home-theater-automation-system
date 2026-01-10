@@ -35,7 +35,7 @@
   esp_err_t err_rc = (x); \
   if (err_rc != ESP_OK) { \
     sys_ind_set_error(true); \
-    sys_ind_buzzer_sound(2, BUZZER_PERIOD_MS); \
+    sys_ind_fixed_buzzer_sound(2); \
     ui_show_critical_error(msg, err_rc); \
   } \
 } while(0)
@@ -53,14 +53,14 @@ static void on_server_running(void)
 static void on_server_stop(void)
 {
   sys_ind_set_error(true);
-  sys_ind_buzzer_sound(2, BUZZER_PERIOD_MS);
+  sys_ind_fixed_buzzer_sound(2);
   ui_show_error("Net: link DOWN");
 }
 
 static void on_server_error(esp_err_t err)
 {
   sys_ind_set_error(true);
-  sys_ind_buzzer_sound(2, BUZZER_PERIOD_MS);
+  sys_ind_fixed_buzzer_sound(2);
   ui_show_error("Server fail");
 }
 
@@ -169,7 +169,7 @@ void app_main(void)
   vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS));
 
   ui_show_boot_progress("System ready!", ++current_step, TOTAL_STEPS);
-  sys_ind_buzzer_sound(1, BUZZER_PERIOD_MS);
+  sys_ind_fixed_buzzer_sound(1);
   vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS * 5));
 
   CHECK_CRITICAL(ui_manager_init(), "UI manager fail");
