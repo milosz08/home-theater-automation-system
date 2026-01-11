@@ -16,6 +16,7 @@ idf_component_register(
     cyclic_task
     env_sensor
     eth_w5500
+    helper
     https_server
     i2c_bus
     io_expander

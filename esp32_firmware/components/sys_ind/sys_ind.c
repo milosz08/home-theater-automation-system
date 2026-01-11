@@ -1,5 +1,6 @@
 #include "sys_ind.h"
 #include "io_expander.h"
+#include "helper.h"
 
 #include "esp_log.h"
 #include "freertos/FreeRTOS.h"
@@ -82,7 +83,7 @@ static void sys_ind_led_heartbeat_task(void *pvParameters)
 
 static void sys_ind_led_check(void)
 {
-  size_t led_count = sizeof(ALL_LED_PINS) / sizeof(ALL_LED_PINS[0]);
+  size_t led_count = ARRAY_SIZE(ALL_LED_PINS);
 
   for (int i = 0; i < led_count; i++) sys_ind_led_set_state(ALL_LED_PINS[i], true);
   vTaskDelay(pdMS_TO_TICKS(500));

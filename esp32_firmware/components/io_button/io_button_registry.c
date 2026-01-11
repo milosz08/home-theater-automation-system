@@ -1,5 +1,6 @@
 #include "io_button.h"
 #include "io_button_handlers.h"
+#include "helper.h"
 
 // private api ---------------------------------------------------------------------------------------------------------
 
@@ -30,5 +31,5 @@ const io_input_config_t *io_button_get_buttons(void)
 
 size_t io_button_get_buttons_count(void)
 {
-  return sizeof(s_buttons) / sizeof(s_buttons[0]);
+  return ARRAY_SIZE(s_buttons);
 }

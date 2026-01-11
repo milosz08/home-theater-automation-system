@@ -2,6 +2,7 @@
 #include "cyclic_task.h"
 #include "env_sensor.h"
 #include "eth_w5500.h"
+#include "helper.h"
 #include "https_server.h"
 #include "i2c_bus.h"
 #include "io_expander.h"
@@ -112,7 +113,7 @@ void app_main(void)
     { .key = AUTH_NVS_DEFAULT_KEY, .value = s_config.default_password } // only for restore
   };
   CHECK_CRITICAL(nvs_manager_save_strings_batch(AUTH_NVS_NS, nvs_entries,
-                                                sizeof(nvs_entries) / sizeof(nvs_entries[0])), "NVS persist fail");
+                                                ARRAY_SIZE(nvs_entries)), "NVS persist fail");
   vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS));
 
   // 7. IO and peripherals
