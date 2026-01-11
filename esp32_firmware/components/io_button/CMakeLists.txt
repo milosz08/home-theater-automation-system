@@ -16,4 +16,5 @@ idf_component_register(
     nvs_manager
     sys_ind
     ui
+    ui_manager
 )

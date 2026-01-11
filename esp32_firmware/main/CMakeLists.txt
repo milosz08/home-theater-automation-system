@@ -27,6 +27,7 @@ idf_component_register(
     storage
     uart_bus
     ui
+    ui_manager
     ws_cmd_router
     ws_dispatcher
     ws_queue

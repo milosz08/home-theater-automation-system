@@ -1,15 +1,15 @@
 idf_component_register(
   SRCS
-    "ui_icon.c"
-    "ui.c"
+    "ui_manager.c"
   
   INCLUDE_DIRS
     "include"
 
-  PRIV_INCLUDE_DIRS
-    "."
-
   REQUIRES
+    esp_timer
     log
-    lcd_driver
+    env_sensor
+    eth_w5500
+    ui
+    helper
 )
