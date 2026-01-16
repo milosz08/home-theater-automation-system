@@ -32,7 +32,7 @@ static void sys_ind_led_set_state(int pin, bool on)
 
 static void sys_ind_buzzer_set_state(bool on)
 {
-  io_expander_set_level(PCF_PIN_OUT_BUZZER, on ? 1 : 0);
+  io_expander_set_level(PCF_PIN_OUT_BUZZER, on ? 0 : 1);
   buzzer_state = on;
 }
 
@@ -102,7 +102,6 @@ esp_err_t sys_ind_init(void)
 
   if (act_led_timer == NULL || cmd_led_timer == NULL || buzzer_timer == NULL) return ESP_ERR_NO_MEM;
 
-  // sys_ind_buzzer_set_state(false);
   sys_ind_led_check();
 
   BaseType_t res = xTaskCreate(sys_ind_led_heartbeat_task, "LedHeartbeat", 2048, NULL, 1, NULL);
