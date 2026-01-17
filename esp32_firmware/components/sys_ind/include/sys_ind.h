@@ -8,8 +8,8 @@
 
 // pin definitions on pcf8574 expander (0-4 out, 5-7 in)
 #define PCF_PIN_OUT_LED_CMD         0       // p0: command invocation (red diode)
-#define PCF_PIN_OUT_LED_ETH_LINK    1       // p1: eth connection status (orange diode)
-#define PCF_PIN_OUT_LED_ETH_ACT     2       // p2: eth packets (green diode)
+#define PCF_PIN_OUT_LED_ETH_LINK    1       // p1: eth connection status (green diode)
+#define PCF_PIN_OUT_LED_ETH_ACT     2       // p2: eth packets (orange diode)
 #define PCF_PIN_OUT_LCD_BACKLIGHT   3       // p3: lcd backlight (via mosfet)
 #define PCF_PIN_OUT_BUZZER          4       // p4: buzzer (via mosfet)
 
