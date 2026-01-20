@@ -69,7 +69,7 @@ system is already driven by a 9V 3A supply via an LM2596S DC-DC converter - mini
 programming and debugging was modified by severing the +5V line, leaving only the ground and data lines
 connected. A short top-down video demonstrating the active system is provided below.
 
-<video src=".github/assets/esp32-driver-prototype2.mp4" controls></video>
+https://github.com/user-attachments/assets/a0ec694c-1044-49fa-9fe1-c02fbbb37623
 
 ## Software
 
