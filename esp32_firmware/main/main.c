@@ -109,8 +109,8 @@ void app_main(void)
   ui_show_boot_progress("Loading config", ++current_step, TOTAL_STEPS);
   CHECK_CRITICAL(storage_load_system_config(&s_config), "Config fail");
   const nvs_entry_t nvs_entries[] = {
-    { .key = AUTH_NVS_KEY, .value = s_config.default_password },
-    { .key = AUTH_NVS_DEFAULT_KEY, .value = s_config.default_password } // only for restore
+    { .key = AUTH_NVS_KEY,          .value = s_config.default_password },
+    { .key = AUTH_NVS_DEFAULT_KEY,  .value = s_config.default_password } // only for restore
   };
   CHECK_CRITICAL(nvs_manager_save_strings_batch(AUTH_NVS_NS, nvs_entries,
                                                 ARRAY_SIZE(nvs_entries)), "NVS persist fail");
