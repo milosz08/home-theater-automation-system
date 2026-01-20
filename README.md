@@ -1,6 +1,12 @@
 # Home theater automation system
 
-[TBD]
+A specialized ESP32-based home theater controller designed for reliable, hardwired environments where 
+Wi-Fi is impractical (server racks). The system utilizes Ethernet connectivity to ensure low-latency 
+control via TLS-encrypted WebSockets. It features a native Android application for daily operation and a 
+Python-based provisioning tool for streamlined deployment.
+
+The firmware includes dedicated serial protocol implementations for the Optoma UHD 38x projector (via 
+RS232) and the Suprema Polaris Pro projection screen (via RS485).
 
 ## Table of content
 
