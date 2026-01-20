@@ -69,7 +69,7 @@ system is already driven by a 9V 3A supply via an LM2596S DC-DC converter - mini
 programming and debugging was modified by severing the +5V line, leaving only the ground and data lines
 connected. A short top-down video demonstrating the active system is provided below.
 
-https://github.com/user-attachments/assets/a0ec694c-1044-49fa-9fe1-c02fbbb37623
+https://github.com/user-attachments/assets/9b0b8d48-a2f2-4973-bb6c-5a5791618fee
 
 ## Software
 
