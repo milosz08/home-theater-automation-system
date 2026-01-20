@@ -58,7 +58,7 @@ Channels 1 and 2 capture the differential RS485 signals (A+ and B-) transmitting
 command to the projection screen, while the RS232 probes (CH3 and CH4) remained disabled for this specific
 test sequence.
 
-![](.github/assets/esp32-driver-prototype1.jpg)
+![](.github/assets/esp32-driver-prototype.jpg)
 
 The bench configuration features a redundant set of converters to allow simultaneous monitoring via the
 oscilloscope and PC connection. The RS485 interface uses a standalone USB adapter, whereas the TTL-to-RS232
