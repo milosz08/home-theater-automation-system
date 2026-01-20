@@ -48,3 +48,7 @@ erase:
 
 menuconfig:
 	idf.py menuconfig
+
+# generate docs via doxygen (only for .c and .h sources inside components and main directory)
+docs:
+	doxygen
