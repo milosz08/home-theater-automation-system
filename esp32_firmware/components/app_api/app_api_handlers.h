@@ -4,10 +4,29 @@
 #include "esp_http_server.h"
 #include "esp_err.h"
 
-// auth
+/*! \brief Handles the "password change" request (POST).
+ *
+ * Expects a JSON payload with `old_pass` and `new_pass`. Verifies the old password against NVS, and if correct, updates
+ * the storage with the new one.
+ *
+ * \param req The HTTP request context.
+ * 
+ * \retval ESP_OK   If handled (even if password was wrong, we send a 400/401 response).
+ * \retval ESP_FAIL On other errors.
+ */
 esp_err_t app_api_auth_change_password(httpd_req_t *req);
 
-// control
+/*! \brief Main handler for the "websocket control" endpoint.
+ *
+ * This function is the entry point for the WS connection (`/ws/control`). It performs the handshake and then registers
+ * the new client socket with the `ws_dispatcher` so it can receive updates.
+ *
+ * \param req The HTTP request context.
+ *
+ * \retval ESP_OK         On successful connection.
+ * \retval ESP_ERR_NO_MEM If no heap memory available.
+ * \retval ESP_FAIL       On other errors.
+ */
 esp_err_t app_api_ws_handler(httpd_req_t *req);
 
 #endif // APP_API_HANDLERS_H_

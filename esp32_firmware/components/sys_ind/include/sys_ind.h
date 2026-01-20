@@ -6,26 +6,76 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-// pin definitions on pcf8574 expander (0-4 out, 5-7 in)
-#define PCF_PIN_OUT_LED_CMD         0       // p0: command invocation (red diode)
-#define PCF_PIN_OUT_LED_ETH_LINK    1       // p1: eth connection status (green diode)
-#define PCF_PIN_OUT_LED_ETH_ACT     2       // p2: eth packets (orange diode)
-#define PCF_PIN_OUT_LCD_BACKLIGHT   3       // p3: lcd backlight (via mosfet)
-#define PCF_PIN_OUT_BUZZER          4       // p4: buzzer (via mosfet)
+// Output mapping on the IO Expander (PCF8574)
+#define PCF_PIN_OUT_LED_CMD         0       /*!< Red LED: command execution/error. */
+#define PCF_PIN_OUT_LED_ETH_LINK    1       /*!< Green LED: Ethernet link UP. */
+#define PCF_PIN_OUT_LED_ETH_ACT     2       /*!< Orange LED: Ethernet activity. */
+#define PCF_PIN_OUT_LCD_BACKLIGHT   3       /*!< MOSFET gate for LCD backlight. */
+#define PCF_PIN_OUT_BUZZER          4       /*!< PNP+NPN gate for active Buzzer. */
 
-#define LED_HOLD_TIME_MS            100     // time (ms) after turn off LED
-#define LED_BLINK_HOLD_TIME_MS      50      // time (ms) between LED blinks
-#define LED_HEARTBEAT_TIME_MS       3000    // heartbeat time (ms)
-#define LED_HEARTBEAT_ERROR_MS      200     // heartbeat time on error (ms)
-#define BUZZER_PERIOD_MS            400     // buzzer sound duration
+#define LED_HOLD_TIME_MS            100     /*!< How long to flash the LED. */
+#define LED_BLINK_HOLD_TIME_MS      50      /*!< Fast blink duration. */
+#define LED_HEARTBEAT_TIME_MS       3000    /*!< Idle heartbeat interval. */
+#define LED_HEARTBEAT_ERROR_MS      200     /*!< Panic blink interval. */
+#define BUZZER_PERIOD_MS            400     /*!< Duration of a single beep. */
 
+/*! \brief Sets up the system indicators.
+ *
+ * Creates software timers for LEDs and the buzzer. Starts the heartbeat task.
+ *
+ * \retval ESP_OK         On success.
+ * \retval ESP_ERR_NO_MEM If no heap memory available.
+ * \retval ESP_FAIL       On init failure.
+ */
 esp_err_t sys_ind_init(void);
+
+/*! \brief Updates the link LED (green).
+ *
+ * \param on `true` to turn on, `false` to turn off.
+ */
 void sys_ind_led_eth_set_link(bool on);
+
+/*! \brief Triggers the activity LED (orange).
+ * 
+ * Turns the LED on and resets the "off-timer". This creates a nice blinking effect proportional to network traffic.
+ */
 void sys_ind_led_eth_packet_activity(void);
+
+/*! \brief Signals a command execution (red LED).
+ *
+ * Performs a quick double-blink to give visual feedback that an action happened.
+ */
 void sys_ind_led_io_cmd_execution(void);
+
+/*! \brief Puts the system into (or out of) error mode.
+ *
+ * In error mode, the Red LED blinks rapidly to alert the user.
+ *
+ * \param active `true` to enable error state.
+ */
 void sys_ind_set_error(bool active);
+
+/*! \brief Controls the LCD backlight.
+ *
+ * \param on `true` for light, `false` for dark.
+ */
 void sys_ind_lcd_backlight_set(bool on);
+
+/*! \brief Beeps the buzzer a specific number of times.
+ *
+ * Uses a timer to handle the on/off intervals asynchronously.
+ *
+ * \param count     How many beeps.
+ * \param period_ms Duration of one beep cycle.
+ */
 void sys_ind_buzzer_sound(int count, uint32_t period_ms);
+
+/*! \brief Convenience wrapper for standard beep duration.
+ *
+ * Calls `sys_ind_buzzer_sound` with default timing.
+ *
+ * \param count How many beeps.
+ */
 void sys_ind_fixed_buzzer_sound(int count);
 
 #endif // SYS_IND_H_
