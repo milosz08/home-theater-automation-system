@@ -37,7 +37,7 @@ jobs:
         run: mv esp32_firmware.bin esp32-firmware-v${{ inputs.version }}.bin
 
       - name: Upload firmware artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: esp32-firmware
           path: ${{ env.ESP32_PROJECT_PATH }}/build/esp32-firmware-v${{ inputs.version }}.bin
@@ -58,7 +58,7 @@ jobs:
         run: make docs
 
       - name: Upload documentation artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: doxygen-docs
           path: ${{ env.ESP32_PROJECT_PATH }}/docs/
@@ -89,7 +89,7 @@ jobs:
           -exec mv {} android-control-client-v${{ inputs.version }}.apk \;
 
       - name: Upload Android artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: android-app
           path: android-control-client-v${{ inputs.version }}.apk
@@ -136,7 +136,7 @@ jobs:
           ${{ matrix.asset_name }}-v${{ inputs.version }}${{ matrix.executable_ext }}
 
       - name: Upload ESP32 provisioning tool artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ matrix.asset_name }}
           path: ${{ env.ESP32_PROVISIONING_TOOL_PATH }}/dist/*
@@ -158,7 +158,7 @@ jobs:
 
     steps:
       - name: Download generated doxygen files
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: doxygen-docs
           path: ./docs-website
@@ -190,7 +190,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
         with:
           path: release-assets
           merge-multiple: true
