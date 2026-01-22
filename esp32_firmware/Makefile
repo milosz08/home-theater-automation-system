@@ -11,6 +11,10 @@ all: build
 build:
 	idf.py build
 
+# builds only the application binary (skips bootloader, partitions, data images)
+build-app:
+	idf.py app
+
 # full rebuild (CMakeLists.txt or partition structure)
 rebuild:
 	idf.py reconfigure
