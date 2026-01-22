@@ -30,7 +30,7 @@ jobs:
         run: |
           . $IDF_PATH/export.sh
           idf.py set-target esp32
-          make build
+          make build-app
 
       - name: Rename and prepare binary
         working-directory: ${{ env.ESP32_PROJECT_PATH }}/build
