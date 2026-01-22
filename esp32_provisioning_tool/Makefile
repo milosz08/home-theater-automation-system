@@ -27,7 +27,10 @@ PYTHON = $(BIN)/python
 PIP = $(BIN)/pip
 PYINSTALLER = $(BIN)/pyinstaller
 
-all: run
+.PHONY: all venv install gui setup build clean
+
+# default target
+all: gui
 
 $(BIN)/activate:
 	$(PYTHON_SYS) -m venv $(VENV)

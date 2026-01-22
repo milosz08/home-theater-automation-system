@@ -3,9 +3,14 @@ PROJECT_NAME := esp32_firmware
 PORT ?= COM3 # communication port for ESP32 board
 BAUD ?= 921600 # flashing speed
 
-.PHONY: all build rebuild flash flash-app flash-data monitor run clean erase menuconfig help
+.PHONY: build build-app rebuild flash flash-app flash-data monitor run clean erase menuconfig help
 
-all: build
+# default target
+all: run
+
+# select esp32 chip
+set-chip:
+	idf.py set-target esp32
 
 # normal building
 build:
