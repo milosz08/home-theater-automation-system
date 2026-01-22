@@ -199,6 +199,11 @@ jobs:
             android-app
             provisioning-tool-*
 
+      - name: Debug - List downloaded files
+        run: |
+          echo "Listing release-assets directory:"
+          ls -R release-assets
+
       - name: Create signed GPG tag
         uses: rickstaa/action-create-tag@v1
         with:
