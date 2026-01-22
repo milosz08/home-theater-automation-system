@@ -1,12 +1,31 @@
 PYTHON_SYS = python
 VENV = .venv
-BIN = $(VENV)/Scripts
-PYTHON = $(BIN)/python
-PIP = $(BIN)/pip
-PYINSTALLER = $(BIN)/pyinstaller
 APP_NAME = esp32-provisioning-tool
 MAIN_FILE = main.py
 DEV_FILE = dev_setup.py
+
+ifeq ($(OS),Windows_NT)
+	BIN_DIR = Scripts
+	SEP = ;
+	RM_DIR = rmdir /s /q
+	RM_FILE = del /f /q
+	CLEAN_CMD = \
+		if exist build $(RM_DIR) build & \
+		if exist dist $(RM_DIR) dist & \
+		if exist $(VENV) $(RM_DIR) $(VENV) & \
+		if exist *.spec $(RM_FILE) *.spec
+else
+	BIN_DIR = bin
+	SEP = :
+	RM_DIR = rm -rf
+	RM_FILE = rm -f
+	CLEAN_CMD = $(RM_DIR) build dist $(VENV) *.spec
+endif
+
+BIN = $(VENV)/$(BIN_DIR)
+PYTHON = $(BIN)/python
+PIP = $(BIN)/pip
+PYINSTALLER = $(BIN)/pyinstaller
 
 all: run
 
@@ -37,7 +56,4 @@ build: venv
 		$(MAIN_FILE)
 
 clean:
-	@if exist build rmdir /s /q build
-	@if exist dist rmdir /s /q dist
-	@if exist $(VENV) rmdir /s /q $(VENV)
-	@if exist *.spec del /f /q *.spec
+	@$(CLEAN_CMD)
