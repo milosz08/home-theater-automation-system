@@ -105,7 +105,7 @@ jobs:
           - os: windows-latest
             asset_name: provisioning-tool-win
             executable_ext: ".exe"
-          - os: macos-13
+          - os: macos-15-intel
             asset_name: provisioning-tool-macos
             executable_ext: ""
 
