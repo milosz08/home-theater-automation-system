@@ -45,7 +45,7 @@ setup: venv
 	$(PYTHON) $(DEV_FILE)
 
 build: venv
-	$(PIP) install pyinstaller
+	$(PIP) install pyinstaller Pillow
 	$(PYINSTALLER) --noconfirm \
 		--onefile \
 		--windowed \
