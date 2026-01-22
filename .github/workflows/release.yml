@@ -39,7 +39,7 @@ jobs:
       - name: Upload firmware artifact
         uses: actions/upload-artifact@v6
         with:
-          name: esp32-firmware
+          name: htas-esp32-firmware
           path: ${{ env.ESP32_PROJECT_PATH }}/build/esp32-firmware-v${{ inputs.version }}.bin
 
   esp32-firmware-doxygen:
@@ -106,7 +106,7 @@ jobs:
       - name: Upload Android artifact
         uses: actions/upload-artifact@v6
         with:
-          name: android-app
+          name: htas-android-app
           path: android-control-client-v${{ inputs.version }}.apk
 
   build-provisioning-tool:
@@ -153,7 +153,7 @@ jobs:
       - name: Upload ESP32 provisioning tool artifact
         uses: actions/upload-artifact@v6
         with:
-          name: ${{ matrix.asset_name }}
+          name: htas-${{ matrix.asset_name }}
           path: ${{ env.ESP32_PROVISIONING_TOOL_PATH }}/dist/*
 
   create-release:
@@ -177,10 +177,7 @@ jobs:
         with:
           path: release-assets
           merge-multiple: true
-          pattern: |
-          esp32-firmware
-          android-app
-          provisioning-tool-*
+          pattern: htas-*
 
       - name: Create signed GPG tag
         uses: rickstaa/action-create-tag@v1
