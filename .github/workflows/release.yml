@@ -141,7 +141,7 @@ jobs:
 
       - name: Build with Make
         working-directory: ${{ env.ESP32_PROVISIONING_TOOL_PATH }}
-        run: make build
+        run: make install build
 
       - name: Rename for release
         shell: bash
