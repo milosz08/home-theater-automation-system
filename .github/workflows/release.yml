@@ -177,7 +177,6 @@ jobs:
         with:
           path: release-assets
           merge-multiple: true
-          pattern: "^(esp32-firmware|android-app|provisioning-tool-.*)$"
 
       - name: Create signed GPG tag
         uses: rickstaa/action-create-tag@v1
