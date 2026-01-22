@@ -4,8 +4,8 @@
 system.
 
 > [!NOTE]
-If a pre-compiled binary for your OS is not available, please refer to CONTRIBUTING.md for build instructions. This is a
-GUI application and requires a desktop environment to run.
+If a pre-compiled binary for your OS is not available, please refer to [CONTRIBUTING.md](./CONTRIBUTING.md) for build
+instructions. This is a GUI application and requires a desktop environment to run.
 
 2. Connect the controller to your computer and verify which COM port has been assigned to it. Launch the provisioning
 tool.
@@ -31,6 +31,7 @@ screen. You can now fully manage the controller via the app.
 connecting a new device.
 * If disconnected, the app will attempt to reconnect. The wait time between attempts increases with each failed retry
 (backoff strategy).
-* The app remembers the last paired controller. If it cannot connect upon launch, the status will show as DISCONNECTED.
+* The app remembers the last paired controller. If it cannot connect upon launch, the status will show as
+**DISCONNECTED**.
 * Communication uses a fully encrypted channel. By utilizing TOFU (Trust On First Use) during the initial pairing, the
 connection is immune to Man-In-The-Middle (MITM) attacks from the very first connection.
