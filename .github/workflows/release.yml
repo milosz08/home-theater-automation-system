@@ -198,5 +198,5 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
             Release v${{ inputs.version }} of Home Theater Automation System.
-            Install and connect procedure you will find in `CONTRIBUTION.md` file.
+            Install and connect procedure you will find in `INSTALL.md` file.
             ESP32 firmare docs you will find [here](${{ needs.esp32-firmware-doxygen.outputs.page_url }}).
