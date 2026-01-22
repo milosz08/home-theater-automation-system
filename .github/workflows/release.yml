@@ -42,8 +42,20 @@ jobs:
           name: esp32-firmware
           path: ${{ env.ESP32_PROJECT_PATH }}/build/esp32-firmware-v${{ inputs.version }}.bin
 
-  generate-esp32-firmware-doxygen:
+  esp32-firmware-doxygen:
     runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -57,11 +69,14 @@ jobs:
         working-directory: ${{ env.ESP32_PROJECT_PATH }}
         run: make docs
 
-      - name: Upload documentation artifact
-        uses: actions/upload-artifact@v6
+      - name: Upload pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: doxygen-docs
-          path: ${{ env.ESP32_PROJECT_PATH }}/docs/
+          path: ${{ env.ESP32_PROJECT_PATH }}/docs
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 
   build-android-control-client:
     runs-on: ubuntu-latest
@@ -141,45 +156,13 @@ jobs:
           name: ${{ matrix.asset_name }}
           path: ${{ env.ESP32_PROVISIONING_TOOL_PATH }}/dist/*
 
-  deploy-esp32-firmware-doxygen:
-    runs-on: ubuntu-latest
-    needs: generate-esp32-firmware-doxygen
-
-    permissions:
-      pages: write
-      id-token: write
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    outputs:
-      page_url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
-      - name: Download generated doxygen files
-        uses: actions/download-artifact@v7
-        with:
-          name: doxygen-docs
-          path: ./docs-website
-
-      - name: Upload pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./docs-website
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-
   create-release:
     runs-on: ubuntu-latest
     needs:
       - build-esp32-firmware
-      - generate-esp32-firmware-doxygen
+      - esp32-firmware-doxygen
       - build-android-control-client
       - build-provisioning-tool
-      - deploy-esp32-firmware-doxygen
 
     permissions:
       contents: write
@@ -216,4 +199,4 @@ jobs:
           body: |
             Release v${{ inputs.version }} of Home Theater Automation System.
             Install and connect procedure you will find in `CONTRIBUTION.md` file.
-            ESP32 firmare docs you will find [here](${{ needs.deploy-esp32-firmware-doxygen.outputs.page_url }}).
+            ESP32 firmare docs you will find [here](${{ needs.esp32-firmware-doxygen.outputs.page_url }}).
