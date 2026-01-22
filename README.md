@@ -102,7 +102,7 @@ partition table (located in `esp32_firmware/partitions.csv`).
 
 ### Android client
 
-[TBD]
+[TBD] - ubder development
 
 ## RS485 data transmission example
 
