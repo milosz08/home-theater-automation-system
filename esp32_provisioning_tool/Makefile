@@ -31,7 +31,7 @@ all: run
 
 $(BIN)/activate:
 	$(PYTHON_SYS) -m venv $(VENV)
-	$(PIP) install --upgrade pip
+	$(PYTHON) -m pip install --upgrade pip
 
 venv: $(BIN)/activate
 
