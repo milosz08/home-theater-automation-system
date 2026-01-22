@@ -28,6 +28,7 @@ jobs:
       - name: Build firmware
         working-directory: ${{ env.ESP32_PROJECT_PATH }}
         run: |
+          . $IDF_PATH/export.sh
           idf.py set-target esp32
           make build
 
