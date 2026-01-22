@@ -50,7 +50,7 @@ build: venv
 		--onefile \
 		--windowed \
 		--icon="res/icon.png" \
-		--add-data "res/icon.png;res" \
+		--add-data "res/icon.png$(SEP)res" \
 		--collect-all esptool \
 		--name $(APP_NAME) \
 		$(MAIN_FILE)
