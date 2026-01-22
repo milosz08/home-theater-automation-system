@@ -12,7 +12,7 @@ on:
 env:
   ANDROID_CONTROL_CLIENT_PATH: "./android_control_client"
   ESP32_PROJECT_PATH: "./esp32_firmware"
-  ESP32_PROVISIONING_TOOL_PATH: "./esp32_firmware"
+  ESP32_PROVISIONING_TOOL_PATH: "./esp32_provisioning_tool"
 
 jobs:
   build-esp32-firmware:
