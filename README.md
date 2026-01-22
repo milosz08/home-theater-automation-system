@@ -26,7 +26,7 @@ The firmware includes dedicated serial protocol implementations for the **Optoma
 The system is powered centrally via an LM2596S switching regulator (5V/3A). This primary rail is
 distributed to three independent sections, each powered by a separate AMS1117 linear regulator stepping
 voltage down to 3.3V, ensuring noise isolation (5V components like the buzzer and LCD display are powered
-directly from the 5V rail). Key communication modules—Ethernet W5500, MAX3232, and MAX3485 - feature
+directly from the 5V rail). Key communication modules: Ethernet W5500, MAX3232, and MAX3485 - feature
 dedicated decoupling circuits consisting of a ceramic capacitor (for high-frequency filtering) paired with
 a Low-ESR capacitor. For the Ethernet module, the electrolytic capacitor size was increased to 220uF to
 eliminate intermittent connection drops observed with standard 47uF units.
