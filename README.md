@@ -1,10 +1,12 @@
 # Home theater automation system
 
 A specialized ESP32-based home theater controller operating via a hardwired Ethernet connection. It communicates using
-TLS-encrypted WebSockets and interfaces with a native Android application and a Python provisioning tool.
-
-The firmware includes dedicated serial protocol implementations for the **Optoma UHD 38x** projector (via RS232) and the
+TLS-encrypted WebSockets and interfaces with a native Android application and a Python provisioning tool. The firmware
+includes dedicated serial protocol implementations for the **Optoma UHD 38x** projector (via RS232) and the
 **Suprema Polaris Pro** projection screen (via RS485).
+
+* **Installation & provisioning:** See [INSTALL](./INSTALL.md) for instructions on how to flash and set up the device.
+* **Development:** See [CONTRIBUTING](./CONTRIBUTING.md) for setting up the environment and building artifacts.
 
 ## Table of content
 
