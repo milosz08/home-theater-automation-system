@@ -56,11 +56,10 @@ twisted pair within the UTP cable can be used, which will dramatically decrease 
 
 ### Prototype (DUT) with test bench
 
-For the test, we used a Rigol DHO804 oscilloscope, and it had these x10 probes attached, all set up with DC coupling.
+For the test, I used a Rigol DHO804 oscilloscope, and it had these x10 probes attached, all set up with DC coupling.
 That way, channels 1 and 2 could pick up the differential RS485 signals, you know, the A+ and B- ones that send over the
 `cmd_screen_down` command to the projection screen. The RS232 stuff on CH3 and CH4, though, those probes were just
-turned off for this part, since it wasnt needed in the sequence. It seems straightforward, but getting the signals right
-took a bit of tweaking.
+turned off for this part, since it wasnt needed in the sequence.
 
 ![](.github/assets/esp32-driver-prototype.jpg)
 
@@ -71,7 +70,7 @@ MAX3232 module. They took off the regular DB9 connector by hand and put in goldp
 3 to TXD, and 2 to RXD, all to fit with the RJ45 interface in the end design. One thing to avoid was those ground loops
 and the problem of powering it twice, especially since the whole system runs off a 9V 3A supply through an LM2596S DC-DC
 converter. So for the mini USB cable thats used to program and debug the ESP, I cut the +5V line, just keeping the
-ground and data lines linked up. That should help, I guess.
+ground and data lines linked up.
 
 And theres a quick video from above showing the system working.
 
