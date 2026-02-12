@@ -74,7 +74,7 @@ ground and data lines linked up.
 
 And theres a quick video from above showing the system working.
 
-https://github.com/user-attachments/assets/9b0b8d48-a2f2-4973-bb6c-5a5791618fee
+https://github.com/user-attachments/assets/eae4c4c2-6b1c-4048-807c-7f3417283a63
 
 ### Safety logic for projection screen using NAND gate and hardware interlock
 
