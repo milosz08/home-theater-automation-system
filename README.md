@@ -90,7 +90,7 @@ signal separation between the wall inputs (`WALL IN`) and RTV cabinet controls (
 loops during local operation. Additionally, all input lines are equipped with RC filters (capacitors) for hardware
 debouncing, ensuring reliable signal detection and noise immunity over long cable runs.
 
-https://github.com/user-attachments/assets/c4669eb3-fd88-48d6-8e5b-ce25ba981c4a
+https://github.com/user-attachments/assets/5b4801b8-d590-4d30-8f9f-8a03ec3a873f
 
 As you can notice, triggering the STOP signal (by simultaneously pressing the wall buttons) also briefly activates the
 UP and DOWN signals. This is a direct result of the intentional design choice to omit transistor-based interlocking.
