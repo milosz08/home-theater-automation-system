@@ -21,7 +21,7 @@ includes dedicated serial protocol implementations for the **Optoma UHD 38x** pr
 
 [Click to open schematic in PDF format](.github/schematic/esp32-driver.pdf)
 
-![](.github/schematic/esp32-driver.svg)
+<img src=".github/schematic/esp32-driver.svg" width="100%">
 
 The​‍​‌‍​‍‌ LM2596S switching regulator (5V/3A) centrally delivers power to the system. This main supply is then split to three
 separate segments, each powered by its own AMS1117 linear regulator that steps down the voltage to 3.3V, thus preventing
@@ -80,7 +80,7 @@ https://github.com/user-attachments/assets/eae4c4c2-6b1c-4048-807c-7f3417283a63
 
 [Click to open schematic in PDF format](.github/schematic/hardware-screen-interlock.pdf)
 
-![](.github/schematic/hardware-screen-interlock.svg)
+<img src=".github/schematic/hardware-screen-interlock.svg" width="100%">
 
 This module serves as an independent hardware safety layer for the projection screen, operating entirely on active low
 logic(ground switching/pull-to-ground). Powered by CD4093 (NAND Schmitt Trigger) logic gates, it enforces a hard-wired
