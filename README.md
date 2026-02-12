@@ -78,6 +78,10 @@ https://github.com/user-attachments/assets/eae4c4c2-6b1c-4048-807c-7f3417283a63
 
 ### Safety logic for projection screen using NAND gate and hardware interlock
 
+[Click to open schematic in PDF format](.github/schematic/hardware-screen-interlock.pdf)
+
+![](.github/schematic/hardware-screen-interlock.svg)
+
 This module serves as an independent hardware safety layer for the projection screen, operating entirely on active low
 logic(ground switching/pull-to-ground). Powered by CD4093 (NAND Schmitt Trigger) logic gates, it enforces a hard-wired
 STOP priority. The logic is designed to interpret a simultaneous press of UP and DOWN buttons on a standard wall shutter
