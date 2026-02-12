@@ -54,7 +54,7 @@ twisted pair within the UTP cable can be used, which will dramatically decrease 
 
 [TBD] - under development
 
-### Prototype (DUT) with test bench
+### Prototype with test bench (ESP32 unit)
 
 For the test, we used a Rigol DHO804 oscilloscope, and it had these x10 probes attached, all set up with DC coupling.
 That way, channels 1 and 2 could pick up the differential RS485 signals, you know, the A+ and B- ones that send over the
