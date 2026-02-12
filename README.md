@@ -77,6 +77,22 @@ And theres a quick video from above showing the system working.
 
 https://github.com/user-attachments/assets/9b0b8d48-a2f2-4973-bb6c-5a5791618fee
 
+### Safety logic for projection screen using NAND gate and hardware interlock
+
+This module serves as an independent hardware safety layer for the projection screen, operating entirely on active low
+logic(ground switching/pull-to-ground). Powered by CD4093 (NAND Schmitt Trigger) logic gates, it enforces a hard-wired
+STOP priority. The logic is designed to interpret a simultaneous press of UP and DOWN buttons on a standard wall shutter
+switch as an immediate emergency halt, protecting the motor from conflicting commands. The circuit features diode-based
+signal separation between the wall inputs (`WALL IN`) and RTV cabinet controls (`SHELF IN`), preventing logic feedback
+loops during local operation. Additionally, all input lines are equipped with RC filters (capacitors) for hardware
+debouncing, ensuring reliable signal detection and noise immunity over long cable runs.
+
+As you can notice, triggering the STOP signal (by simultaneously pressing the wall buttons) also briefly activates the
+UP and DOWN signals. This is a direct result of the intentional design choice to omit transistor-based interlocking.
+This behavior is completely safe and acceptable, as we rely on the screen controller’s internal safety logic, which
+inherently prioritizes the STOP signal over any directional commands. Consequently, even with all three signals active,
+the motor halts immediately.
+
 ## Software
 
 ### ESP32 firmware
