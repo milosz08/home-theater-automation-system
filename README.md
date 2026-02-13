@@ -165,7 +165,7 @@ during active transmission, ensuring error-free frame interpretation by the scre
 * LM2596S DC-DC Step-Down 12V -> 5V, AMS1117 DC-DC Step-Down 5V -> 3.3V (power section),
 * AHT20+BMP280, BMT1206UXLF,
 * 2N7000 (MOSFET), BC337 (NPN), BC327 (PNP), 1N4007, SB2100, P6KE15CA,
-* SN74HC02 (NOR),
+* CD4093BE (NAND),
 * ESP-IDF, ESP-LittleFS, C, CMake, Make,
 * PKI with CA (MITM attacks protection), basic auth,
 * Python (esptool, littlefs-python, cryptography, pyserial, qrcode),
