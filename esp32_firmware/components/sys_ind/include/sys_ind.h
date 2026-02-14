@@ -8,8 +8,8 @@
 
 // Output mapping on the IO Expander (PCF8574)
 #define PCF_PIN_OUT_LED_CMD         0       /*!< Red LED: command execution/error. */
-#define PCF_PIN_OUT_LED_ETH_LINK    1       /*!< Green LED: Ethernet link UP. */
-#define PCF_PIN_OUT_LED_ETH_ACT     2       /*!< Orange LED: Ethernet activity. */
+#define PCF_PIN_OUT_LED_ETH_ACT     1       /*!< Orange LED: Ethernet activity. */
+#define PCF_PIN_OUT_LED_ETH_LINK    2       /*!< Green LED: Ethernet link UP. */
 #define PCF_PIN_OUT_LCD_BACKLIGHT   3       /*!< MOSFET gate for LCD backlight. */
 #define PCF_PIN_OUT_BUZZER          4       /*!< PNP+NPN gate for active Buzzer. */
 
