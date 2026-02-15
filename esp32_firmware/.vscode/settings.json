@@ -36,4 +36,5 @@
   "workbench.tree.enableStickyScroll": false,
   "workbench.tree.indent": 20,
   "workbench.tree.renderIndentGuides": "always",
+  "idf.currentSetup": "D:/programs/espressif/frameworks/esp-idf-v5.5.2-2/",
 }
