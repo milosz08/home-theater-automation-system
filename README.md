@@ -52,7 +52,22 @@ twisted pair within the UTP cable can be used, which will dramatically decrease 
 
 ### Standalone unit (boxed)
 
-[TBD] - under development
+The standalone unit was designed with a focus on modularity and ease of maintenance, allowing for component replacement
+without the need for soldering. All external wiring is routed through screw terminals (ARK connectors), making
+installation and modifications quick and secure. Important components are socketed using female headers, ensuring that
+any damaged part can be swapped out instantly. Due to its delicate size, the MAX3232 module was soldered onto a
+custom-cut PCB adapter to ensure mechanical stability within the socket.
+
+![](.github/assets/standalone-unit-out-top.jpg)
+![](.github/assets/standalone-unit-boxed.jpg)
+
+<details>
+  <summary>Rest of images</summary>
+
+  ![](.github/assets/standalone-unit-out-bottom.jpg)
+  
+  ![](.github/assets/standalone-unit-control.jpg)
+</details>
 
 ### Prototype with test bench (ESP32 unit)
 
