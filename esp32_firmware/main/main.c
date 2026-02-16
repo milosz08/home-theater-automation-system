@@ -8,6 +8,7 @@
 #include "io_expander.h"
 #include "io_button.h"
 #include "io_input.h"
+#include "ntp_service.h"
 #include "sys_ind.h"
 #include "nvs_manager.h"
 #include "storage.h"
@@ -30,7 +31,7 @@
 #include "freertos/task.h"
 
 #define PROGRESS_BAR_COOLDOWN_MS  100 // time between next steps
-#define TOTAL_STEPS               12  // total steps
+#define TOTAL_STEPS               13  // total steps
 
 #define CHECK_CRITICAL(x, msg) do { \
   esp_err_t err_rc = (x); \
@@ -197,7 +198,12 @@ void app_main(void)
   eth_w5500_force_link_blocking(on_eth_boot_wait);
   vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS));
 
-  // 12. cyclic tasks
+  // 12. ntp service sync
+  ui_show_boot_progress("Start NTP sync", ++current_step, TOTAL_STEPS);
+  CHECK_CRITICAL(ntp_service_init(s_config.ntp_server, s_config.ntp_timezone), "NTP fail sync");;
+  vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS));
+
+  // 13. cyclic tasks
   ui_show_boot_progress("Init tasks", ++current_step, TOTAL_STEPS);
   CHECK_CRITICAL(cyclic_task_env_init(), "Tasks fail");
   vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS));

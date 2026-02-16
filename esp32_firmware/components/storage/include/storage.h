@@ -5,7 +5,7 @@
 
 /*! \brief Main system configuration structure.
  *
- * Holds network settings and security credentials.
+ * Holds network settings, security credentials and time configuration.
  */
 typedef struct
 {
@@ -14,6 +14,8 @@ typedef struct
   char netmask[16];           /*!< Subnet mask. */
   char dns[16];               /*!< DNS IP. */
   int https_port;             /*!< Port for the web server (default 443). */
+  char ntp_server[64];        /*!< NTP Server address (e.g. pool.ntp.org). */
+  char ntp_timezone[64];      /*!< POSIX timezone string. */
   char default_password[64];  /*!< Admin password for the API. */
 } system_config_t;
 

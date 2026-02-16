@@ -22,6 +22,7 @@ idf_component_register(
     io_expander
     io_button
     io_input
+    ntp_service
     sys_ind
     nvs_manager
     storage

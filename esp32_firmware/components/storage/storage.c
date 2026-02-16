@@ -48,6 +48,8 @@ esp_err_t storage_load_system_config(system_config_t *config)
   // safety values
   memset(config, 0, sizeof(system_config_t));
   config->https_port = 443;
+  strncpy(config->ntp_server, "pool.ntp.org", sizeof(config->ntp_server) - 1);
+  strncpy(config->ntp_timezone, "CET-1CEST,M3.5.0,M10.5.0/3", sizeof(config->ntp_timezone) - 1);
   strncpy(config->default_password, "admin", sizeof(config->default_password) - 1);
 
   char *buffer = helper_read_file_to_buffer("/storage/config.json");
@@ -78,6 +80,8 @@ esp_err_t storage_load_system_config(system_config_t *config)
   GET_STRING_SAFE(config->gateway, json, "gateway");
   GET_STRING_SAFE(config->netmask, json, "netmask");
   GET_STRING_SAFE(config->dns, json, "dns");
+  GET_STRING_SAFE(config->ntp_server, json, "ntp_server");
+  GET_STRING_SAFE(config->ntp_timezone, json, "ntp_timezone");
   GET_STRING_SAFE(config->default_password, json, "default_password");
 
   cJSON *port_item = cJSON_GetObjectItem(json, "port");

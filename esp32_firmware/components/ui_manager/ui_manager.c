@@ -1,6 +1,7 @@
 #include "ui_manager.h"
 #include "eth_w5500.h"
 #include "helper.h"
+#include "ntp_service.h"
 #include "ui.h"
 #include "env_sensor.h"
 
@@ -16,6 +17,7 @@ static const char *TAG = "UI_MGR";
 typedef enum
 {
   PAGE_SYSTEM,
+  PAGE_CLOCK,
   PAGE_NETWORK,
   PAGE_ENV,
   PAGE_RESOURCES,
@@ -34,6 +36,16 @@ static void render_system_page(void)
   helper_format_uptime(sec, time_buf, sizeof(time_buf));
   snprintf(line1, sizeof(line1), "UP: %s", time_buf);
   ui_set_text("System: ACTIVE", line1);
+}
+
+static void render_clock_page(void)
+{
+  static char date_str[17], time_str[17];
+  if (ntp_service_get_time_and_date_strs(date_str, sizeof(date_str), time_str, sizeof(time_str)))
+  {
+    ui_set_text(date_str, time_str);
+  }
+  else ui_set_text("NTP syncing...", "Please wait");
 }
 
 static void render_network_page(void)
@@ -78,6 +90,7 @@ static void render_current_page(void)
   {
     case PAGE_SYSTEM:     render_system_page();     break;
     case PAGE_NETWORK:    render_network_page();    break;
+    case PAGE_CLOCK:      render_clock_page();      break;
     case PAGE_ENV:        render_env_page();        break;
     case PAGE_RESOURCES:  render_resources_page();  break;
     default: break;

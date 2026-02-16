@@ -10,6 +10,7 @@ idf_component_register(
     log
     env_sensor
     eth_w5500
-    ui
     helper
+    ntp_service
+    ui
 )
