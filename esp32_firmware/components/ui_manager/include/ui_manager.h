@@ -26,4 +26,18 @@ void ui_manager_switch_mode(void);
  */
 void ui_manager_manual_mode(void);
 
+/*! \brief Pauses the UI manager updates.
+ *
+ * Stops the auto-scroll timer and prevents page rendering. Use this before running blocking tasks that need exclusive
+ * screen access (e.g., OTA updates) to avoid visual glitches.
+ */
+void ui_manager_suspend(void);
+
+/*! \brief Resumes the UI manager updates.
+ *
+ * Restarts the auto-scroll timer (if previously enabled) and immediately refreshes the current page. Call this after a
+ * blocking task is finished or failed to restore the dashboard.
+ */
+void ui_manager_resume(void);
+
 #endif // UI_MANAGER_H_

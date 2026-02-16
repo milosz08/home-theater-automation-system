@@ -24,6 +24,7 @@ typedef enum
 
 static ui_page_t current_page = PAGE_SYSTEM;
 static bool auto_mode = true;
+static bool is_suspended = false;
 static TimerHandle_t auto_scroll_timer = NULL;
 
 static void render_system_page(void)
@@ -85,7 +86,7 @@ static void render_current_page(void)
 
 static void auto_scroll_callback(TimerHandle_t xTimer)
 {
-  if (auto_mode)
+  if (auto_mode && !is_suspended)
   {
     current_page = (current_page + 1) % PAGE_COUNT;
     render_current_page();
@@ -108,7 +109,7 @@ esp_err_t ui_manager_init(void)
 
 void ui_manager_switch_mode(void)
 {
-  if (auto_scroll_timer == NULL) return;
+  if (is_suspended || auto_scroll_timer == NULL) return;
   auto_mode = !auto_mode;
   if (auto_mode)
   {
@@ -126,8 +127,21 @@ void ui_manager_switch_mode(void)
 
 void ui_manager_manual_mode(void)
 {
-  if (auto_scroll_timer == NULL) return;
+  if (is_suspended || auto_scroll_timer == NULL) return;
   current_page = (current_page + 1) % PAGE_COUNT;
   render_current_page();
   if (auto_mode) xTimerReset(auto_scroll_timer, 0);
+}
+
+void ui_manager_suspend(void)
+{
+  is_suspended = true;
+  if (auto_scroll_timer) xTimerStop(auto_scroll_timer, 0);
+}
+
+void ui_manager_resume(void)
+{
+  is_suspended = false;
+  if (auto_mode && auto_scroll_timer) xTimerStart(auto_scroll_timer, 0);
+  render_current_page();
 }
