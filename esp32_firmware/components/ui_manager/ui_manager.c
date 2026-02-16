@@ -110,7 +110,7 @@ static void auto_scroll_callback(TimerHandle_t xTimer)
 
 esp_err_t ui_manager_init(void)
 {
-  auto_scroll_timer = xTimerCreate("UiCarousel", pdMS_TO_TICKS(5000), pdTRUE, NULL, auto_scroll_callback);
+  auto_scroll_timer = xTimerCreate("carousel_timer", pdMS_TO_TICKS(5000), pdTRUE, NULL, auto_scroll_callback);
   if (auto_scroll_timer == NULL) return ESP_ERR_NO_MEM;
   
   xTimerStart(auto_scroll_timer, 0);

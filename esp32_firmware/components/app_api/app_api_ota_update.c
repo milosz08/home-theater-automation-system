@@ -125,6 +125,6 @@ esp_err_t app_api_ota_update(httpd_req_t *req)
   ui_show_boot_progress("Complete", total_len, total_len);
   send_ota_progress_event(total_len, total_len);
 
-  xTaskCreate(ota_reboot_task, "ota_reboot", 2048, NULL, 5, NULL);
+  xTaskCreate(ota_reboot_task, "ota_reboot_task", 2048, NULL, 5, NULL);
   return app_api_return_ok(req);
 }

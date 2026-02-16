@@ -94,17 +94,17 @@ static void sys_ind_led_check(void)
 
 esp_err_t sys_ind_init(void)
 {
-  act_led_timer = xTimerCreate("ActTmr", pdMS_TO_TICKS(LED_HOLD_TIME_MS), pdFALSE, (void *)PCF_PIN_OUT_LED_ETH_ACT,
+  act_led_timer = xTimerCreate("act_timer", pdMS_TO_TICKS(LED_HOLD_TIME_MS), pdFALSE, (void *)PCF_PIN_OUT_LED_ETH_ACT,
                                turn_off_led_callback);
-  cmd_led_timer = xTimerCreate("CmdTmr", pdMS_TO_TICKS(LED_HOLD_TIME_MS), pdFALSE, (void *)PCF_PIN_OUT_LED_CMD,
+  cmd_led_timer = xTimerCreate("cmd_timer", pdMS_TO_TICKS(LED_HOLD_TIME_MS), pdFALSE, (void *)PCF_PIN_OUT_LED_CMD,
                                turn_off_led_callback);
-  buzzer_timer = xTimerCreate("BuzTmr", pdMS_TO_TICKS(100), pdTRUE, (void *)0, buzzer_callback);
+  buzzer_timer = xTimerCreate("buzz_timer", pdMS_TO_TICKS(100), pdTRUE, (void *)0, buzzer_callback);
 
   if (act_led_timer == NULL || cmd_led_timer == NULL || buzzer_timer == NULL) return ESP_ERR_NO_MEM;
 
   sys_ind_led_check();
 
-  BaseType_t res = xTaskCreate(sys_ind_led_heartbeat_task, "LedHeartbeat", 2048, NULL, 1, NULL);
+  BaseType_t res = xTaskCreate(sys_ind_led_heartbeat_task, "led_heartbeat_task", 2048, NULL, 1, NULL);
   if (res != pdPASS) return ESP_ERR_NO_MEM;
 
   ESP_LOGI(TAG, "initialized system indicators via io expander");

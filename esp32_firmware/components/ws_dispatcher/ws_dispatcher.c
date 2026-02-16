@@ -52,7 +52,7 @@ static void ws_task_entry(void *arg)
 
 esp_err_t ws_dispatcher_init(void)
 {
-  BaseType_t task_created = xTaskCreate(ws_task_entry, "WsDisp", 4096, NULL, 5, NULL);
+  BaseType_t task_created = xTaskCreate(ws_task_entry, "ws_dispatcher_task", 4096, NULL, 5, NULL);
   if (task_created != pdPASS) return ESP_ERR_NO_MEM;
 
   ESP_LOGI(TAG, "ws dispatcher init");
