@@ -125,18 +125,27 @@ void sys_ind_led_eth_packet_activity(void)
   }
 }
 
-void sys_ind_led_io_cmd_execution(void)
+void sys_ind_led_io_execution(int count)
 {
   xTimerStop(cmd_led_timer, 0);
-    
   const TickType_t blink_delay = pdMS_TO_TICKS(LED_BLINK_HOLD_TIME_MS);
-  for (int i = 0; i < 2; i++)
+  for (int i = 0; i < count; i++)
   {
     sys_ind_led_set_state(PCF_PIN_OUT_LED_CMD, true);
     vTaskDelay(blink_delay);
     sys_ind_led_set_state(PCF_PIN_OUT_LED_CMD, false);
     vTaskDelay(blink_delay);
   }
+}
+
+void sys_ind_led_io_cmd_execution(void)
+{
+  sys_ind_led_io_execution(CMD_LED_COUNT);
+}
+
+void sys_ind_led_io_error_execution(void)
+{
+  sys_ind_led_io_execution(ERROR_LED_COUNT);
 }
 
 void sys_ind_set_error(bool active)
