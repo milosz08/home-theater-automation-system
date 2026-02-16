@@ -24,7 +24,9 @@ typedef esp_err_t (*httpd_handler_func_t)(httpd_req_t *req);
 
 typedef struct
 {
-  https_post_handler_cb_t on_success;
+  https_server_config_t config;
+  https_success_handler_cb_t on_success;
+  https_error_handler_cb_t on_error;
 } server_context_t;
 
 static bool is_authorized(httpd_req_t *req)
@@ -109,6 +111,7 @@ static esp_err_t https_server_start(const https_server_config_t *cfg)
   server_context_t *ctx = malloc(sizeof(server_context_t));
   if (!ctx) return ESP_ERR_NO_MEM;
   ctx->on_success = cfg->on_request_success;
+  ctx->on_error = cfg->on_request_error;
 
   conf.servercert = (const unsigned char*)cert_buffer;
   conf.servercert_len = strlen(cert_buffer) + 1;

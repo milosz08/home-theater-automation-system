@@ -71,6 +71,13 @@ static void on_command_action(const char *friendly_name)
   if (friendly_name != NULL) ui_show_fixed_temp_cmd_message(friendly_name);
 }
 
+static void on_command_error(const char *friendly_name, esp_err_t err)
+{
+  sys_ind_led_io_error_execution();
+  sys_ind_buzzer_sound(3, 100);
+  ui_show_temp_error(friendly_name, err, 4000);
+}
+
 // public api ----------------------------------------------------------------------------------------------------------
 
 void app_main(void)
@@ -136,12 +143,14 @@ void app_main(void)
     .port               = s_config.https_port,
     .cacert_path        = "/storage/cacert.pem",
     .prvtkey_path       = "/storage/prvtkey.pem",
+    // endpoints configuration
     .endpoints          = app_api_get_endpoints(),
     .num_endpoints      = app_api_get_endpoints_count(),
     .on_running         = on_server_running,
     .on_stop            = on_server_stop,
     .on_error           = on_server_error,
-    .on_request_success = on_command_action
+    .on_request_success = on_command_action,
+    .on_request_error   = on_command_error
   };
   CHECK_CRITICAL(ws_queue_init(), "WS queue fail");
   CHECK_CRITICAL(ws_dispatcher_init(), "WS disp fail");
