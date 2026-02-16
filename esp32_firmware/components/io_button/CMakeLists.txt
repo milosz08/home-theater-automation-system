@@ -15,6 +15,6 @@ idf_component_register(
     io_input
     nvs_manager
     sys_ind
-    ui
     ui_manager
+    ui
 )

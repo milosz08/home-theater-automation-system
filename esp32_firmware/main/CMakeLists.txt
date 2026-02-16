@@ -26,8 +26,8 @@ idf_component_register(
     nvs_manager
     storage
     uart_bus
-    ui
     ui_manager
+    ui
     ws_cmd_router
     ws_dispatcher
     ws_queue
