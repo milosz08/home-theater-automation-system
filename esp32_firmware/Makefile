@@ -1,5 +1,8 @@
 PROJECT_NAME := esp32_firmware
 
+VER ?= 0.0.1-dev-local
+VER_FLAG := -DCMD_APP_VER="$(VER)"
+
 PORT ?= COM3 # communication port for ESP32 board
 BAUD ?= 921600 # flashing speed
 
@@ -14,16 +17,16 @@ set-chip:
 
 # normal building
 build:
-	idf.py build
+	idf.py build $(VER_FLAG)
 
 # builds only the application binary (skips bootloader, partitions, data images)
 build-app:
-	idf.py app
+	idf.py app $(VER_FLAG)
 
 # full rebuild (CMakeLists.txt or partition structure)
 rebuild:
 	idf.py reconfigure
-	idf.py build
+	idf.py build $(VER_FLAG)
 
 # flash with high speed (app, bootloader, partition table, storage)
 flash: build

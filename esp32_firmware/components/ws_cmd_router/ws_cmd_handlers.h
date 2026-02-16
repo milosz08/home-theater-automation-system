@@ -4,7 +4,7 @@
 #include "cJSON.h"
 
 /*! \brief Max number of commands we can register in the router. */
-#define MAX_COMMANDS 3
+#define MAX_COMMANDS 4
 
 // Projection screen command handlers
 
@@ -31,5 +31,14 @@ void ws_cmd_screen_stop(const cJSON *payload);
  * \param payload The JSON object (unused here, but required by typedef signature).
  */
 void ws_cmd_screen_up(const cJSON *payload);
+
+/*! \brief Handles the GET_SYS_INFO command.
+ *
+ * Retrieves system information (version, project name, compile time) and sends it back to the client via WebSocket
+ * queue handler.
+ *
+ * \param payload The JSON object (unused here, but required by typedef signature).
+ */
+void ws_cmd_get_sys_info(const cJSON *payload);
 
 #endif // WS_CMD_HANDLERS_H_

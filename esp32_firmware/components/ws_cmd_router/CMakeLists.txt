@@ -10,7 +10,9 @@ idf_component_register(
     "."
 
   REQUIRES
+    esp_app_format
     log
     json
     peripheral_control
+    ws_queue
 )

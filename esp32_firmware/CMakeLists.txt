@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
+set(PROJECT_VER "${CMD_APP_VER}")
 
 # include esp-idf toolkit
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)

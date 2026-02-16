@@ -14,6 +14,8 @@
 
 /*! \brief Event name for environmental updates (temp/hum). */
 #define WS_EVENT_TYPE_ENV_UPDATE "env"
+/*! \brief Event name for getting system info (e.g., version, name) */
+#define WS_EVENT_TYPE_SYS_INFO "sysinfo"
 
 /*! \brief Structure representing a queued message. */
 typedef struct
