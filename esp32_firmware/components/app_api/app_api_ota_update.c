@@ -48,7 +48,7 @@ esp_err_t app_api_ota_update(httpd_req_t *req)
       strcmp(content_type, "application/octet-stream") != 0)
   {
     ui_manager_resume();
-    return API_RETURN_ERR(req, 400, ESP_ERR_NOT_SUPPORTED);
+    return APP_API_RETURN_ERR(req, 400, ESP_ERR_NOT_SUPPORTED);
   }
   esp_ota_handle_t update_handle = 0;
   const esp_partition_t *update_partition = NULL;
@@ -66,13 +66,13 @@ esp_err_t app_api_ota_update(httpd_req_t *req)
   if (update_partition == NULL)
   {
     ui_manager_resume();
-    return API_RETURN_ERR(req, 500, ESP_ERR_NOT_FOUND);
+    return APP_API_RETURN_ERR(req, 500, ESP_ERR_NOT_FOUND);
   }
   res = esp_ota_begin(update_partition, OTA_SIZE_UNKNOWN, &update_handle);
   if (res != ESP_OK)
   {
     ui_manager_resume();
-    return API_RETURN_ERR(req, 500, res);
+    return APP_API_RETURN_ERR(req, 500, res);
   }
   ESP_LOGI(TAG, "starting ota update, size: %d bytes", remaining);
   ui_show_boot_progress("Firmware update", 0, total_len);
@@ -85,14 +85,14 @@ esp_err_t app_api_ota_update(httpd_req_t *req)
       if (received == HTTPD_SOCK_ERR_TIMEOUT) continue;
       ui_manager_resume();
       esp_ota_end(update_handle);
-      return API_RETURN_ERR(req, 500, ESP_FAIL);
+      return APP_API_RETURN_ERR(req, 500, ESP_FAIL);
     }
     res = esp_ota_write(update_handle, buf, received);
     if (res != ESP_OK)
     {
       esp_ota_end(update_handle);
       ui_manager_resume();
-      return API_RETURN_ERR(req, 500, res);
+      return APP_API_RETURN_ERR(req, 500, res);
     }
     remaining -= received;
     current_len += received;
@@ -111,13 +111,13 @@ esp_err_t app_api_ota_update(httpd_req_t *req)
   if (res != ESP_OK)
   {
     ui_manager_resume();
-    return API_RETURN_ERR(req, 500, res);
+    return APP_API_RETURN_ERR(req, 500, res);
   }
   res = esp_ota_set_boot_partition(update_partition);
   if (res != ESP_OK)
   {
     ui_manager_resume();
-    return API_RETURN_ERR(req, 500, res);
+    return APP_API_RETURN_ERR(req, 500, res);
   }
   
   ESP_LOGI(TAG, "ota update success, queuing reboot...");
@@ -126,5 +126,5 @@ esp_err_t app_api_ota_update(httpd_req_t *req)
   send_ota_progress_event(total_len, total_len);
 
   xTaskCreate(ota_reboot_task, "ota_reboot", 2048, NULL, 5, NULL);
-  return api_return_ok(req);
+  return app_api_return_ok(req);
 }

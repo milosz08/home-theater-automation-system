@@ -98,7 +98,7 @@ esp_err_t app_api_handle_response(httpd_req_t *req, void *void_ctx, esp_err_t ha
   return result_for_middleware;
 }
 
-esp_err_t _api_return_err_helper(httpd_req_t *req, int status, esp_err_t code, const char *name_str)
+esp_err_t _app_api_return_err_helper(httpd_req_t *req, int status, esp_err_t code, const char *name_str)
 {
   api_ctx_t *ctx = (api_ctx_t *)req->user_ctx;
   if (ctx)
@@ -111,7 +111,7 @@ esp_err_t _api_return_err_helper(httpd_req_t *req, int status, esp_err_t code, c
   return ESP_OK;
 }
 
-esp_err_t api_return_ok(httpd_req_t *req)
+esp_err_t app_api_return_ok(httpd_req_t *req)
 {
   api_ctx_t *ctx = (api_ctx_t *)req->user_ctx;
   if (ctx)
@@ -123,7 +123,7 @@ esp_err_t api_return_ok(httpd_req_t *req)
   return ESP_OK;
 }
 
-void api_set_manual_response(httpd_req_t *req)
+void app_api_set_manual_response(httpd_req_t *req)
 {
   api_ctx_t *ctx = (api_ctx_t *)req->user_ctx;
   if (ctx) ctx->manual_response = true;

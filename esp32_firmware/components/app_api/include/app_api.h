@@ -11,7 +11,7 @@
 
 /*! \brief List of generic variable names used in handlers.
  *
- * If the stringified name from API_RETURN_ERR matches one of these, the system will fallback to esp_err_to_name().
+ * If the stringified name from APP_API_RETURN_ERR matches one of these, the system will fallback to esp_err_to_name().
  */
 #define API_GENERIC_VAR_NAMES "res", "err"
 
@@ -25,8 +25,8 @@
  * \param status The HTTP status code (e.g., 400, 500).
  * \param code   The ESP error code (esp_err_t).
  */
-#define API_RETURN_ERR(req, status, code) \
-  _api_return_err_helper(req, status, code, #code)
+#define APP_API_RETURN_ERR(req, status, code) \
+  _app_api_return_err_helper(req, status, code, #code)
 
 /*! \brief Context structure passed between the middleware and the handler.
  *
@@ -79,11 +79,11 @@ const https_endpoint_t *app_api_get_endpoints(void);
  */
 size_t app_api_get_endpoints_count(void);
 
-/*! \brief Internal helper for API_RETURN_ERR.
+/*! \brief Internal helper for APP_API_RETURN_ERR.
  *
  * Populates the context with error details but returns ESP_OK.
  */
-esp_err_t _api_return_err_helper(httpd_req_t *req, int status, esp_err_t code, const char *name_str);
+esp_err_t _app_api_return_err_helper(httpd_req_t *req, int status, esp_err_t code, const char *name_str);
 
 /*! \brief Sets the context to success state (HTTP 204).
  *
@@ -92,7 +92,7 @@ esp_err_t _api_return_err_helper(httpd_req_t *req, int status, esp_err_t code, c
  * \param req The HTTP request handle.
  * \return Always ESP_OK.
  */
-esp_err_t api_return_ok(httpd_req_t *req);
+esp_err_t app_api_return_ok(httpd_req_t *req);
 
 /*! \brief Flags that the handler will send its own response.
  *
@@ -100,6 +100,6 @@ esp_err_t api_return_ok(httpd_req_t *req);
  *
  * \param req The HTTP request handle.
  */
-void api_set_manual_response(httpd_req_t *req);
+void app_api_set_manual_response(httpd_req_t *req);
 
 #endif // APP_API_H_
