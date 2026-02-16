@@ -6,6 +6,11 @@
 
 #include "esp_err.h"
 
+// Keys can have max 15 characters!
+#define AUTH_NVS_NS           "auth_storage"
+#define AUTH_NVS_KEY          "server_pass"
+#define AUTH_NVS_DEFAULT_KEY  "def_server_pass"
+
 /*! \brief Simple key-value pair helper struct. */
 typedef struct
 {

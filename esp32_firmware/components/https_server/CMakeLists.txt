@@ -12,5 +12,4 @@ idf_component_register(
     esp_event
     log
     helper
-    nvs_manager
 )

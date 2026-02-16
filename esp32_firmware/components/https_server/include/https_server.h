@@ -6,18 +6,13 @@
 
 #include "esp_err.h"
 
-// Keys can have max 15 characters!
-#define AUTH_HEADER           "x-auth-pass"
-#define AUTH_NVS_NS           "auth_storage"
-#define AUTH_NVS_KEY          "server_pass"
-#define AUTH_NVS_DEFAULT_KEY  "def_server_pass"
-
 // Callback type definitions
 typedef void (*https_on_running_t)(void);
 typedef void (*https_on_stop_t)(void);
 typedef void (*https_on_error_t)(esp_err_t err);
 typedef void (*https_success_handler_cb_t)(const char *endpoint_name);
 typedef void (*https_error_handler_cb_t)(const char *endpoint_name, esp_err_t err);
+typedef bool (*https_auth_cb_t)(httpd_req_t *req);
 
 // Response handler type definitions
 typedef void* (*https_ctx_creator_t)(httpd_req_t *req);
@@ -53,6 +48,7 @@ typedef struct
   https_on_running_t on_running;                  /*!< Called when server starts successfully. */
   https_on_stop_t on_stop;                        /*!< Called when server stops (e.g., network lost). */
   https_on_error_t on_error;                      /*!< Called if startup fails. */
+  https_auth_cb_t auth_cb;                        /*!< Called on middleware to authorized requests (inluced WebSocket)*/
   https_success_handler_cb_t on_request_success;  /*!< Called after any successful request. */
   https_error_handler_cb_t on_request_error;      /*!< Called after any error in request. */
 } https_server_config_t;

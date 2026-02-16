@@ -1,10 +1,14 @@
 #include "app_api.h"
+#include "helper.h"
+#include "nvs_manager.h"
 
 #include <string.h>
 #include <stdio.h>
 
 #include "cJSON.h"
 #include "esp_log.h"
+#include "nvs_flash.h"
+#include "nvs.h"
 
 // private api ---------------------------------------------------------------------------------------------------------
 
@@ -127,4 +131,25 @@ void app_api_set_manual_response(httpd_req_t *req)
 {
   api_ctx_t *ctx = (api_ctx_t *)req->user_ctx;
   if (ctx) ctx->manual_response = true;
+}
+
+bool app_api_check_auth(httpd_req_t *req)
+{
+  char token_buf[64] = {0};
+  size_t header_len = httpd_req_get_hdr_value_len(req, AUTH_HEADER);
+
+  if (header_len == 0 || header_len >= sizeof(token_buf)) return false;
+  if (httpd_req_get_hdr_value_str(req, AUTH_HEADER, token_buf, sizeof(token_buf)) != ESP_OK) return false;
+
+  char current_pass[64] = {0};
+  esp_err_t err = nvs_manager_load_str(AUTH_NVS_NS, AUTH_NVS_KEY, current_pass, sizeof(current_pass));
+  if (err != ESP_OK) return false;
+
+  size_t cur_len = strlen(current_pass);
+  size_t rcv_len = strlen(token_buf);
+
+  if (cur_len == 0 || cur_len != rcv_len) return false;
+  if (helper_secure_memcmp(token_buf, current_pass, cur_len) == 0) return true;
+
+  return false;
 }

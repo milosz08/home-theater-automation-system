@@ -153,6 +153,7 @@ void app_main(void)
     .on_running         = on_server_running,
     .on_stop            = on_server_stop,
     .on_error           = on_server_error,
+    .auth_cb            = app_api_check_auth,
     .on_request_success = on_command_action,
     .on_request_error   = on_command_error
   };

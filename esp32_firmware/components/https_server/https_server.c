@@ -1,6 +1,5 @@
 #include "https_server.h"
 #include "helper.h"
-#include "nvs_manager.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -9,8 +8,6 @@
 #include "esp_https_server.h"
 #include "esp_log.h"
 #include "esp_netif.h"
-#include "nvs_flash.h"
-#include "nvs.h"
 
 // private api ---------------------------------------------------------------------------------------------------------
 
@@ -29,30 +26,11 @@ typedef struct
   https_error_handler_cb_t on_error;
 } server_context_t;
 
-static bool is_authorized(httpd_req_t *req)
-{
-  char token_buf[64] = {0};
-  size_t header_len = httpd_req_get_hdr_value_len(req, AUTH_HEADER);
-
-  if (header_len == 0 || header_len >= sizeof(token_buf)) return false;
-  if (httpd_req_get_hdr_value_str(req, AUTH_HEADER, token_buf, sizeof(token_buf)) != ESP_OK) return false;
-
-  char current_pass[64] = {0};
-  esp_err_t err = nvs_manager_load_str(AUTH_NVS_NS, AUTH_NVS_KEY, current_pass, sizeof(current_pass));
-  if (err != ESP_OK) return false;
-
-  size_t cur_len = strlen(current_pass);
-  size_t rcv_len = strlen(token_buf);
-
-  if (cur_len == 0 || cur_len != rcv_len) return false;
-  if (helper_secure_memcmp(token_buf, current_pass, cur_len) == 0) return true;
-
-  return false;
-}
-
 static esp_err_t ws_auth_callback(httpd_req_t *req)
 {
-  return is_authorized(req) ? ESP_OK : ESP_FAIL;
+  server_context_t *ctx = (server_context_t *)httpd_get_global_user_ctx(req->handle);
+  if (ctx && ctx->config.auth_cb) return ctx->config.auth_cb(req) ? ESP_OK : ESP_FAIL;
+  return ESP_FAIL;
 }
 
 static esp_err_t http_middleware(httpd_req_t *req)
@@ -61,10 +39,15 @@ static esp_err_t http_middleware(httpd_req_t *req)
   if (!ep || !ep->handler) return httpd_resp_send_err(req, HTTPD_500_INTERNAL_SERVER_ERROR, NULL);
 
   server_context_t *ctx = (server_context_t *)httpd_get_global_user_ctx(req->handle);
-  if (!ep->is_public && !is_authorized(req))
+  if (!ep->is_public)
   {
-    httpd_resp_send_err(req, HTTPD_401_UNAUTHORIZED, NULL);
-    return ESP_FAIL;
+    bool authorized = false;
+    if (ctx && ctx->config.auth_cb) authorized = ctx->config.auth_cb(req);
+    if (!authorized)
+    {
+      httpd_resp_send_err(req, HTTPD_401_UNAUTHORIZED, NULL);
+      return ESP_FAIL;
+    }
   }
   void *api_ctx = NULL;
   if (ctx && ctx->config.create_request_ctx) api_ctx = ctx->config.create_request_ctx(req);

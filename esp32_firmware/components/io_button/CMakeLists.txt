@@ -11,7 +11,6 @@ idf_component_register(
 
   REQUIRES
     helper
-    https_server
     io_input
     nvs_manager
     sys_ind

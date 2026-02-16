@@ -6,6 +6,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+#define AUTH_HEADER "x-auth-pass"
+
 // custom error codes
 #define APP_ERR_INVALID_PASSWORD 0x10001
 
@@ -101,5 +103,17 @@ esp_err_t app_api_return_ok(httpd_req_t *req);
  * \param req The HTTP request handle.
  */
 void app_api_set_manual_response(httpd_req_t *req);
+
+/*! \brief Verifies the client's authentication token.
+ *
+ * Extracts the token from the request header (defined by `AUTH_HEADER`) and compares it securely against the password
+ * stored in NVS. This function is designed to be used as the `auth_cb` in the HTTPS server config.
+ *
+ * \param req The HTTP request handle.
+ *
+ * \retval true   If authentication is successful (token matches NVS password).
+ * \retval false  If the token is missing, invalid, or does not match.
+ */
+bool app_api_check_auth(httpd_req_t *req);
 
 #endif // APP_API_H_
