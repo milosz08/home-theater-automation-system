@@ -11,24 +11,28 @@ static const char *TAG = "WS_CMD";
 
 // public api ----------------------------------------------------------------------------------------------------------
 
+// user ----> system
 void ws_cmd_screen_down(const cJSON *payload)
 {
   ESP_LOGI(TAG, "set projection screen down");
   peripheral_control_screen_down();
 }
 
+// user ----> system
 void ws_cmd_screen_stop(const cJSON *payload)
 {
   ESP_LOGI(TAG, "set projection screen stop");
   peripheral_control_screen_stop();
 }
 
+// user ----> system
 void ws_cmd_screen_up(const cJSON *payload)
 {
   ESP_LOGI(TAG, "set projection screen up");
   peripheral_control_screen_up();
 }
 
+// user <---- system
 void ws_cmd_get_sys_info(const cJSON *payload)
 {
   const esp_app_desc_t *app_desc = esp_app_get_description();
