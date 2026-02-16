@@ -1,5 +1,6 @@
 idf_component_register(
   SRCS 
+    "app_api.c"
     "app_api_auth.c"
     "app_api_registry.c"
     "app_api_ws.c"

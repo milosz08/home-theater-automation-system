@@ -66,10 +66,22 @@ static esp_err_t http_middleware(httpd_req_t *req)
     httpd_resp_send_err(req, HTTPD_401_UNAUTHORIZED, NULL);
     return ESP_FAIL;
   }
-  esp_err_t res = ep->handler(req);
+  void *api_ctx = NULL;
+  if (ctx && ctx->config.create_request_ctx) api_ctx = ctx->config.create_request_ctx(req);
 
-  if (res == ESP_OK && ctx && ctx->on_success) ctx->on_success(ep->name);
-  return res;
+  void *original_endpoint_ctx = req->user_ctx;
+  if (api_ctx) req->user_ctx = api_ctx;
+
+  esp_err_t logic_res = ep->handler(req);
+  req->user_ctx = original_endpoint_ctx;
+
+  esp_err_t final_res = logic_res;
+  if (ctx->config.handle_response) final_res = ctx->config.handle_response(req, api_ctx, logic_res);
+
+  if (final_res != ESP_OK && ctx->config.on_request_error) ctx->config.on_request_error(ep->name, final_res);
+  else if (final_res == ESP_OK && ctx->config.on_request_success) ctx->config.on_request_success(ep->name);
+
+  return ESP_OK;
 }
 
 static void https_server_stop(void)
@@ -110,6 +122,7 @@ static esp_err_t https_server_start(const https_server_config_t *cfg)
 
   server_context_t *ctx = malloc(sizeof(server_context_t));
   if (!ctx) return ESP_ERR_NO_MEM;
+  ctx->config = *cfg;
   ctx->on_success = cfg->on_request_success;
   ctx->on_error = cfg->on_request_error;
 

@@ -146,6 +146,10 @@ void app_main(void)
     // endpoints configuration
     .endpoints          = app_api_get_endpoints(),
     .num_endpoints      = app_api_get_endpoints_count(),
+    // response handlers
+    .create_request_ctx = app_api_create_ctx,
+    .handle_response    = app_api_handle_response,
+    // event callbacks
     .on_running         = on_server_running,
     .on_stop            = on_server_stop,
     .on_error           = on_server_error,

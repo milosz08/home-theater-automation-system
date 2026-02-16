@@ -19,6 +19,10 @@ typedef void (*https_on_error_t)(esp_err_t err);
 typedef void (*https_success_handler_cb_t)(const char *endpoint_name);
 typedef void (*https_error_handler_cb_t)(const char *endpoint_name, esp_err_t err);
 
+// Response handler type definitions
+typedef void* (*https_ctx_creator_t)(httpd_req_t *req);
+typedef esp_err_t (*https_response_handler_t)(httpd_req_t *req, void *ctx, esp_err_t res);
+
 /*! \brief Describes a single URL endpoint. */
 typedef struct
 {
@@ -40,6 +44,10 @@ typedef struct
   // Endpoint configuration
   const https_endpoint_t *endpoints;          /*!< Array of defined endpoints. */
   size_t num_endpoints;                       /*!< Number of endpoints in the array. */
+
+  // response handlers
+  https_ctx_creator_t create_request_ctx;     /*!< Factory to create a custom context. */
+  https_response_handler_t handle_response;   /*!< Finalizer to format and send the HTTP response. */
 
   // Event callbacks
   https_on_running_t on_running;                  /*!< Called when server starts successfully. */
