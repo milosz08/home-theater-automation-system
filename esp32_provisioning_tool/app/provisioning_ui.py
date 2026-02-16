@@ -17,7 +17,7 @@ class ProvisioningUI:
     self.root = root
     self.root.title("ESP32 provisioning tool (by Miłosz Gilga)")
     self.root.resizable(False, True)
-    self.root.geometry("900x700")
+    self.root.geometry("900x800")
     self.root.iconphoto(True, tk.PhotoImage(file=self.resource_path("res/icon.png")))
 
     self.device_mgr = EspDeviceManager()
