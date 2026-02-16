@@ -67,7 +67,7 @@ jobs:
       
       - name: Generate documentation
         working-directory: ${{ env.ESP32_PROJECT_PATH }}
-        run: make docs
+        run: make docs VER="${{ inputs.version }}"
 
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3

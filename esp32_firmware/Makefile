@@ -6,6 +6,8 @@ VER_FLAG := -DCMD_APP_VER="$(VER)"
 PORT ?= COM3 # communication port for ESP32 board
 BAUD ?= 921600 # flashing speed
 
+export VER # export version for doxygen (win/unix)
+
 .PHONY: build build-app rebuild flash flash-app flash-data monitor run clean erase menuconfig help
 
 # default target
@@ -64,3 +66,7 @@ menuconfig:
 # generate docs via doxygen (only for .c and .h sources inside components and main directory)
 docs:
 	doxygen
+
+# run simple python http  server for check doxygen documentation locally
+check-docs:
+	python -m http.server -d docs
