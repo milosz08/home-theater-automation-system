@@ -27,6 +27,6 @@ esp_err_t app_api_auth_change_password(httpd_req_t *req);
  * \retval ESP_ERR_NO_MEM If no heap memory available.
  * \retval ESP_FAIL       On other errors.
  */
-esp_err_t app_api_ws_handler(httpd_req_t *req);
+esp_err_t app_api_ws(httpd_req_t *req);
 
 #endif // APP_API_HANDLERS_H_

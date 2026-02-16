@@ -11,7 +11,7 @@
 // public api ----------------------------------------------------------------------------------------------------------
 
 // GET /ws/control (websocket)
-esp_err_t app_api_ws_handler(httpd_req_t *req)
+esp_err_t app_api_ws(httpd_req_t *req)
 {
   if (req->method == HTTP_GET)
   {

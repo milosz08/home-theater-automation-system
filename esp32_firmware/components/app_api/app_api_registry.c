@@ -17,7 +17,7 @@ static const https_endpoint_t s_endpoints[] = {
   {
     .uri        = "/ws/control",
     .method     = HTTP_GET,
-    .handler    = app_api_ws_handler,
+    .handler    = app_api_ws,
     .is_public  = false,
     .is_ws      = true
   },
