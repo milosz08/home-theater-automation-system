@@ -21,6 +21,14 @@ static const https_endpoint_t s_endpoints[] = {
     .is_public  = false,
     .is_ws      = true
   },
+  // ota update
+  {
+    .uri        = "/api/update",
+    .method     = HTTP_POST,
+    .handler    = app_api_ota_update,
+    .is_public  = false,
+    .name       = "Firmware update"
+  },
 };
 
 // public api ----------------------------------------------------------------------------------------------------------

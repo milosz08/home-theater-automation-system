@@ -15,7 +15,9 @@
 /*! \brief Event name for environmental updates (temp/hum). */
 #define WS_EVENT_TYPE_ENV_UPDATE "env"
 /*! \brief Event name for getting system info (e.g., version, name) */
-#define WS_EVENT_TYPE_SYS_INFO "sysinfo"
+#define WS_EVENT_TYPE_SYS_INFO "sys-info"
+/*! \brief Event name for getting firmware ota update status (e.g., percentage, bytes count) */
+#define WS_EVENT_TYPE_OTA_UPDATE_PROGRESS "update-progress"
 
 /*! \brief Structure representing a queued message. */
 typedef struct
