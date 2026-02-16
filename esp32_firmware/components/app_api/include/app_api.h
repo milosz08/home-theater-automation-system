@@ -6,10 +6,10 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-#define AUTH_HEADER "x-auth-pass"
+#define AUTH_HEADER "x-auth-pass" /*!< Name of the header passed via client to authorize requests. */
 
 // custom error codes
-#define APP_ERR_INVALID_PASSWORD 0x10001
+#define APP_ERR_INVALID_PASSWORD 0x10001 /*!< Invalid password in change password REST handler. */
 
 /*! \brief List of generic variable names used in handlers.
  *

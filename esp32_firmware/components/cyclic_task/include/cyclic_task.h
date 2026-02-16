@@ -3,8 +3,7 @@
 
 #include "esp_err.h"
 
-/*! \brief How often (in ms) to read environmental sensors (5 seconds). */
-#define CYCLIC_TASK_ENV_INTERVAL_MS 5000
+#define CYCLIC_TASK_ENV_INTERVAL_MS 5000 /*!< How often (in ms) to read environmental sensors (5 seconds). */
 
 /*! \brief Starts the background task for cyclic sensor readings.
  *

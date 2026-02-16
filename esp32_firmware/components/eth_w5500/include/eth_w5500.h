@@ -5,22 +5,14 @@
 #include "driver/spi_master.h"
 #include "driver/gpio.h"
 
-/*! \brief SPI Host controller instance (VSPI/HSPI). */
-#define ETH_SPI_HOST        SPI3_HOST
-/*! \brief GPIO pin for SPI clock (SCK). */
-#define ETH_SPI_SCLK_GPIO   GPIO_NUM_18
-/*! \brief GPIO pin for master out slave in (MOSI) - sending data to W5500. */
-#define ETH_SPI_MOSI_GPIO   GPIO_NUM_23
-/*! \brief GPIO pin for master in slave out (MISO) - receiving data from W5500. */
-#define ETH_SPI_MISO_GPIO   GPIO_NUM_19
-/*! \brief GPIO pin for chip select (CS) - active low. */
-#define ETH_SPI_CS_GPIO     GPIO_NUM_5
-/*! \brief GPIO pin for interrupt (INT) - signals incoming packets. */
-#define ETH_SPI_INT_GPIO    GPIO_NUM_4
-/*! \brief SPI Clock speed in MHz. */
-#define ETH_SPI_CLOCK_MHZ   16
-/*! \brief GPIO pin for hardware reset (RST) of the W5500 chip. */
-#define ETH_SPI_RST_GPIO    GPIO_NUM_32
+#define ETH_SPI_HOST        SPI3_HOST     /*!< SPI Host controller instance (VSPI/HSPI). */
+#define ETH_SPI_SCLK_GPIO   GPIO_NUM_18   /*!< GPIO pin for SPI clock (SCK). */
+#define ETH_SPI_MOSI_GPIO   GPIO_NUM_23   /*!< GPIO pin for master out slave in (MOSI) - sending data to W5500. */
+#define ETH_SPI_MISO_GPIO   GPIO_NUM_19   /*!< GPIO pin for master in slave out (MISO) - receiving data from W5500. */
+#define ETH_SPI_CS_GPIO     GPIO_NUM_5    /*!< GPIO pin for chip select (CS) - active low. */
+#define ETH_SPI_INT_GPIO    GPIO_NUM_4    /*!< GPIO pin for interrupt (INT) - signals incoming packets. */
+#define ETH_SPI_CLOCK_MHZ   16            /*!< SPI Clock speed in MHz. */
+#define ETH_SPI_RST_GPIO    GPIO_NUM_32   /*!< GPIO pin for hardware reset (RST) of the W5500 chip. */
 
 /*! \brief Initial silent wait time for auto-negotiation before alerting the user. */
 #define ETH_INIT_WAIT_FOR_LINK_MILLIS 2500

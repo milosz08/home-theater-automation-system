@@ -5,10 +5,8 @@
 
 #include <stdbool.h>
 
-/*! \brief Max messages in the queue waiting to be sent. */
-#define WS_QUEUE_SIZE 10
-/*! \brief Max length of the event name string. */
-#define WS_EVENT_NAME_MAX 16
+#define WS_QUEUE_SIZE 10      /*!< Max messages in the queue waiting to be sent. */
+#define WS_EVENT_NAME_MAX 16  /*!< Max length of the event name string. */
 
 // event names
 

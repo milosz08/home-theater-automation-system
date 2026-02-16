@@ -6,30 +6,18 @@
 #include "esp_err.h"
 
 // RS485 Configuration (projection screen)
-
-/*! \brief UART port used for RS485. */
-#define RS485_UART_PORT       UART_NUM_2
-/*! \brief TX Pin for RS485. */
-#define RS485_TX_PIN          GPIO_NUM_17
-/*! \brief RX Pin for RS485. */
-#define RS485_RX_PIN          GPIO_NUM_16
-/*! \brief Baud rate for RS485. */
-#define RS485_BAUD_RATE       2400
-/*! \brief Buffer size for RS485. */
-#define RS485_BUF_SIZE        2048
+#define RS485_UART_PORT       UART_NUM_2    /*!< UART port used for RS485. */
+#define RS485_TX_PIN          GPIO_NUM_17   /*!< TX Pin for RS485. */
+#define RS485_RX_PIN          GPIO_NUM_16   /*!< RX Pin for RS485. */
+#define RS485_BAUD_RATE       2400          /*!< Baud rate for RS485. */
+#define RS485_BUF_SIZE        2048          /*!< Buffer size for RS485. */
 
 // RS232 Configuration (projector)
-
-/*! \brief UART port used for RS232. */
-#define RS232_UART_PORT       UART_NUM_1
-/*! \brief TX Pin for RS232. */
-#define RS232_TX_PIN          GPIO_NUM_21
-/*! \brief RX Pin for RS232. */
-#define RS232_RX_PIN          GPIO_NUM_22
-/*! \brief Baud rate for RS232. */
-#define RS232_BAUD_RATE       115200
-/*! \brief Buffer size for RS232. */
-#define RS232_BUF_SIZE        1024
+#define RS232_UART_PORT       UART_NUM_1    /*!< UART port used for RS232. */
+#define RS232_TX_PIN          GPIO_NUM_21   /*!< TX Pin for RS232. */
+#define RS232_RX_PIN          GPIO_NUM_22   /*!< RX Pin for RS232. */
+#define RS232_BAUD_RATE       115200        /*!< Baud rate for RS232. */
+#define RS232_BUF_SIZE        1024          /*!< Buffer size for RS232. */
 
 /*! \brief Initializes the RS485 interface.
  *

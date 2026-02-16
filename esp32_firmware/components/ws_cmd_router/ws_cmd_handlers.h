@@ -3,8 +3,7 @@
 
 #include "cJSON.h"
 
-/*! \brief Max number of commands we can register in the router. */
-#define MAX_COMMANDS 4
+#define MAX_COMMANDS 4  /*!< Max number of commands we can register in the router. */
 
 // Projection screen command handlers
 

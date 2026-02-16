@@ -5,12 +5,9 @@
 
 #include "esp_err.h"
 
-/*! \brief I2C address of the expander (assuming A0-A2 are grounded). */
-#define EXPANDER_ADDR             0x20
-/*! \brief Pin direction mask. In this setup: pins 7,6,5 are inputs; 4,3,2,1,0 are outputs. */
-#define EXPANDER_INIT_PINS_MASK   0xE0  // 11100000
-/*! \brief Default state for the shadow register (all high). */
-#define EXPANDER_PORT_SHADOW      0xFF  // 1111111
+#define EXPANDER_ADDR             0x20  /*!< I2C address of the expander (assuming A0-A2 are grounded). */
+#define EXPANDER_INIT_PINS_MASK   0xE0  /*!< Pin direction mask. Pins 7,6,5 are inputs; 4,3,2,1,0 are outputs. */
+#define EXPANDER_PORT_SHADOW      0xFF  /*!< Default state for the shadow register (all high). */
 
 /*! \brief Initializes the IO expander component.
  *

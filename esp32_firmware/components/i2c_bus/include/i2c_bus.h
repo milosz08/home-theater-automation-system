@@ -5,20 +5,13 @@
 #include "driver/i2c.h"
 #include "esp_err.h"
 
-/*! \brief I2C port number used for the master interface. */
-#define I2C_MASTER_NUM              I2C_NUM_0
-/*! \brief GPIO pin for the clock (SCL) line. */
-#define I2C_MASTER_SCL_IO           GPIO_NUM_33
-/*! \brief GPIO pin for the data (SDA) line. */
-#define I2C_MASTER_SDA_IO           GPIO_NUM_27
-/*! \brief Bus frequency in Hz (standard 40 kHz for this setup). */
-#define I2C_MASTER_FREQ_HZ          40000
-/*! \brief Disable TX buffer (not needed here). */
-#define I2C_MASTER_TX_BUF_DISABLE   0
-/*! \brief Disable RX buffer (not needed here). */
-#define I2C_MASTER_RX_BUF_DISABLE   0
-/*! \brief Default timeout for I2C operations in milliseconds. */
-#define I2C_MASTER_TIMEOUT_MS       100
+#define I2C_MASTER_NUM              I2C_NUM_0   /*!< I2C port number used for the master interface. */
+#define I2C_MASTER_SCL_IO           GPIO_NUM_33 /*!< GPIO pin for the clock (SCL) line. */
+#define I2C_MASTER_SDA_IO           GPIO_NUM_27 /*!< GPIO pin for the data (SDA) line. */
+#define I2C_MASTER_FREQ_HZ          40000       /*!< Bus frequency in Hz (standard 40 kHz for this setup). */
+#define I2C_MASTER_TX_BUF_DISABLE   0           /*!< Disable TX buffer (not needed here). */
+#define I2C_MASTER_RX_BUF_DISABLE   0           /*!< Disable RX buffer (not needed here). */
+#define I2C_MASTER_TIMEOUT_MS       100         /*!< Default timeout for I2C operations in milliseconds. */
 
 /*! \brief Sets up the I2C Master bus.
  *

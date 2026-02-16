@@ -5,12 +5,9 @@
 
 // PCF8574 expander inputs mapping
 
-/*! \brief Pin on the expander for the RESET button. */
-#define PCF_PIN_IN_BTN_RESET          5
-/*! \brief Pin on the expander for the MENU button. */
-#define PCF_PIN_IN_BTN_MENU           6
-/*! \brief Pin used for LCD backlight control button. */
-#define PCF_PIN_IN_BTN_LCD_BACKLIGHT  7
+#define PCF_PIN_IN_BTN_RESET          5   /*!< Pin on the expander for the RESET button. */
+#define PCF_PIN_IN_BTN_MENU           6   /*!< Pin on the expander for the MENU button. */
+#define PCF_PIN_IN_BTN_LCD_BACKLIGHT  7   /*!< Pin used for LCD backlight control button. */
 
 /*! \brief Gets the list of configured buttons.
  *

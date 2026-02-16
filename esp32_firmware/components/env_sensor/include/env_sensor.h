@@ -4,10 +4,8 @@
 #include "esp_err.h"
 #include "driver/i2c.h"
 
-/*! \brief I2C address for the AHT20 (temp & humidity) sensor. */
-#define AHT20_ADDR    0x38
-/*! \brief I2C address for the BMP280 (temp & pressure) sensor. */
-#define BMP280_ADDR   0x77
+#define AHT20_ADDR    0x38  /*!< I2C address for the AHT20 (temp & humidity) sensor. */
+#define BMP280_ADDR   0x77  /*!< I2C address for the BMP280 (temp & pressure) sensor. */
 
 /*! \brief Simple struct to hold all our environmental readings. */
 typedef struct

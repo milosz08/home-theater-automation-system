@@ -4,8 +4,15 @@
 #include <stddef.h>
 #include <stdint.h>
 
+/*! \brief Handy macro to get the number of elements in a static array.
+ *
+ * This macro will not work correctly with pointers, only with static arrays.
+ *
+ * \param arr The array to measure.
+ *
+ * \return The number of elements in the array.
+ */
 #ifndef ARRAY_SIZE
-/*! \brief Handy macro to get the number of elements in a static array. */
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 #endif
 

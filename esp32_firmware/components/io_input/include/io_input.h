@@ -3,12 +3,9 @@
 
 #include "esp_err.h"
 
-/*! \brief Minimum press time (ms) to register a click (debounce). */
-#define BTN_TIME_SHORT    50
-/*! \brief Hold time (ms) to register a long click. */
-#define BTN_TIME_LONG     2000
-/*! \brief Hold time (ms) to trigger a factory reset. */
-#define BTN_TIME_FACTORY  5000
+#define BTN_TIME_SHORT    50    /*!< Minimum press time (ms) to register a click (debounce). */
+#define BTN_TIME_LONG     2000  /*!< Hold time (ms) to register a long click. */
+#define BTN_TIME_FACTORY  5000  /*!< Hold time (ms) to trigger a factory reset. */
 
 /*! \brief Types of button interactions. */
 typedef enum

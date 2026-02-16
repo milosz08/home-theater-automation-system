@@ -9,11 +9,9 @@
 #define LCD_RS_BIT          0x01
 #define LCD_RW_BIT          0x02
 #define LCD_EN_BIT          0x04
-/*! \brief Bit responsible for the backlight (needs to be kept high to light up). */
-#define LCD_BL_BIT          0x08
+#define LCD_BL_BIT          0x08  /*!< Bit responsible for the backlight (needs to be kept high to light up). */
 
-/*! \brief I2C address of the LCD backpack (usually 0x27 or 0x3F). */
-#define LCD_I2C_ADDR        0x27
+#define LCD_I2C_ADDR        0x27  /*!< I2C address of the LCD backpack (usually 0x27 or 0x3F). */
 
 /*! \brief Wakes up and configures the LCD.
  *

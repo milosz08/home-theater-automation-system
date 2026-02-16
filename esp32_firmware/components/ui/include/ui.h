@@ -7,8 +7,7 @@
 #define PROGRESS_BAR_CHAR         0x01
 #define DEGREE_CHAR               0x02
 
-/*! \brief How long messages stay on screen (ms). */
-#define REQ_MESS_DURATION_MS      2000
+#define REQ_MESS_DURATION_MS      2000  /*!< How long messages stay on screen (ms). */
 
 /*! \brief Initializes the User Interface.
  *
