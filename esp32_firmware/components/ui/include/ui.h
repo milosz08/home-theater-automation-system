@@ -50,6 +50,17 @@ void ui_show_boot_progress(const char *task_name, int step, int total_steps);
  */
 void ui_show_error(const char *msg);
 
+/*! \brief Displays a temporary error with a specific code.
+ *
+ * Shows the friendly description on the first line and the formatted error code (e.g., "ERROR 0x1102") on the second
+ * line. Automatically restores the previous screen after the duration expires.
+ *
+ * \param text        Friendly description of the error (max 16 chars).
+ * \param err         The ESP error code (esp_err_t) to display as HEX.
+ * \param duration_ms Time in milliseconds to keep the error on screen.
+ */
+void ui_show_temp_error(const char *text, esp_err_t err, uint32_t duration_ms);
+
 /*! \brief Displays a critical error and halts/loops.
  *
  * Used when the system cannot continue (e.g., memory failure).

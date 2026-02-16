@@ -112,6 +112,30 @@ void ui_show_error(const char *msg)
   lcd_driver_print(buffer);
 }
 
+void ui_show_temp_error(const char *text, esp_err_t err, uint32_t duration_ms)
+{
+  if (text == NULL) return;
+
+  is_temp_active = true;
+  lcd_driver_clear();
+
+  lcd_driver_set_cursor(0, 0);
+  char line0[17];
+  snprintf(line0, sizeof(line0), "%-16.16s", text);
+  lcd_driver_print(line0);
+
+  lcd_driver_set_cursor(0, 1);
+  char line1[17];
+  snprintf(line1, sizeof(line1), "ERROR 0x%X", err);
+  lcd_driver_print(line1);
+
+  if (ui_temp_msg_timer != NULL)
+  {
+    xTimerChangePeriod(ui_temp_msg_timer, pdMS_TO_TICKS(duration_ms), 0);
+    xTimerStart(ui_temp_msg_timer, 0);
+  }
+}
+
 void ui_show_critical_error(const char *msg, esp_err_t err)
 {
   char line0[17];
