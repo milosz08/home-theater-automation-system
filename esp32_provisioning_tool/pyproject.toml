@@ -17,6 +17,7 @@ dependencies = [
   "python-dotenv>=1.2.1",
   "pyserial>=3.5",
   "littlefs-python>=0.16.0",
+  "tzlocal>=5.3.1",
 ]
 
 [project.scripts]

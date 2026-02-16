@@ -15,6 +15,8 @@ ESP_GATEWAY=<gateway address>
 ESP_NETMASK=<network mask, ex. for /24: 255.255.255.0>
 ESP_DNS=<by default Cloudflare DNS server 1.1.1.1, with you own DNS server supports named domain>
 ESP_PORT=<HTTPS and WSS port>
+ESP_NTP_TIMEZONE=<timezone in posix format, ex. CET-1CEST,M3.5.0,M10.5.0/3 for Europe/Warsaw>
+ESP_NTP_SERVER=<NTP server address, ex. pool.ntp.org>
 ESP_DEFAULT_PASSWORD=<init password for communication with ESP32 driver by Android app>
 ```
 

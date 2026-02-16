@@ -10,6 +10,7 @@ import sys
 
 from .provisioning_generator import ProvisioningGenerator
 from .esp_device_manager import EspDeviceManager
+from .ntp_service import NtpService
 
 class ProvisioningUI:
   def __init__(self, root):
@@ -20,6 +21,7 @@ class ProvisioningUI:
     self.root.iconphoto(True, tk.PhotoImage(file=self.resource_path("res/icon.png")))
 
     self.device_mgr = EspDeviceManager()
+    self.ntp_service = NtpService()
 
     self.suggested_name = "pairing_qr"
     self.DEFAULTS = {
@@ -29,6 +31,8 @@ class ProvisioningUI:
       "dns": "1.1.1.1",
       "port": "443",
       "password": "admin",
+      "ntp_server": self.ntp_service.get_suggested_ntp_server(),
+      "ntp_timezone": self.ntp_service.get_local_posix_str(),
     }
     self.setup_path = tk.StringVar(value=os.path.join(Path.home(), "setup"))
 
@@ -42,6 +46,8 @@ class ProvisioningUI:
     self.esp_dns = tk.StringVar(value=self.DEFAULTS["dns"])
     self.esp_port = tk.StringVar(value=self.DEFAULTS["port"])
     self.esp_password = tk.StringVar(value=self.DEFAULTS["password"])
+    self.esp_ntp_server = tk.StringVar(value=self.DEFAULTS["ntp_server"])
+    self.esp_ntp_timezone = tk.StringVar(value=self.DEFAULTS["ntp_timezone"])
 
     self.qr_image_tk = None
     self.flash_check_btn = None
@@ -118,6 +124,8 @@ class ProvisioningUI:
       ("Netmask:", self.esp_netmask, "netmask"),
       ("DNS server:", self.esp_dns, "dns"),
       ("Server port:", self.esp_port, "port"),
+      ("NTP server:", self.esp_ntp_server, "ntp_server"),
+      ("NTP timezone (posix):", self.esp_ntp_timezone, "ntp_timezone"),
       ("Default password:", self.esp_password, "password"),
     ]
     for _, (label_text, var, d_key) in enumerate(inputs):
@@ -226,6 +234,8 @@ class ProvisioningUI:
         "netmask": self.esp_netmask.get().strip(),
         "dns": self.esp_dns.get().strip(),
         "port": int(self.esp_port.get() or 443),
+        "ntp_server": self.esp_ntp_server.get().strip(),
+        "ntp_timezone": self.esp_ntp_timezone.get().strip(),
         "default_password": self.esp_password.get()
       }
     }

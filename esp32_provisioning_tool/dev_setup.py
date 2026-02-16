@@ -25,6 +25,8 @@ ESP_GATEWAY = os.getenv("ESP_GATEWAY", "192.168.0.1")
 ESP_NETMASK = os.getenv("ESP_NETMASK", "255.255.255.0")
 ESP_DNS = os.getenv("ESP_DNS", "1.1.1.1")
 ESP_PORT = int(os.getenv("ESP_PORT", "443"))
+ESP_NTP_TIMEZONE = os.getenv("ESP_NTP_TIMEZONE", "CET-1CEST,M3.5.0,M10.5.0/3")
+ESP_NTP_SERVER = os.getenv("ESP_NTP_SERVER", "pool.ntp.org")
 ESP_PASS = os.getenv("ESP_DEFAULT_PASSWORD", "admin")
 
 def update_android_local_properties(hash_val):
@@ -68,6 +70,8 @@ def main():
     "netmask": ESP_NETMASK,
     "dns": ESP_DNS,
     "port": ESP_PORT,
+    "ntp_server": ESP_NTP_SERVER,
+    "ntp_timezone": ESP_NTP_TIMEZONE,
     "default_password": ESP_PASS
   }
   generator.generate_config_json(config_data)
