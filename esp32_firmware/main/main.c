@@ -30,7 +30,7 @@
 #include "freertos/task.h"
 
 #define PROGRESS_BAR_COOLDOWN_MS  100 // time between next steps
-#define TOTAL_STEPS               11  // total steps
+#define TOTAL_STEPS               12  // total steps
 
 #define CHECK_CRITICAL(x, msg) do { \
   esp_err_t err_rc = (x); \
@@ -76,6 +76,21 @@ static void on_command_error(const char *friendly_name, esp_err_t err)
   sys_ind_led_io_error_execution();
   sys_ind_buzzer_sound(3, 100);
   ui_show_temp_error(friendly_name, err, 4000);
+}
+
+static void on_eth_boot_wait(bool linked)
+{
+  if (!linked)
+  {
+    ui_show_error("No eth cable!");
+    sys_ind_set_error(true);
+    sys_ind_fixed_buzzer_sound(1);
+  }
+  else
+  {
+    sys_ind_set_error(false);
+    ui_restore_screen();
+  }
 }
 
 // public api ----------------------------------------------------------------------------------------------------------
@@ -176,9 +191,13 @@ void app_main(void)
     .on_packet_received = sys_ind_led_eth_packet_activity
   };
   CHECK_CRITICAL(eth_w5500_init(&eth_cfg, &eth_callbacks), "Ethernet fail");
+
+  // 11. ethernet link status
+  ui_show_boot_progress("Check eth link", ++current_step, TOTAL_STEPS);
+  eth_w5500_force_link_blocking(on_eth_boot_wait);
   vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS));
 
-  // 11. cyclic tasks
+  // 12. cyclic tasks
   ui_show_boot_progress("Init tasks", ++current_step, TOTAL_STEPS);
   CHECK_CRITICAL(cyclic_task_env_init(), "Tasks fail");
   vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS));

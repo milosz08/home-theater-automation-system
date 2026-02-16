@@ -22,6 +22,11 @@
 /*! \brief GPIO pin for hardware reset (RST) of the W5500 chip. */
 #define ETH_SPI_RST_GPIO    GPIO_NUM_32
 
+/*! \brief Initial silent wait time for auto-negotiation before alerting the user. */
+#define ETH_INIT_WAIT_FOR_LINK_MILLIS 2500
+/*! \brief Interval between consecutive link status checks during blocking wait. */
+#define ETH_INIT_LINK_CHECK_INTERVAL_MILLIS 1000
+
 /*! \brief Static network configuration parameters.
  *
  * If `ip` is NULL or empty, DHCP will be used.
@@ -41,6 +46,12 @@ typedef struct
   void (*on_packet_received)(void);           /*!< Called on RX activity (useful for blinking LEDs). */
 } eth_callbacks_t;
 
+/*! \brief Callback type for boot-time link waiting process.
+ *
+ * \param state true if link is detected (success), false if still waiting (alert).
+ */
+typedef void (*eth_link_wait_cb_t)(bool state);
+
 /*! \brief Initializes the W5500 Ethernet module.
  *
  * Sets up SPI bus, MAC, PHY, and attaches the network interface glue. Configures static IP if provided, otherwise
@@ -54,6 +65,16 @@ typedef struct
  * \retval ESP_FAIL       On hardware initialization failure.
  */
 esp_err_t eth_w5500_init(const eth_config_t *config, const eth_callbacks_t *callbacks);
+
+/*! \brief Blocks system execution until a physical Ethernet link is established.
+ *
+ * First, it waits silently for `ETH_INIT_WAIT_FOR_LINK_MILLIS` to allow auto-negotiation. If no link is found, it
+ * enters an alert loop calling `wait_cb` with `false` every `ETH_INIT_LINK_CHECK_INTERVAL_MILLIS` until a cable is
+ * connected.
+ *
+ * \param wait_cb Callback to update UI or indicators during the waiting process.
+ */
+void eth_w5500_force_link_blocking(eth_link_wait_cb_t wait_cb);
 
 /*! \brief Gets the current network status.
  *

@@ -10,6 +10,7 @@
 #include "esp_log.h"
 #include "esp_mac.h"
 #include "esp_netif.h"
+#include "freertos/event_groups.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
@@ -89,6 +90,40 @@ static esp_err_t set_static_ip(esp_netif_t *netif, const eth_config_t *cfg)
 
   ESP_LOGI(TAG, "static IP applied: %s, GW: %s, DNS: %s", cfg->ip, cfg->gateway, dns_addr);
   return ESP_OK;
+}
+
+static void eth_startup_event_handler(void *arg, esp_event_base_t event_base, int32_t event_id, void *event_data)
+{
+  EventGroupHandle_t eth_group = (EventGroupHandle_t)arg;
+  if (event_base == ETH_EVENT && event_id == ETHERNET_EVENT_CONNECTED) xEventGroupSetBits(eth_group, BIT0);
+}
+
+static esp_err_t eth_w5500_wait_for_link(uint32_t timeout_ms)
+{
+  EventGroupHandle_t eth_boot_group = xEventGroupCreate();
+  esp_event_handler_instance_t instance;
+
+  esp_err_t err = esp_event_handler_instance_register(ETH_EVENT, ETHERNET_EVENT_CONNECTED, eth_startup_event_handler,
+                                                      eth_boot_group, &instance);
+  if (err != ESP_OK)
+  {
+    vEventGroupDelete(eth_boot_group);
+    return err;
+  }
+  ESP_LOGI(TAG, "waiting for link up (timeout: %lu ms)...", timeout_ms);
+
+  EventBits_t bits = xEventGroupWaitBits(eth_boot_group, BIT0, pdTRUE, pdTRUE, pdMS_TO_TICKS(timeout_ms));
+
+  esp_event_handler_instance_unregister(ETH_EVENT, ETHERNET_EVENT_CONNECTED, instance);
+  vEventGroupDelete(eth_boot_group);
+
+  if (bits & BIT0)
+  {
+    ESP_LOGI(TAG, "link detected");
+    return ESP_OK;
+  }
+  ESP_LOGE(TAG, "link timeout (cable unplugged?)");
+  return ESP_ERR_TIMEOUT;
 }
 
 // public api ----------------------------------------------------------------------------------------------------------
@@ -196,6 +231,25 @@ esp_err_t eth_w5500_init(const eth_config_t *config, const eth_callbacks_t *call
   if (err != ESP_OK) return err;
 
   return ESP_OK;
+}
+
+void eth_w5500_force_link_blocking(eth_link_wait_cb_t wait_cb)
+{
+  if (eth_w5500_wait_for_link(ETH_INIT_WAIT_FOR_LINK_MILLIS) == ESP_OK)
+  {
+    ESP_LOGI(TAG, "ethernet link detected immediately");
+    if (wait_cb) wait_cb(true);
+    return;
+  }
+  ESP_LOGW(TAG, "ethernet link not detected after grace period, starting alerts");
+  
+  while (eth_w5500_wait_for_link(ETH_INIT_LINK_CHECK_INTERVAL_MILLIS) != ESP_OK)
+  {
+    if (wait_cb) wait_cb(false);
+    vTaskDelay(pdMS_TO_TICKS(100));
+  }
+  ESP_LOGI(TAG, "ethernet link restored");
+  if (wait_cb) wait_cb(true);
 }
 
 void eth_w5500_network_info(char *out_ip, uint8_t *out_mac)
