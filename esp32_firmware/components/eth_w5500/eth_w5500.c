@@ -235,7 +235,7 @@ esp_err_t eth_w5500_init(const eth_config_t *config, const eth_callbacks_t *call
 
 void eth_w5500_force_link_blocking(eth_link_wait_cb_t wait_cb)
 {
-  if (eth_w5500_wait_for_link(ETH_INIT_WAIT_FOR_LINK_MILLIS) == ESP_OK)
+  if (eth_w5500_wait_for_link(ETH_INIT_WAIT_FOR_LINK_MS) == ESP_OK)
   {
     ESP_LOGI(TAG, "ethernet link detected immediately");
     if (wait_cb) wait_cb(true);
@@ -243,7 +243,7 @@ void eth_w5500_force_link_blocking(eth_link_wait_cb_t wait_cb)
   }
   ESP_LOGW(TAG, "ethernet link not detected after grace period, starting alerts");
   
-  while (eth_w5500_wait_for_link(ETH_INIT_LINK_CHECK_INTERVAL_MILLIS) != ESP_OK)
+  while (eth_w5500_wait_for_link(ETH_INIT_LINK_CHECK_INTERVAL_MS) != ESP_OK)
   {
     if (wait_cb) wait_cb(false);
     vTaskDelay(pdMS_TO_TICKS(100));

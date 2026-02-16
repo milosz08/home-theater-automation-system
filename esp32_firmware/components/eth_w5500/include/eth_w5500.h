@@ -15,9 +15,9 @@
 #define ETH_SPI_RST_GPIO    GPIO_NUM_32   /*!< GPIO pin for hardware reset (RST) of the W5500 chip. */
 
 /*! \brief Initial silent wait time for auto-negotiation before alerting the user. */
-#define ETH_INIT_WAIT_FOR_LINK_MILLIS 2500
+#define ETH_INIT_WAIT_FOR_LINK_MS       2500
 /*! \brief Interval between consecutive link status checks during blocking wait. */
-#define ETH_INIT_LINK_CHECK_INTERVAL_MILLIS 1000
+#define ETH_INIT_LINK_CHECK_INTERVAL_MS 1000
 
 /*! \brief Static network configuration parameters.
  *
@@ -60,9 +60,8 @@ esp_err_t eth_w5500_init(const eth_config_t *config, const eth_callbacks_t *call
 
 /*! \brief Blocks system execution until a physical Ethernet link is established.
  *
- * First, it waits silently for `ETH_INIT_WAIT_FOR_LINK_MILLIS` to allow auto-negotiation. If no link is found, it
- * enters an alert loop calling `wait_cb` with `false` every `ETH_INIT_LINK_CHECK_INTERVAL_MILLIS` until a cable is
- * connected.
+ * First, it waits silently for `ETH_INIT_WAIT_FOR_LINK_MS` to allow auto-negotiation. If no link is found, it enters an
+ * alert loop calling `wait_cb` with `false` every `ETH_INIT_LINK_CHECK_INTERVAL_MS` until a cable is connected.
  *
  * \param wait_cb Callback to update UI or indicators during the waiting process.
  */
