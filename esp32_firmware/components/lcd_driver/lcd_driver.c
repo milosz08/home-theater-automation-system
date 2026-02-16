@@ -68,7 +68,7 @@ esp_err_t lcd_driver_init(void)
   lcd_driver_cmd(0x06); // entry mode set: increment cursor
   lcd_driver_cmd(0x0C); // display on, cursor off, blink off
 
-  ESP_LOGI(TAG, "LCD initialized at 0x%X", LCD_I2C_ADDR);
+  ESP_LOGI(TAG, "lcd initialized at 0x%X", LCD_I2C_ADDR);
   return ESP_OK;
 }
 

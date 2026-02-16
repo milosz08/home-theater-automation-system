@@ -55,7 +55,7 @@ esp_err_t app_api_handle_response(httpd_req_t *req, void *void_ctx, esp_err_t ha
   const char *ep_name = (ep && ep->name) ? ep->name : "UNKNOWN";
   if (!ctx)
   {
-    ESP_LOGE(TAG, "[%s] critical: context is NULL", ep_name);
+    ESP_LOGE(TAG, "[%s] critical: context is null", ep_name);
     httpd_resp_send_500(req);
     return ESP_FAIL;
   }
@@ -94,7 +94,7 @@ esp_err_t app_api_handle_response(httpd_req_t *req, void *void_ctx, esp_err_t ha
       free((void*)json_str);
       cJSON_Delete(root);
 
-      ESP_LOGW(TAG, "[%s] error: %s (%s) -> HTTP %d", ep_name, final_name, hex_code, ctx->http_status);
+      ESP_LOGW(TAG, "[%s] error: %s (%s) -> http %d", ep_name, final_name, hex_code, ctx->http_status);
     }
   }
   esp_err_t result_for_middleware = (handler_res != ESP_OK) ? handler_res : ctx->error_code;

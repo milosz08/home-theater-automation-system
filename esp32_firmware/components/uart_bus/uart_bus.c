@@ -33,7 +33,7 @@ esp_err_t uart_bus_rs485_init(void)
   err = uart_set_mode(RS485_UART_PORT, UART_MODE_UART); 
   if (err != ESP_OK) return err;
 
-  ESP_LOGI(TAG, "init rs485 interface, TX:%d RX:%d", RS485_TX_PIN, RS485_RX_PIN);
+  ESP_LOGI(TAG, "init rs485 interface, tx:%d rx:%d", RS485_TX_PIN, RS485_RX_PIN);
   return ESP_OK;
 }
 
@@ -65,7 +65,7 @@ esp_err_t uart_bus_rs232_init(void) {
   err = uart_driver_install(RS232_UART_PORT, RS232_BUF_SIZE, 0, 0, NULL, 0);
   if (err != ESP_OK) return err;
 
-  ESP_LOGI(TAG, "init rs232 interface, TX:%d RX:%d", RS232_TX_PIN, RS232_RX_PIN);
+  ESP_LOGI(TAG, "init rs232 interface, tx:%d rx:%d", RS232_TX_PIN, RS232_RX_PIN);
   return ESP_OK;
 }
 

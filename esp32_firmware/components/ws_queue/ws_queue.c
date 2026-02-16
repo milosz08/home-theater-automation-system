@@ -22,7 +22,7 @@ esp_err_t ws_queue_init(void)
   s_ws_queue = xQueueCreate(WS_QUEUE_SIZE, sizeof(ws_msg_t));
   if (s_ws_queue == NULL) return ESP_ERR_NO_MEM;
 
-  ESP_LOGI(TAG, "WS queue init");
+  ESP_LOGI(TAG, "ws queue init");
   return ESP_OK;
 }
 

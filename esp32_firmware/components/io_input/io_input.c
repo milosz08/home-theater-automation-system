@@ -67,7 +67,7 @@ esp_err_t io_input_init(const io_input_config_t *config, size_t num_buttons)
   }
   xTaskCreate(io_input_task, "IoInput", 3072, NULL, 5, NULL);
 
-  ESP_LOGI(TAG, "init %d button(s) on I2C expander", (int)num_buttons);
+  ESP_LOGI(TAG, "init %d button(s) on i2c expander", (int)num_buttons);
   for(size_t i = 0; i < num_buttons; i++)
   {
     ESP_LOGI(TAG, " -> button '%s' registered on pin %d", config[i].name, config[i].pin);

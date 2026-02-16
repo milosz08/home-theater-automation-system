@@ -103,7 +103,7 @@ esp_err_t ui_manager_init(void)
   xTimerStart(auto_scroll_timer, 0);
   render_current_page();
 
-  ESP_LOGI(TAG, "UI manager init");
+  ESP_LOGI(TAG, "ui manager init");
   return ESP_OK;
 }
 
@@ -113,13 +113,13 @@ void ui_manager_switch_mode(void)
   auto_mode = !auto_mode;
   if (auto_mode)
   {
-    ESP_LOGI(TAG, "mode: AUTO");
+    ESP_LOGI(TAG, "mode: auto");
     ui_show_temp_message("MODE: AUTO", 1000);
     xTimerStart(auto_scroll_timer, 0);
   }
   else
   {
-    ESP_LOGI(TAG, "mode: MANUAL");
+    ESP_LOGI(TAG, "mode: manual");
     ui_show_temp_message("MODE: MANUAL", 1000);
     xTimerStop(auto_scroll_timer, 0);
   }

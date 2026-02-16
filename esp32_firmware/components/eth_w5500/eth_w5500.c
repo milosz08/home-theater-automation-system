@@ -32,11 +32,11 @@ static void eth_event_handler(void *arg, esp_event_base_t event_base, int32_t ev
     switch (event_id)
     {
       case ETHERNET_EVENT_CONNECTED:
-        ESP_LOGI(TAG, "ethernet link UP");
+        ESP_LOGI(TAG, "ethernet link up");
         if (ctx && ctx->callbacks.on_link_state_changed) ctx->callbacks.on_link_state_changed(true);
         break;
       case ETHERNET_EVENT_DISCONNECTED:
-        ESP_LOGI(TAG, "ethernet link DOWN");
+        ESP_LOGI(TAG, "ethernet link down");
         if (ctx && ctx->callbacks.on_link_state_changed) ctx->callbacks.on_link_state_changed(false);
         break;
     }
@@ -44,7 +44,7 @@ static void eth_event_handler(void *arg, esp_event_base_t event_base, int32_t ev
   else if (event_base == IP_EVENT && event_id == IP_EVENT_ETH_GOT_IP)
   {
     ip_event_got_ip_t *event = (ip_event_got_ip_t *)event_data;
-    ESP_LOGI(TAG, "assigned IP: " IPSTR, IP2STR(&event->ip_info.ip));
+    ESP_LOGI(TAG, "assigned ip: " IPSTR, IP2STR(&event->ip_info.ip));
   }
 }
 
@@ -63,7 +63,7 @@ static esp_err_t set_static_ip(esp_netif_t *netif, const eth_config_t *cfg)
 {
   if (cfg == NULL || cfg->ip == NULL || strlen(cfg->ip) == 0)
   {
-    ESP_LOGW(TAG, "static IP not configured/empty, skipping (DHCP default)...");
+    ESP_LOGW(TAG, "static ip not configured/empty, skipping (dhcp default)...");
     return ESP_OK;
   }
 
@@ -88,7 +88,7 @@ static esp_err_t set_static_ip(esp_netif_t *netif, const eth_config_t *cfg)
   err = esp_netif_set_dns_info(netif, ESP_NETIF_DNS_MAIN, &dns_info);
   if (err != ESP_OK) return err;
 
-  ESP_LOGI(TAG, "static IP applied: %s, GW: %s, DNS: %s", cfg->ip, cfg->gateway, dns_addr);
+  ESP_LOGI(TAG, "static ip applied: %s, gw: %s, dns: %s", cfg->ip, cfg->gateway, dns_addr);
   return ESP_OK;
 }
 
@@ -176,7 +176,7 @@ esp_err_t eth_w5500_init(const eth_config_t *config, const eth_callbacks_t *call
   esp_eth_mac_t *mac = esp_eth_mac_new_w5500(&w5500_config, &mac_config);
   if (mac == NULL)
   {
-    ESP_LOGE(TAG, "Failed to create MAC instance");
+    ESP_LOGE(TAG, "failed to create mac instance");
     free(ctx);
     return ESP_FAIL;
   }
@@ -188,7 +188,7 @@ esp_err_t eth_w5500_init(const eth_config_t *config, const eth_callbacks_t *call
   esp_eth_phy_t *phy = esp_eth_phy_new_w5500(&phy_config);
   if (phy == NULL)
   {
-    ESP_LOGE(TAG, "Failed to create PHY instance");
+    ESP_LOGE(TAG, "failed to create phy instance");
     free(ctx);
     return ESP_FAIL;
   }
@@ -205,7 +205,7 @@ esp_err_t eth_w5500_init(const eth_config_t *config, const eth_callbacks_t *call
   err = esp_read_mac(base_mac_addr, ESP_MAC_ETH);
   if (err != ESP_OK) return err;
 
-  ESP_LOGI(TAG, "MAC: %02x:%02x:%02x:%02x:%02x:%02x",
+  ESP_LOGI(TAG, "mac: %02x:%02x:%02x:%02x:%02x:%02x",
             base_mac_addr[0], base_mac_addr[1], base_mac_addr[2],
             base_mac_addr[3], base_mac_addr[4], base_mac_addr[5]);
 

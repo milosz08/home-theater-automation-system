@@ -23,7 +23,7 @@ esp_err_t i2c_bus_init(void)
     .master.clk_speed   = I2C_MASTER_FREQ_HZ,
     .clk_flags          = 0,
   };
-  ESP_LOGI(TAG, "init I2C, SDA:%d SCL:%d", I2C_MASTER_SDA_IO, I2C_MASTER_SCL_IO);
+  ESP_LOGI(TAG, "init i2c, sda:%d scl:%d", I2C_MASTER_SDA_IO, I2C_MASTER_SCL_IO);
 
   // configure driver
   esp_err_t err = i2c_param_config(I2C_MASTER_NUM, &conf);

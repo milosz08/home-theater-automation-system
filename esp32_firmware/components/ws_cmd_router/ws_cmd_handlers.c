@@ -13,19 +13,19 @@ static const char *TAG = "WS_CMD";
 
 void ws_cmd_screen_down(const cJSON *payload)
 {
-  ESP_LOGI(TAG, "set projection screen DOWN");
+  ESP_LOGI(TAG, "set projection screen down");
   peripheral_control_screen_down();
 }
 
 void ws_cmd_screen_stop(const cJSON *payload)
 {
-  ESP_LOGI(TAG, "set projection screen STOP");
+  ESP_LOGI(TAG, "set projection screen stop");
   peripheral_control_screen_stop();
 }
 
 void ws_cmd_screen_up(const cJSON *payload)
 {
-  ESP_LOGI(TAG, "set projection screen UP");
+  ESP_LOGI(TAG, "set projection screen up");
   peripheral_control_screen_up();
 }
 

@@ -24,7 +24,7 @@ static bool ws_cmd_register(const char *key, const char *friendly_name, ws_cmd_c
 {
   if (s_cmd_count >= MAX_COMMANDS)
   {
-    ESP_LOGE(TAG, "command registry full!");
+    ESP_LOGE(TAG, "command registry full");
     return false;
   }
   s_commands[s_cmd_count].key = key;

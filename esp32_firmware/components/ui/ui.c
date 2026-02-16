@@ -145,7 +145,7 @@ void ui_show_critical_error(const char *msg, esp_err_t err)
   snprintf(line1, sizeof(line1), "%.16s", msg);
 
   ui_set_text(line0, line1);
-  ESP_LOGE(TAG, "CRITICAL ERROR: %s (0x%x)", msg, err);
+  ESP_LOGE(TAG, "critical error: %s (0x%x)", msg, err);
 
   while (1) vTaskDelay(pdMS_TO_TICKS(1000));
 }

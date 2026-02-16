@@ -17,13 +17,13 @@ esp_err_t nvs_manager_init(void)
   esp_err_t ret = nvs_flash_init();
   if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND)
   {
-      ESP_LOGW(TAG, "NVS flash recovery needed (erase & re-init)...");
+      ESP_LOGW(TAG, "nvs flash recovery needed (erase & re-init)...");
       ESP_ERROR_CHECK(nvs_flash_erase());
       ret = nvs_flash_init();
   }
   if (ret != ESP_OK) return ret;
 
-  ESP_LOGI(TAG, "NVS init");
+  ESP_LOGI(TAG, "nvs init");
   return ESP_OK;
 }
 

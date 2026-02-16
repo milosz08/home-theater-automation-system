@@ -40,6 +40,6 @@ esp_err_t cyclic_task_env_init(void)
   BaseType_t task_created = xTaskCreate(env_monitor_task_entry, "EnvTask", 4096, NULL, 5, NULL);
   if (task_created != pdPASS) return ESP_ERR_NO_MEM;
 
-  ESP_LOGI(TAG, "environment WS monitor started");
+  ESP_LOGI(TAG, "environment ws monitor started");
    return ESP_OK;
 }

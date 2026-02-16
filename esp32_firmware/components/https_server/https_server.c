@@ -84,7 +84,7 @@ static void https_server_stop(void)
     free(key_buffer);
     key_buffer = NULL;
   }
-  ESP_LOGI(TAG, "HTTPS server stopped");
+  ESP_LOGI(TAG, "https server stopped");
 }
 
 static esp_err_t https_server_start(const https_server_config_t *cfg)
@@ -121,7 +121,7 @@ static esp_err_t https_server_start(const https_server_config_t *cfg)
   conf.httpd.global_user_ctx = ctx;
   conf.httpd.global_user_ctx_free_fn = free; // automatic free after stopped server
 
-  ESP_LOGI(TAG, "starting HTTPS server on port %d", cfg->port);
+  ESP_LOGI(TAG, "starting https server on port %d", cfg->port);
   esp_err_t ret = httpd_ssl_start(&server, &conf);
   if (ret != ESP_OK)
   {
@@ -160,10 +160,10 @@ static esp_err_t https_server_start(const https_server_config_t *cfg)
         uri_conf.handler = http_middleware;
         uri_conf.user_ctx = (void *)ep;
       }
-      ESP_LOGI(TAG, "registering %s URI: %s [%s]",
-               ep->is_public ? "PUBLIC" : "SECURE",
+      ESP_LOGI(TAG, "registering %s uri: %s [%s]",
+               ep->is_public ? "public" : "secure",
                ep->uri,
-               ep->is_ws ? "WS" : "HTTP");
+               ep->is_ws ? "ws" : "http");
       httpd_register_uri_handler(server, &uri_conf);
     }
   }
@@ -177,7 +177,7 @@ static void https_server_connection_handler(void *arg, esp_event_base_t event_ba
 
   if (event_base == IP_EVENT && event_id == IP_EVENT_ETH_GOT_IP)
   {
-    ESP_LOGI(TAG, "network UP -> starting web server...");
+    ESP_LOGI(TAG, "network up -> starting web server...");
     esp_err_t err = https_server_start(cfg);
     if (err == ESP_OK)
     {
@@ -187,7 +187,7 @@ static void https_server_connection_handler(void *arg, esp_event_base_t event_ba
   }
   else if (event_base == ETH_EVENT && event_id == ETHERNET_EVENT_DISCONNECTED)
   {
-    ESP_LOGW(TAG, "network DOWN -> stopping web server...");
+    ESP_LOGW(TAG, "network down -> stopping web server...");
     https_server_stop();
     if (cfg->on_stop) cfg->on_stop();
   }
@@ -220,6 +220,6 @@ esp_err_t https_server_service_init(const https_server_config_t *cfg)
     return err;
   }
 
-  ESP_LOGI(TAG, "service init, waiting for IP to start server...");
+  ESP_LOGI(TAG, "service init, waiting for ip to start server...");
   return ESP_OK;
 }

@@ -107,7 +107,7 @@ esp_err_t sys_ind_init(void)
   BaseType_t res = xTaskCreate(sys_ind_led_heartbeat_task, "LedHeartbeat", 2048, NULL, 1, NULL);
   if (res != pdPASS) return ESP_ERR_NO_MEM;
 
-  ESP_LOGI(TAG, "System indicators initialized via IO expander");
+  ESP_LOGI(TAG, "initialized system indicators via io expander");
   return ESP_OK;
 }
 

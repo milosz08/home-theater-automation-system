@@ -45,7 +45,7 @@ esp_err_t io_expander_init()
     return err;
   }
 
-  ESP_LOGI(TAG, "I2C expander initialized, input mask: 0x%02X", EXPANDER_INIT_PINS_MASK);
+  ESP_LOGI(TAG, "i2c expander initialized, input mask: 0x%02X", EXPANDER_INIT_PINS_MASK);
   return ESP_OK;
 }
 

@@ -55,7 +55,7 @@ esp_err_t ws_dispatcher_init(void)
   BaseType_t task_created = xTaskCreate(ws_task_entry, "WsDisp", 4096, NULL, 5, NULL);
   if (task_created != pdPASS) return ESP_ERR_NO_MEM;
 
-  ESP_LOGI(TAG, "WS dispatcher init");
+  ESP_LOGI(TAG, "ws dispatcher init");
   return ESP_OK;
 }
 
@@ -63,7 +63,7 @@ void ws_dispatcher_add_client(httpd_handle_t server_handle, int new_sockfd)
 {
   s_active_socket = new_sockfd;
   s_server_handle = server_handle;
-  ESP_LOGI(TAG, "new WS client registered: %d", new_sockfd);
+  ESP_LOGI(TAG, "new ws client registered: %d", new_sockfd);
 }
 
 void ws_dispatcher_remove_client(int sockfd)
@@ -71,6 +71,6 @@ void ws_dispatcher_remove_client(int sockfd)
   if (s_active_socket == sockfd)
   {
     s_active_socket = -1;
-    ESP_LOGI(TAG, "WS client removed: %d", sockfd);
+    ESP_LOGI(TAG, "ws client removed: %d", sockfd);
   }
 }

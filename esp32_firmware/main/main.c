@@ -97,7 +97,7 @@ static void on_eth_boot_wait(bool linked)
 
 void app_main(void)
 {
-  ESP_LOGI(TAG, "System starting...");
+  ESP_LOGI(TAG, "system starting...");
 
   int current_step = 0;
   system_config_t s_config;

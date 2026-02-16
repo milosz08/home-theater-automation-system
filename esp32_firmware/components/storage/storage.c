@@ -41,7 +41,7 @@ esp_err_t storage_load_system_config(system_config_t *config)
 {
   if (config == NULL)
   {
-    ESP_LOGE(TAG, "output config pointer is NULL");
+    ESP_LOGE(TAG, "output config pointer is null");
     return ESP_ERR_INVALID_ARG;
   }
 
@@ -53,14 +53,14 @@ esp_err_t storage_load_system_config(system_config_t *config)
   char *buffer = helper_read_file_to_buffer("/storage/config.json");
   if (buffer == NULL)
   {
-    ESP_LOGE(TAG, "failed to read config.json from SPIFFS (using defaults)");
+    ESP_LOGE(TAG, "failed to read config.json from spiffs (using defaults)");
     return ESP_OK;
   }
 
   cJSON *json = cJSON_Parse(buffer);
   if (json == NULL)
   {
-    ESP_LOGE(TAG, "JSON parsing error");
+    ESP_LOGE(TAG, "json parsing error");
     free(buffer);
     return ESP_FAIL;
   }
@@ -90,7 +90,7 @@ esp_err_t storage_load_system_config(system_config_t *config)
   if (config->https_port <= 0 || config->https_port > 65535) config->https_port = 443;
 
   ESP_LOGI(TAG, "config loaded");
-  ESP_LOGI(TAG, "network: %s, Port: %d", (config->ip[0] == '\0') ? "DHCP" : config->ip, config->https_port);
+  ESP_LOGI(TAG, "network: %s, port: %d", (config->ip[0] == '\0') ? "dhcp" : config->ip, config->https_port);
 
   cJSON_Delete(json);
   free(buffer);
