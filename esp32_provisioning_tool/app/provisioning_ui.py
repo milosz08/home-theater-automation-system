@@ -131,7 +131,7 @@ class ProvisioningUI:
     for _, (label_text, var, d_key) in enumerate(inputs):
       cell = ttk.Frame(config_frame)
       cell.pack(fill=tk.X, pady=2)
-      ttk.Label(cell, text=label_text, width=15).pack(side=tk.LEFT)
+      ttk.Label(cell, text=label_text, width=20).pack(side=tk.LEFT)
       reset_btn = ttk.Button(cell, text="R", width=3, command=lambda v=var, k=d_key: v.set(self.DEFAULTS[k]))
       reset_btn.pack(side=tk.RIGHT)
       ttk.Entry(cell, textvariable=var).pack(side=tk.RIGHT, expand=True, fill=tk.X, padx=5)
