@@ -1,6 +1,7 @@
 PYTHON_SYS = python
 VENV = .venv
 APP_NAME = esp32-provisioning-tool
+APP_VER ?= 0.0.1-local-dev
 MAIN_FILE = main.py
 DEV_FILE = dev_setup.py
 
@@ -55,7 +56,8 @@ build: venv
 		--icon="res/icon.png" \
 		--add-data "res/icon.png$(SEP)res" \
 		--collect-all esptool \
-		--name $(APP_NAME) \
+		--name $(APP_NAME)-v$(APP_VER) \
+		--define APP_VER=$(APP_VER) \
 		$(MAIN_FILE)
 
 clean:

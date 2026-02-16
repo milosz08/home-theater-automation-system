@@ -141,13 +141,13 @@ jobs:
 
       - name: Build with Make
         working-directory: ${{ env.ESP32_PROVISIONING_TOOL_PATH }}
-        run: make install build
+        run: make install build APP_VER=${{ inputs.version }}
 
       - name: Rename for release
         shell: bash
         working-directory: ${{ env.ESP32_PROVISIONING_TOOL_PATH }}/dist
         run: |
-          mv esp32-provisioning-tool${{ matrix.executable_ext }} \
+          mv esp32-provisioning-tool-v${{ inputs.version }}${{ matrix.executable_ext }} \
           ${{ matrix.asset_name }}-v${{ inputs.version }}${{ matrix.executable_ext }}
 
       - name: Upload ESP32 provisioning tool artifact

@@ -14,8 +14,10 @@ from .ntp_service import NtpService
 
 class ProvisioningUI:
   def __init__(self, root):
+    self.app_version = os.getenv("APP_VER", "0.0.1-local-dev")
+
     self.root = root
-    self.root.title("ESP32 provisioning tool (by Miłosz Gilga)")
+    self.root.title(f"ESP32 provisioning tool (by Miłosz Gilga, v{self.app_version})")
     self.root.resizable(False, True)
     self.root.geometry("900x800")
     self.root.iconphoto(True, tk.PhotoImage(file=self.resource_path("res/icon.png")))
