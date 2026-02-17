@@ -3,13 +3,14 @@
 
 #include <string.h>
 
+#include "esp_http_server.h"
 #include "esp_log.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
 // private api ---------------------------------------------------------------------------------------------------------
 
-static const char *TAG = "WS_DISP";
+static const char *TAG = "WS_DISPATCHER";
 
 static int s_active_socket = -1;
 static httpd_handle_t s_server_handle = NULL;
@@ -61,6 +62,11 @@ esp_err_t ws_dispatcher_init(void)
 
 void ws_dispatcher_add_client(httpd_handle_t server_handle, int new_sockfd)
 {
+  if (s_active_socket != -1 && s_active_socket != new_sockfd)
+  {
+    ESP_LOGW(TAG, "kicking old client: %d to accept new: %d", s_active_socket, new_sockfd);
+    httpd_sess_trigger_close(server_handle, s_active_socket);
+  }
   s_active_socket = new_sockfd;
   s_server_handle = server_handle;
   ESP_LOGI(TAG, "new ws client registered: %d", new_sockfd);
