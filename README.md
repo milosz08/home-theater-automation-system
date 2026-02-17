@@ -45,7 +45,7 @@ which protect the interfaces against voltage spikes coming from equipment such a
 buzzer circuit (5V), being driven by 3.3V logic, employs a cascaded transistor pair by means of a BC327 (T1) and BC337
 (T2); in addition, a diode (D5) is set in reverse parallel across the buzzer coil to safeguard the driver transistor
 from inductive kickback voltage spikes resulting from the buzzer coil operation. Besides, a passive circuit built around
-an SN74HC02 NOR gate can generate a STOP signal through pressing two buttons on a wall-mounted shutter switch
+an CD4093BE NAND gate can generate a STOP signal through pressing two buttons on a wall-mounted shutter switch
 simultaneously. The RS485 differential signals (A+ and B-) are assigned to pins 4 and 5 of the RJ45 connector so that a
 twisted pair within the UTP cable can be used, which will dramatically decrease the electromagnetic interference
 (common-mode noise rejection).
