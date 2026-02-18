@@ -66,8 +66,10 @@ class ProvisioningGenerator:
 
   def generate_qr_code(self, network_data, cert_path):
     with open(cert_path, "rb") as f:
-      cert_data = f.read()
-      fingerprint = hashlib.sha256(cert_data).hexdigest()
+      pem_data = f.read()
+      cert = x509.load_pem_x509_certificate(pem_data)
+      der_data = cert.public_bytes(serialization.Encoding.DER)
+      fingerprint = hashlib.sha256(der_data).hexdigest().lower()
 
     qr_payload = {
       "ip": network_data["ip"],
