@@ -5,6 +5,7 @@
 #include "ui.h"
 #include "env_sensor.h"
 
+#include "esp_heap_caps.h"
 #include "esp_log.h"
 #include "esp_timer.h"
 #include "freertos/FreeRTOS.h"
@@ -75,12 +76,17 @@ static void render_env_page(void)
 
 static void render_resources_page(void)
 {
-  uint32_t free_heap = esp_get_free_heap_size() / 1024;
-  uint32_t min_free_heap = esp_get_minimum_free_heap_size() / 1024;
+  uint32_t free_bytes = esp_get_free_heap_size();
+  uint32_t total_bytes = heap_caps_get_total_size(MALLOC_CAP_INTERNAL);
+  uint32_t min_free_bytes = esp_get_minimum_free_heap_size();
 
-  static char line0[17], line1[17];
-  snprintf(line0, sizeof(line0), "RAM: %luKB", free_heap);
-  snprintf(line1, sizeof(line1), "Min: %luKB", min_free_heap);
+  uint32_t used_kb = (total_bytes - free_bytes) / 1024;
+  uint32_t total_kb = total_bytes / 1024;
+  uint32_t min_free_kb = min_free_bytes / 1024;
+
+  static char line0[32], line1[32];
+  snprintf(line0, sizeof(line0), "RAM: %lu/%luKB", (unsigned long)used_kb, (unsigned long)total_kb);
+  snprintf(line1, sizeof(line1), "Min free: %luKB", (unsigned long)min_free_kb);
   ui_set_text(line0, line1);
 }
 
