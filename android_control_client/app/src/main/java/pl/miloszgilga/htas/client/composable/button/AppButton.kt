@@ -82,6 +82,7 @@ fun AppOutlinedButton(
   onClick: suspend () -> Unit,
   modifier: Modifier = Modifier,
   enabled: Boolean = true,
+  icon: ImageVector? = null,
   type: ButtonType = ButtonType.NORMAL,
 ) {
   var isLoading by remember { mutableStateOf(false) }
@@ -122,6 +123,7 @@ fun AppOutlinedButton(
   ) {
     LoadingButtonContent(
       text = text,
+      icon = icon,
       isLoading = isLoading,
       progressColor = baseColor,
     )
@@ -134,6 +136,7 @@ fun AppTextButton(
   onClick: suspend () -> Unit,
   modifier: Modifier = Modifier,
   enabled: Boolean = true,
+  icon: ImageVector? = null,
   type: ButtonType = ButtonType.NORMAL,
 ) {
   var isLoading by remember { mutableStateOf(false) }
@@ -163,6 +166,7 @@ fun AppTextButton(
   ) {
     LoadingButtonContent(
       text = text,
+      icon = icon,
       isLoading = isLoading,
       progressColor = color,
     )
