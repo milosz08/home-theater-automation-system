@@ -10,5 +10,5 @@ data class ErrorPayload(
 class RestException(
   httpCode: Int,
   val errorCode: String,
-  val errorName: String
+  val errorName: String,
 ) : Exception("Rest error $httpCode: $errorName ($errorCode)")
