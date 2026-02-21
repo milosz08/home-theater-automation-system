@@ -1,5 +1,6 @@
 #include "ws_cmd_router.h"
 #include "ws_cmd_handlers.h"
+#include "ws_queue.h"
 
 #include <string.h>
 
@@ -42,11 +43,18 @@ static bool ws_cmd_register(const char *key, const char *friendly_name, ws_cmd_c
 esp_err_t ws_cmd_router_init(ws_cmd_executed_cb_t on_executed_cb, ws_cmd_error_cb_t on_error_cb)
 {
   s_on_executed_cb = on_executed_cb;
-  ws_cmd_register("cmd_screen_down",  "SCREEN DOWN",  ws_cmd_screen_down);
-  ws_cmd_register("cmd_screen_stop",  "SCREEN STOP",  ws_cmd_screen_stop);
-  ws_cmd_register("cmd_screen_up",    "SCREEN UP",    ws_cmd_screen_up);
-  ws_cmd_register("cmd_get_sys_info", "GET SYS INFO", ws_cmd_get_sys_info);
   s_on_error_cb = on_error_cb;
+  ws_cmd_register("cmd_get_sys_info",     "GET SYS INFO",     ws_cmd_get_sys_info);
+  // macros
+  ws_cmd_register("cmd_start_projection", "START PROJECTION", ws_cmd_start_projection);
+  ws_cmd_register("cmd_end_projection",   "END PROJECTION",   ws_cmd_end_projection);
+  // projection screen
+  ws_cmd_register("cmd_screen_down",      "SCREEN DOWN",      ws_cmd_screen_down);
+  ws_cmd_register("cmd_screen_stop",      "SCREEN STOP",      ws_cmd_screen_stop);
+  ws_cmd_register("cmd_screen_up",        "SCREEN UP",        ws_cmd_screen_up);
+  // projector
+  ws_cmd_register("cmd_projector_on",     "PROJECTOR ON",     ws_cmd_projector_on);
+  ws_cmd_register("cmd_projector_off",    "PROJECTOR OFF",    ws_cmd_projector_off);
   return ESP_OK;
 }
 

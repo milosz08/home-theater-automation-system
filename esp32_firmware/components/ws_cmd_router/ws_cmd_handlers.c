@@ -12,29 +12,8 @@ static const char *TAG = "WS_CMD";
 
 // public api ----------------------------------------------------------------------------------------------------------
 
-// user ----> system
-void ws_cmd_screen_down(const cJSON *payload)
-{
-  ESP_LOGI(TAG, "set projection screen down");
-  peripheral_control_screen_down();
-}
-
-// user ----> system
-void ws_cmd_screen_stop(const cJSON *payload)
-{
-  ESP_LOGI(TAG, "set projection screen stop");
-  peripheral_control_screen_stop();
-}
-
-// user ----> system
-void ws_cmd_screen_up(const cJSON *payload)
-{
-  ESP_LOGI(TAG, "set projection screen up");
-  peripheral_control_screen_up();
-}
-
-// user <---- system
-void ws_cmd_get_sys_info(const cJSON *payload)
+// user <---> system
+esp_err_t ws_cmd_get_sys_info(const cJSON *payload, bool *notify)
 {
   const esp_app_desc_t *app_desc = esp_app_get_description();
   uint32_t total_heap = heap_caps_get_total_size(MALLOC_CAP_INTERNAL);
@@ -50,6 +29,82 @@ void ws_cmd_get_sys_info(const cJSON *payload)
   if (json_str != NULL)
   {
     ws_queue_send(WS_EVENT_TYPE_SYS_INFO, json_str);
+    free(json_str);
   }
   cJSON_Delete(resp_root);
+
+  *notify = false;
+  return ESP_OK;
+}
+
+// user ----> system
+esp_err_t ws_cmd_start_projection(const cJSON *payload, bool *notify)
+{
+  esp_err_t res;
+  ESP_LOGI(TAG, "start projection");
+  res = peripheral_control_screen_down();
+  res = peripheral_control_projector_on();
+  *notify = true;
+  return res;
+}
+
+// user ----> system
+esp_err_t ws_cmd_end_projection(const cJSON *payload, bool *notify)
+{
+  esp_err_t res;
+  ESP_LOGI(TAG, "end projection");
+  res = peripheral_control_screen_up();
+  res = peripheral_control_projector_off();
+  *notify = true;
+  return res;
+}
+
+// user ----> system
+esp_err_t ws_cmd_screen_down(const cJSON *payload, bool *notify)
+{
+  esp_err_t res;
+  ESP_LOGI(TAG, "set projection screen down");
+  res = peripheral_control_screen_down();
+  *notify = true;
+  return res;
+}
+
+// user ----> system
+esp_err_t ws_cmd_screen_stop(const cJSON *payload, bool *notify)
+{
+  esp_err_t res;
+  ESP_LOGI(TAG, "set projection screen stop");
+  res = peripheral_control_screen_stop();
+  *notify = true;
+  return res;
+}
+
+// user ----> system
+esp_err_t ws_cmd_screen_up(const cJSON *payload, bool *notify)
+{
+  esp_err_t res;
+  ESP_LOGI(TAG, "set projection screen up");
+  res = peripheral_control_screen_up();
+  *notify = true;
+  return res;
+}
+
+// user ----> system
+esp_err_t ws_cmd_projector_on(const cJSON *payload, bool *notify)
+{
+  esp_err_t res;
+  ESP_LOGI(TAG, "set projector on");
+  res = peripheral_control_projector_on();
+  *notify = true;
+  return res;
+}
+
+// user ----> system
+esp_err_t ws_cmd_projector_off(const cJSON *payload, bool *notify)
+{
+  esp_err_t res;
+  ESP_LOGI(TAG, "set projector off");
+  res = peripheral_control_projector_off();
+  *notify = true;
+  return res;
 }
