@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
@@ -28,6 +29,7 @@ fun AppButton(
   onClick: suspend () -> Unit,
   modifier: Modifier = Modifier,
   enabled: Boolean = true,
+  icon: ImageVector? = null,
   type: ButtonType = ButtonType.NORMAL,
 ) {
   var isLoading by remember { mutableStateOf(false) }
@@ -63,6 +65,7 @@ fun AppButton(
   ) {
     LoadingButtonContent(
       text = text,
+      icon = icon,
       isLoading = isLoading,
       progressColor = if (type == ButtonType.ERROR) {
         MaterialTheme.colorScheme.onError
