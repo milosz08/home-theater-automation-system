@@ -96,6 +96,8 @@ jobs:
 
       - name: Build release APK
         working-directory: ${{ env.ANDROID_CONTROL_CLIENT_PATH }}
+        env:
+          APP_VER: ${{ inputs.version }}
         run: ./gradlew assembleRelease
 
       - name: Rename APK

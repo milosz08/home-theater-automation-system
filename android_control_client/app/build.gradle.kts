@@ -19,7 +19,9 @@ android {
     versionCode = 1
     versionName = "1.0"
 
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    val appVersion = System.getenv("APP_VER") ?: "0.0.1-dev-local"
+    buildConfigField("String", "CI_BUILD_VERSION", "\"$appVersion\"")
+    buildConfigField("long", "BUILD_TIME", "${System.currentTimeMillis()}L")
   }
 
   buildTypes {
@@ -41,6 +43,7 @@ android {
   }
   buildFeatures {
     compose = true
+    buildConfig = true
   }
 }
 
