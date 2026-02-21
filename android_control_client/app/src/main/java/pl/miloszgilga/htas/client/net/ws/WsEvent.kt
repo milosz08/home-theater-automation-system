@@ -20,6 +20,12 @@ sealed class WsEvent {
     @SerializedName("ramMax") val ramMax: Long,
   ) : WsEvent()
 
+  data class CommandInvocation(
+    @SerializedName("cmd") val cmd: String,
+    @SerializedName("errorCode") val errorCode: String?,
+    @SerializedName("errorName") val errorName: String?,
+  ) : WsEvent()
+
   data class Unknown(val type: String) : WsEvent()
 
   data class ParseError(val cause: Throwable) : WsEvent()

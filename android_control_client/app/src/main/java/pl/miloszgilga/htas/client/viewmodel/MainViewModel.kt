@@ -33,6 +33,7 @@ import pl.miloszgilga.htas.client.net.rest.ResetPasswordResponse
 import pl.miloszgilga.htas.client.net.rest.RestExecutor
 import pl.miloszgilga.htas.client.toast.ToastManager
 import pl.miloszgilga.htas.client.toast.ToastType
+import pl.miloszgilga.htas.client.util.mapDeviceError
 
 class MainViewModel(
   application: Application,
@@ -121,6 +122,10 @@ class MainViewModel(
       Log.w(TAG, "forgetting current device and cleared datastore")
       uiState = AppUiState.Unpaired
     }
+  }
+
+  fun sendCommand(action: WsAction, value: Any? = null) {
+    repository.sendAction(action, value)
   }
 
   fun disconnect() {
@@ -237,6 +242,19 @@ class MainViewModel(
         envHistory.add(event)
         if (envHistory.size > MAX_HISTORY_SIZE) {
           envHistory.removeAt(0)
+        }
+      }
+
+      is WsEvent.CommandInvocation -> {
+        val action = HardwareCmd.fromKey(event.cmd)
+        val isError = event.errorName != null && event.errorCode != null
+        if (isError) {
+          Log.e(TAG, "command: ${event.cmd} failed: ${event.errorName} (${event.errorCode})")
+          ToastManager.show(mapDeviceError(event.errorName, event.errorCode).asString(application), ToastType.ERROR)
+        } else {
+          val cmdName = action?.let { application.getString(it.resId) } ?: event.cmd
+          Log.d(TAG, "command: ${event.cmd} success")
+          ToastManager.show(cmdName, ToastType.NORMAL)
         }
       }
 

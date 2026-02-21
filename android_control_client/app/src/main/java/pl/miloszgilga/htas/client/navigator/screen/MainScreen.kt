@@ -63,7 +63,7 @@ fun MainScreen(
 
       is AppUiState.Connecting -> CircularProgressSection(stringResource(R.string.connecting))
 
-      is AppUiState.Connected -> ConnectedSection()
+      is AppUiState.Connected -> ConnectedSection(viewModel)
 
       is AppUiState.Unpaired -> UnifiedStateSection(
         icon = Icons.Default.DeviceUnknown,
