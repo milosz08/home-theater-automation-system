@@ -114,12 +114,16 @@ static esp_err_t https_server_start(const https_server_config_t *cfg)
   conf.prvtkey_pem = (const unsigned char*)key_buffer;
   conf.prvtkey_len = strlen(key_buffer) + 1;
   conf.port_secure = cfg->port;
+  conf.session_tickets = true;
 
   conf.httpd.max_uri_handlers = cfg->num_endpoints + 2;
-  conf.httpd.stack_size = 10240;
+  conf.httpd.stack_size = 16384;
+  conf.httpd.max_open_sockets = 7;
+  conf.httpd.max_resp_headers = 12;
   conf.httpd.lru_purge_enable = true;
   conf.httpd.global_user_ctx = ctx;
   conf.httpd.global_user_ctx_free_fn = free; // automatic free after stopped server
+  conf.httpd.send_wait_timeout = 10;
 
   ESP_LOGI(TAG, "starting https server on port %d", cfg->port);
   esp_err_t ret = httpd_ssl_start(&server, &conf);
