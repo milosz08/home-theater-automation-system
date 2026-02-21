@@ -92,10 +92,10 @@ esp_err_t app_api_handle_response(httpd_req_t *req, void *void_ctx, esp_err_t ha
 
       char hex_code[16];
       snprintf(hex_code, sizeof(hex_code), "0x%X", ctx->error_code);
-      cJSON_AddStringToObject(root, "error_code", hex_code);
+      cJSON_AddStringToObject(root, "errorCode", hex_code);
 
       const char *final_name = resolve_error_name(ctx);
-      cJSON_AddStringToObject(root, "error_name", final_name);
+      cJSON_AddStringToObject(root, "errorName", final_name);
 
       const char *json_str = cJSON_PrintUnformatted(root);
       char status_str[8];
