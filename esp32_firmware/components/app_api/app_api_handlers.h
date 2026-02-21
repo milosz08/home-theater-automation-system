@@ -16,6 +16,19 @@
  */
 esp_err_t app_api_auth_change_password(httpd_req_t *req);
 
+/*! \brief Resets the NVS password to the factory default.
+ *
+ * Loads the default password from a protected NVS key and overwrites the active password. Returns the default password
+ * in a JSON response for the first-time setup.
+ *
+ * \param req The HTTP request context.
+ * 
+ * \retval ESP_OK         On success.
+ * \retval ESP_ERR_NO_MEM On NVS/memory failure.
+ * \retval ESP_FAIL       On other errors.
+ */
+esp_err_t app_api_auth_reset_password(httpd_req_t *req);
+
 /*! \brief Main handler for the "websocket control" endpoint.
  *
  * This function is the entry point for the WS connection (`/ws/control`). It performs the handshake and then registers

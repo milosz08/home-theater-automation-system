@@ -13,6 +13,13 @@ static const https_endpoint_t s_endpoints[] = {
     .is_public  = false,
     .name       = "Change password"
   },
+  {
+    .uri        = "/api/reset-password",
+    .method     = HTTP_DELETE,
+    .handler    = app_api_auth_reset_password,
+    .is_public  = false,
+    .name       = "Reset password"
+  },
   // control (ws)
   {
     .uri        = "/ws/control",

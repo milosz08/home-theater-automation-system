@@ -58,3 +58,21 @@ esp_err_t app_api_auth_change_password(httpd_req_t *req)
   ESP_LOGI(TAG, "password changed");
   return app_api_return_ok(req);
 }
+
+esp_err_t app_api_auth_reset_password(httpd_req_t *req)
+{
+  char default_password[64] = {0};
+  esp_err_t err = nvs_manager_load_str(AUTH_NVS_NS, AUTH_NVS_DEFAULT_KEY, default_password, sizeof(default_password));
+  if (err != ESP_OK) return APP_API_RETURN_ERR(req, 500, err);
+
+  err = nvs_manager_save_str(AUTH_NVS_NS, AUTH_NVS_KEY, default_password);
+  if (err != ESP_OK) return APP_API_RETURN_ERR(req, 500, err);
+
+  ESP_LOGI(TAG, "password reset");
+
+  cJSON *root = cJSON_CreateObject();
+  if (root == NULL) return APP_API_RETURN_ERR(req, 500, ESP_ERR_NO_MEM);
+  
+  cJSON_AddStringToObject(root, "defaultPassword", default_password);
+  return app_api_return_json(req, root);
+}
