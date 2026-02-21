@@ -78,9 +78,10 @@ fun StatsScreen(
               )
             },
             {
-              val (currentUsedKb, totalRamKb, chartDataPoints) = remember(history.size, sysInfo) {
-                calculateRam(sysInfo.ramMax, history.map { point -> point.ram })
-              }
+              val (currentUsedKb, totalRamKb, chartDataPoints) = calculateRam(
+                sysInfo.ramMax,
+                history.map { it.ram },
+              )
               StatsChart(
                 title = stringResource(R.string.ram_usage),
                 value = "$currentUsedKb / $totalRamKb kB",
