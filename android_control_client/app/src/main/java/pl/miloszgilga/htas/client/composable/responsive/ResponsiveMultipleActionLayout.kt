@@ -12,33 +12,42 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ResponsiveDualActionLayout(
+fun ResponsiveMultipleActionLayout(
   modifier: Modifier = Modifier,
-  primaryAction: @Composable (Modifier) -> Unit,
-  secondaryAction: @Composable (Modifier) -> Unit,
+  includeVerticalSpace: Boolean = true,
+  includeHorizontalSpace: Boolean = true,
+  actions: List<@Composable (Modifier) -> Unit>,
 ) {
   val configuration = LocalConfiguration.current
   val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
   val updatedModifier = modifier
     .fillMaxWidth()
-    .padding(vertical = 16.dp)
+    .padding(
+      vertical = if (includeVerticalSpace) 16.dp else 0.dp,
+      horizontal = if (includeHorizontalSpace) 16.dp else 0.dp,
+    )
 
+  if (actions.isEmpty()) {
+    return
+  }
   if (isLandscape) {
     Row(
       modifier = updatedModifier,
       horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-      primaryAction(Modifier.weight(1f))
-      secondaryAction(Modifier.weight(1f))
+      actions.forEach { action ->
+        action(Modifier.weight(1f))
+      }
     }
   } else {
     Column(
       modifier = updatedModifier,
       verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-      primaryAction(Modifier.fillMaxWidth())
-      secondaryAction(Modifier.fillMaxWidth())
+      actions.forEach { action ->
+        action(Modifier.fillMaxWidth())
+      }
     }
   }
 }

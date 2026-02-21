@@ -1,15 +1,12 @@
 package pl.miloszgilga.htas.client.navigator.screen
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import pl.miloszgilga.htas.client.BuildConfig
 import pl.miloszgilga.htas.client.R
 import pl.miloszgilga.htas.client.viewmodel.AppUiState
@@ -24,7 +21,7 @@ import pl.miloszgilga.htas.client.composable.SectionHeader
 import pl.miloszgilga.htas.client.composable.SectionSpacer
 import pl.miloszgilga.htas.client.composable.row.TextPropertyRow
 import pl.miloszgilga.htas.client.composable.TopBarWrapper
-import pl.miloszgilga.htas.client.composable.responsive.ResponsiveDualActionLayout
+import pl.miloszgilga.htas.client.composable.responsive.ResponsiveMultipleActionLayout
 import pl.miloszgilga.htas.client.composable.settings.ChangePasswordModal
 import pl.miloszgilga.htas.client.composable.settings.ConnectionStatusBadgeRow
 import pl.miloszgilga.htas.client.composable.settings.FooterText
@@ -84,22 +81,25 @@ fun SettingsScreen(
           TextPropertyRow(label = stringResource(R.string.port), value = it.port.toString())
           PasswordSettingsRow(label = stringResource(R.string.password), password = it.pass)
           sysInfo?.let {
-            ResponsiveDualActionLayout(
-              primaryAction = { weightModifier ->
-                AppButton(
-                  text = stringResource(R.string.change_password),
-                  onClick = { activeDialog = ActiveDialog.CHANGE_PASSWORD },
-                  modifier = weightModifier
-                )
-              },
-              secondaryAction = { weightModifier ->
-                AppButton(
-                  text = stringResource(R.string.reset_password),
-                  onClick = { activeDialog = ActiveDialog.RESET_PASSWORD },
-                  modifier = weightModifier,
-                  type = ButtonType.ERROR,
-                )
-              }
+            ResponsiveMultipleActionLayout(
+              includeHorizontalSpace = false,
+              actions = listOf(
+                { weightModifier ->
+                  AppButton(
+                    text = stringResource(R.string.change_password),
+                    onClick = { activeDialog = ActiveDialog.CHANGE_PASSWORD },
+                    modifier = weightModifier,
+                  )
+                },
+                { weightModifier ->
+                  AppButton(
+                    text = stringResource(R.string.reset_password),
+                    onClick = { activeDialog = ActiveDialog.RESET_PASSWORD },
+                    modifier = weightModifier,
+                    type = ButtonType.ERROR,
+                  )
+                },
+              ),
             )
           }
           TextPropertyRow(
@@ -123,25 +123,26 @@ fun SettingsScreen(
         text = stringResource(R.string.danger_zone),
         color = MaterialTheme.colorScheme.error,
       )
-      ResponsiveDualActionLayout(
-        modifier = Modifier.padding(horizontal = 16.dp),
-        primaryAction = { weightModifier ->
-          AppButton(
-            text = stringResource(R.string.disconnect),
-            onClick = { activeDialog = ActiveDialog.DISCONNECT },
-            enabled = state is AppUiState.Connected,
-            modifier = weightModifier,
-            type = ButtonType.ERROR,
-          )
-        },
-        secondaryAction = { weightModifier ->
-          AppOutlinedButton(
-            text = stringResource(R.string.forget_unpair),
-            onClick = { activeDialog = ActiveDialog.FORGET },
-            modifier = weightModifier,
-            type = ButtonType.ERROR,
-          )
-        }
+      ResponsiveMultipleActionLayout(
+        actions = listOf(
+          { weightModifier ->
+            AppButton(
+              text = stringResource(R.string.disconnect),
+              onClick = { activeDialog = ActiveDialog.DISCONNECT },
+              enabled = state is AppUiState.Connected,
+              modifier = weightModifier,
+              type = ButtonType.ERROR,
+            )
+          },
+          { weightModifier ->
+            AppOutlinedButton(
+              text = stringResource(R.string.forget_unpair),
+              onClick = { activeDialog = ActiveDialog.FORGET },
+              modifier = weightModifier,
+              type = ButtonType.ERROR,
+            )
+          },
+        )
       )
       SectionSpacer()
 
