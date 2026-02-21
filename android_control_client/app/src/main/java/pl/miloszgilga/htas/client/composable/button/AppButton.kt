@@ -1,6 +1,7 @@
 package pl.miloszgilga.htas.client.composable.button
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -23,6 +24,12 @@ enum class ButtonType {
   ;
 }
 
+enum class ButtonSize {
+  NORMAL,
+  LARGE,
+  ;
+}
+
 @Composable
 fun AppButton(
   text: String,
@@ -31,6 +38,7 @@ fun AppButton(
   enabled: Boolean = true,
   icon: ImageVector? = null,
   type: ButtonType = ButtonType.NORMAL,
+  size: ButtonSize = ButtonSize.NORMAL,
 ) {
   var isLoading by remember { mutableStateOf(false) }
   val scope = rememberCoroutineScope()
@@ -50,6 +58,10 @@ fun AppButton(
     },
     modifier = modifier,
     enabled = enabled,
+    contentPadding = when (size) {
+      ButtonSize.NORMAL -> ButtonDefaults.ContentPadding
+      ButtonSize.LARGE -> PaddingValues(horizontal = 32.dp, vertical = 16.dp)
+    },
     colors = ButtonDefaults.buttonColors(
       containerColor = when (type) {
         ButtonType.NORMAL -> MaterialTheme.colorScheme.primary
@@ -84,6 +96,7 @@ fun AppOutlinedButton(
   enabled: Boolean = true,
   icon: ImageVector? = null,
   type: ButtonType = ButtonType.NORMAL,
+  size: ButtonSize = ButtonSize.NORMAL,
 ) {
   var isLoading by remember { mutableStateOf(false) }
   val scope = rememberCoroutineScope()
@@ -108,6 +121,10 @@ fun AppOutlinedButton(
     },
     modifier = modifier,
     enabled = enabled,
+    contentPadding = when (size) {
+      ButtonSize.NORMAL -> ButtonDefaults.TextButtonContentPadding
+      ButtonSize.LARGE -> PaddingValues(horizontal = 24.dp, vertical = 16.dp)
+    },
     colors = ButtonDefaults.outlinedButtonColors(
       contentColor = baseColor,
       disabledContentColor = baseColor.copy(alpha = 0.38f),
@@ -138,6 +155,7 @@ fun AppTextButton(
   enabled: Boolean = true,
   icon: ImageVector? = null,
   type: ButtonType = ButtonType.NORMAL,
+  size: ButtonSize = ButtonSize.NORMAL,
 ) {
   var isLoading by remember { mutableStateOf(false) }
   val scope = rememberCoroutineScope()
@@ -162,6 +180,10 @@ fun AppTextButton(
     },
     modifier = modifier,
     enabled = enabled,
+    contentPadding = when (size) {
+      ButtonSize.NORMAL -> ButtonDefaults.ContentPadding
+      ButtonSize.LARGE -> PaddingValues(horizontal = 32.dp, vertical = 16.dp)
+    },
     colors = ButtonDefaults.textButtonColors(contentColor = color)
   ) {
     LoadingButtonContent(
