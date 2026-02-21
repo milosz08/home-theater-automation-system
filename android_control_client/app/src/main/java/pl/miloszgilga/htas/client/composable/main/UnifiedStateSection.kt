@@ -62,7 +62,7 @@ fun UnifiedStateSection(
       textAlign = TextAlign.Center,
     )
     if (description != null) {
-      SectionSpacer(spacerSize = SpacerSize.SMALL)
+      SectionSpacer(size = SpacerSize.SMALL)
       Text(
         text = description,
         style = MaterialTheme.typography.bodyMedium,
@@ -71,7 +71,7 @@ fun UnifiedStateSection(
         modifier = Modifier.padding(horizontal = 16.dp),
       )
     }
-    SectionSpacer(spacerSize = SpacerSize.LARGE)
+    SectionSpacer(size = SpacerSize.LARGE)
     ResponsiveLayout(spacing = 12.dp) { isPortrait ->
       val buttonModifier = Modifier
         .then(if (isPortrait) Modifier.fillMaxWidth() else Modifier)

@@ -44,7 +44,7 @@ fun StatsChart(
         color = chartColor,
       )
     }
-    SectionSpacer(spacerSize = SpacerSize.SMALL)
+    SectionSpacer(size = SpacerSize.SMALL)
     Box(modifier = Modifier.weight(1f)) {
       SimpleLineChart(
         modifier = Modifier.fillMaxSize(),
