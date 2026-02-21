@@ -39,10 +39,10 @@ esp_err_t peripheral_control_screen_up(void)
 
 esp_err_t peripheral_control_projector_on(void)
 {
-  return ESP_ERR_TIMEOUT;
+  return ESP_OK;
 }
 
 esp_err_t peripheral_control_projector_off(void)
 {
-  return ESP_ERR_INVALID_STATE;
+  return ESP_OK;
 }
