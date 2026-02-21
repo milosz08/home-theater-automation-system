@@ -43,6 +43,7 @@ void *app_api_create_ctx(httpd_req_t *req)
     ctx->error_code = ESP_OK;
     ctx->error_name_str = NULL;
     ctx->manual_response = false;
+    ctx->response_json = NULL;
   }
   return (void*)ctx;
 }
@@ -67,10 +68,23 @@ esp_err_t app_api_handle_response(httpd_req_t *req, void *void_ctx, esp_err_t ha
   }
   if (!ctx->manual_response)
   {
-    if (ctx->http_status == 204 && ctx->error_code == ESP_OK)
+    if (ctx->error_code == ESP_OK)
     {
-      httpd_resp_set_status(req, "204 No Content");
-      httpd_resp_send(req, NULL, 0);
+      if (ctx->response_json != NULL)
+      {
+        char *json_str = cJSON_PrintUnformatted(ctx->response_json);
+        char status_str[8];
+        snprintf(status_str, sizeof(status_str), "%d", ctx->http_status);
+        httpd_resp_set_status(req, status_str);
+        httpd_resp_set_type(req, "application/json");
+        httpd_resp_send(req, json_str, strlen(json_str));
+        free(json_str);
+      }
+      else
+      {
+        httpd_resp_set_status(req, "204 No Content");
+        httpd_resp_send(req, NULL, 0);
+      }
     }
     else
     {
@@ -97,6 +111,7 @@ esp_err_t app_api_handle_response(httpd_req_t *req, void *void_ctx, esp_err_t ha
       ESP_LOGW(TAG, "[%s] error: %s (%s) -> http %d", ep_name, final_name, hex_code, ctx->http_status);
     }
   }
+  if (ctx->response_json != NULL) cJSON_Delete(ctx->response_json);
   esp_err_t result_for_middleware = (handler_res != ESP_OK) ? handler_res : ctx->error_code;
   free(ctx);
   return result_for_middleware;
@@ -124,6 +139,18 @@ esp_err_t app_api_return_ok(httpd_req_t *req)
     ctx->error_code = ESP_OK;
     ctx->manual_response = false;
   }
+  return ESP_OK;
+}
+
+esp_err_t app_api_return_json(httpd_req_t *req, cJSON *root)
+{
+  api_ctx_t *ctx = (api_ctx_t *)req->user_ctx;
+  if (ctx)
+  {
+    ctx->http_status = 200;
+    ctx->response_json = root;
+  }
+  else if (root != NULL) cJSON_Delete(root); 
   return ESP_OK;
 }
 

@@ -6,6 +6,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+#include "cJSON.h"
+
 #define AUTH_HEADER "x-auth-pass" /*!< Name of the header passed via client to authorize requests. */
 
 // custom error codes
@@ -40,6 +42,7 @@ typedef struct
   esp_err_t error_code;       /*!< The internal ESP-IDF error code or custom app error. */
   const char *error_name_str; /*!< The stringified name of the error variable/constant (from macro). */
   bool manual_response;       /*!< If true, the handler has already sent the response; middleware skips JSON gen. */
+  cJSON *response_json;       /*!< Pointer to the JSON object to be sent as a successful response. */
 } api_ctx_t;
 
 /*! \brief Allocates and initializes the API context.
@@ -95,6 +98,18 @@ esp_err_t _app_api_return_err_helper(httpd_req_t *req, int status, esp_err_t cod
  * \return Always ESP_OK.
  */
 esp_err_t app_api_return_ok(httpd_req_t *req);
+
+/*! \brief Prepares a JSON response to be sent.
+ *
+ * Assigns the JSON root to the context and sets HTTP status to 200 OK. The middleware will handle the serialization and
+ * memory cleanup of the cJSON object.
+ *
+ * \param req   The HTTP request handle.
+ * \param root  Pointer to the cJSON object to return.
+ *
+ * \return ESP_OK If context exists, or error if not.
+ */
+esp_err_t app_api_return_json(httpd_req_t *req, cJSON *root);
 
 /*! \brief Flags that the handler will send its own response.
  *
