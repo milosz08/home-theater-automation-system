@@ -1,5 +1,6 @@
 package pl.miloszgilga.htas.client.util
 
+import pl.miloszgilga.htas.client.R
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -44,4 +45,15 @@ fun calculateRam(
   }
   val currentUsedKb = currentUsed / 1024f
   return Triple(currentUsedKb.toInt(), totalRamKb.toInt(), historyUsedKb)
+}
+
+fun mapDeviceError(errorName: String, errorCode: String): UiText {
+  return when (errorName) {
+    "APP_ERR_INVALID_PASSWORD" -> UiText.StringResource(R.string.error_esp_invalid_password)
+    "ESP_ERR_INVALID_ARG" -> UiText.StringResource(R.string.error_esp_invalid_arg)
+    "ESP_ERR_NO_MEM" -> UiText.StringResource(R.string.error_esp_no_mem)
+    "ESP_ERR_INVALID_STATE" -> UiText.StringResource(R.string.error_esp_invalid_state)
+    "ESP_ERR_TIMEOUT" -> UiText.StringResource(R.string.error_esp_timeout)
+    else -> UiText.StringResource(R.string.error_esp_generic, errorName, errorCode)
+  }
 }

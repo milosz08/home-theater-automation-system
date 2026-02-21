@@ -6,6 +6,7 @@ import pl.miloszgilga.htas.client.net.JsonParser
 import pl.miloszgilga.htas.client.net.TofuClient
 import pl.miloszgilga.htas.client.store.ServerConfig
 import pl.miloszgilga.htas.client.util.UiText
+import pl.miloszgilga.htas.client.util.mapDeviceError
 import java.net.SocketTimeoutException
 
 class RestExecutor(@PublishedApi internal val jsonParser: JsonParser) {
@@ -44,16 +45,7 @@ class RestExecutor(@PublishedApi internal val jsonParser: JsonParser) {
     return when (throwable) {
       is SocketTimeoutException -> UiText.StringResource(R.string.error_esp_timeout)
 
-      is RestException -> {
-        when (throwable.errorName) {
-          "APP_ERR_INVALID_PASSWORD" -> UiText.StringResource(R.string.error_esp_invalid_password)
-          "ESP_ERR_INVALID_ARG" -> UiText.StringResource(R.string.error_esp_invalid_arg)
-          "ESP_ERR_NO_MEM" -> UiText.StringResource(R.string.error_esp_no_mem)
-          "ESP_ERR_INVALID_STATE" -> UiText.StringResource(R.string.error_esp_invalid_state)
-          "ESP_ERR_TIMEOUT" -> UiText.StringResource(R.string.error_esp_timeout)
-          else -> UiText.StringResource(R.string.error_esp_generic, throwable.errorName, throwable.errorCode)
-        }
-      }
+      is RestException -> mapDeviceError(throwable.errorName, throwable.errorCode)
 
       else -> UiText.StringResource(
         R.string.error_network_generic,
