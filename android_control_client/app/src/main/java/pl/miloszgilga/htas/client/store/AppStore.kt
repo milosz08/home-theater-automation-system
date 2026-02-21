@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.map
 
 val Context.dataStore by preferencesDataStore(name = "settings")
 
-class ConnectionStore(private val context: Context) {
+class AppStore(private val context: Context) {
   companion object {
     private val IP_KEY = stringPreferencesKey("ip")
     private val PORT_KEY = intPreferencesKey("port")

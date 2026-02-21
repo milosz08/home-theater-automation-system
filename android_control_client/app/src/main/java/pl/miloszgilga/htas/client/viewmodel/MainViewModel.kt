@@ -23,7 +23,7 @@ import pl.miloszgilga.htas.client.net.ws.WsAction
 import pl.miloszgilga.htas.client.net.ws.WsEvent
 import pl.miloszgilga.htas.client.net.ws.WsEventParser
 import pl.miloszgilga.htas.client.net.parse
-import pl.miloszgilga.htas.client.store.ConnectionStore
+import pl.miloszgilga.htas.client.store.AppStore
 import pl.miloszgilga.htas.client.store.ServerConfig
 import pl.miloszgilga.htas.client.util.UiText
 import pl.miloszgilga.htas.client.R
@@ -39,7 +39,7 @@ class MainViewModel(
   application: Application,
   private val jsonParser: JsonParser,
 ) : AndroidViewModel(application) {
-  private val store = ConnectionStore(application)
+  private val store = AppStore(application)
   private val repository = WsClient(jsonParser)
   private val eventParser = WsEventParser(jsonParser)
   private val restExecutor = RestExecutor(jsonParser)
