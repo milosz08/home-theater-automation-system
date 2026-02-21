@@ -16,6 +16,8 @@
 #define WS_EVENT_TYPE_SYS_INFO "sys-info"
 /*! \brief Event name for getting firmware ota update status (e.g., percentage, bytes count) */
 #define WS_EVENT_TYPE_OTA_UPDATE_PROGRESS "update-progress"
+/*! \brief Event name for getting info about command invocation (command name and invocation status) */
+#define WS_EVENT_TYPE_CMD_INVOCATION "cmd-invocation"
 
 /*! \brief Structure representing a queued message. */
 typedef struct

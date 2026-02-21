@@ -175,7 +175,7 @@ void app_main(void)
   };
   CHECK_CRITICAL(ws_queue_init(), "WS queue fail");
   CHECK_CRITICAL(ws_dispatcher_init(), "WS disp fail");
-  CHECK_CRITICAL(ws_cmd_router_init(on_command_action), "WS router fail");
+  CHECK_CRITICAL(ws_cmd_router_init(on_command_action, on_command_error), "WS router fail");
   CHECK_CRITICAL(https_server_service_init(&https_cfg), "HTTPS fail");
   vTaskDelay(pdMS_TO_TICKS(PROGRESS_BAR_COOLDOWN_MS));
 
