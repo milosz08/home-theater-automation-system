@@ -5,14 +5,14 @@
 #include "driver/uart.h"
 #include "esp_err.h"
 
-// RS485 Configuration (projection screen)
+// RS485 (projection screen)
 #define RS485_UART_PORT       UART_NUM_2    /*!< UART port used for RS485. */
 #define RS485_TX_PIN          GPIO_NUM_17   /*!< TX Pin for RS485. */
 #define RS485_RX_PIN          GPIO_NUM_16   /*!< RX Pin for RS485. */
 #define RS485_BAUD_RATE       2400          /*!< Baud rate for RS485. */
 #define RS485_BUF_SIZE        2048          /*!< Buffer size for RS485. */
 
-// RS232 Configuration (projector)
+// RS232 (projector)
 #define RS232_UART_PORT       UART_NUM_1    /*!< UART port used for RS232. */
 #define RS232_TX_PIN          GPIO_NUM_21   /*!< TX Pin for RS232. */
 #define RS232_RX_PIN          GPIO_NUM_22   /*!< RX Pin for RS232. */
@@ -33,19 +33,24 @@ esp_err_t uart_bus_rs485_init(void);
  * \param data  Pointer to data buffer.
  * \param len   Number of bytes to send.
  *
- * @return Number of bytes sent or -1 on error.
+ * \retval ESP_OK           On success.
+ * \retval ESP_ERR_TIMEOUT  If the transmission timed out.
+ * \retval ESP_FAIL         On driver error or invalid state.
  */
-int uart_bus_rs485_send(const uint8_t *data, uint16_t len);
+esp_err_t uart_bus_rs485_send(const uint8_t *data, uint16_t len);
 
 /*! \brief Reads data from RS485.
  *
  * \param buf         Buffer to store received data.
  * \param len         Max bytes to read.
  * \param timeout_ms  How long to wait for data.
- * 
- * \return Number of bytes read.
+ * \param out_len     Pointer to an integer where the number of read bytes will be stored.
+ *
+ * \retval ESP_OK           If data was successfully read (check out_len for size).
+ * \retval ESP_ERR_TIMEOUT  If no data was received before the timeout expired.
+ * \retval ESP_FAIL         On driver error or invalid state.
  */
-int uart_bus_rs485_read(uint8_t *buf, uint32_t len, uint32_t timeout_ms);
+esp_err_t uart_bus_rs485_read(uint8_t *buf, uint32_t len, uint32_t timeout_ms, int *out_len);
 
 /*! \brief Initializes the RS232 interface.
  *
@@ -57,22 +62,27 @@ int uart_bus_rs485_read(uint8_t *buf, uint32_t len, uint32_t timeout_ms);
 esp_err_t uart_bus_rs232_init(void);
 
 /*! \brief Sends raw data over RS232.
- * 
+ *
  * \param data  Pointer to data buffer.
  * \param len   Number of bytes to send.
  *
- * \return Number of bytes sent.
+ * \retval ESP_OK           On success.
+ * \retval ESP_ERR_TIMEOUT  If the transmission timed out.
+ * \retval ESP_FAIL         On driver error or invalid state.
  */
-int uart_bus_rs232_send(const uint8_t *data, uint16_t len);
+esp_err_t uart_bus_rs232_send(const uint8_t *data, uint16_t len);
 
 /*! \brief Reads data from RS232.
  *
  * \param buf         Buffer to store received data.
  * \param len         Max bytes to read.
  * \param timeout_ms  How long to wait for data.
+ * \param out_len     Pointer to an integer where the number of read bytes will be stored.
  *
- * \return Number of bytes read.
+ * \retval ESP_OK           If data was successfully read (check out_len for size).
+ * \retval ESP_ERR_TIMEOUT  If no data was received before the timeout expired.
+ * \retval ESP_FAIL         On driver error or invalid state.
  */
-int uart_bus_rs232_read(uint8_t *buf, uint32_t len, uint32_t timeout_ms);
+esp_err_t uart_bus_rs232_read(uint8_t *buf, uint32_t len, uint32_t timeout_ms, int *out_len);
 
 #endif // UART_BUS_H_

@@ -37,14 +37,26 @@ esp_err_t uart_bus_rs485_init(void)
   return ESP_OK;
 }
 
-int uart_bus_rs485_send(const uint8_t *data, uint16_t len)
+esp_err_t uart_bus_rs485_send(const uint8_t *data, uint16_t len)
 {
-  return uart_write_bytes(RS485_UART_PORT, (const char*)data, len);
+  int bytes_written = uart_write_bytes(RS485_UART_PORT, (const char*)data, len);
+
+  if (bytes_written == len) return ESP_OK;
+  if (bytes_written < 0) return ESP_ERR_INVALID_STATE;
+
+  return ESP_ERR_TIMEOUT;
 }
 
-int uart_bus_rs485_read(uint8_t *buf, uint32_t len, uint32_t timeout_ms)
+esp_err_t uart_bus_rs485_read(uint8_t *buf, uint32_t len, uint32_t timeout_ms, int *out_len)
 {
-  return uart_read_bytes(RS485_UART_PORT, buf, len, pdMS_TO_TICKS(timeout_ms));
+  int rx_len = uart_read_bytes(RS485_UART_PORT, buf, len, pdMS_TO_TICKS(timeout_ms));
+  if (rx_len < 0)
+  {
+    if (out_len) *out_len = 0;
+    return ESP_ERR_INVALID_STATE;
+  }
+  if (out_len) *out_len = rx_len;
+  return (rx_len > 0) ? ESP_OK : ESP_ERR_TIMEOUT;
 }
 
 esp_err_t uart_bus_rs232_init(void) {
@@ -69,12 +81,24 @@ esp_err_t uart_bus_rs232_init(void) {
   return ESP_OK;
 }
 
-int uart_bus_rs232_send(const uint8_t *data, uint16_t len)
+esp_err_t uart_bus_rs232_send(const uint8_t *data, uint16_t len)
 {
-  return uart_write_bytes(RS232_UART_PORT, (const char*)data, len);
+  int bytes_written = uart_write_bytes(RS232_UART_PORT, (const char*)data, len);
+  
+  if (bytes_written == len) return ESP_OK;
+  if (bytes_written < 0) return ESP_ERR_INVALID_STATE;
+
+  return ESP_ERR_TIMEOUT;
 }
 
-int uart_bus_rs232_read(uint8_t *buf, uint32_t len, uint32_t timeout_ms)
+esp_err_t uart_bus_rs232_read(uint8_t *buf, uint32_t len, uint32_t timeout_ms, int *out_len)
 {
-  return uart_read_bytes(RS232_UART_PORT, buf, len, pdMS_TO_TICKS(timeout_ms));
+  int rx_len = uart_read_bytes(RS232_UART_PORT, buf, len, pdMS_TO_TICKS(timeout_ms));
+  if (rx_len < 0)
+  {
+    if (out_len) *out_len = 0;
+    return ESP_ERR_INVALID_STATE;
+  }
+  if (out_len) *out_len = rx_len;
+  return (rx_len > 0) ? ESP_OK : ESP_ERR_TIMEOUT;
 }

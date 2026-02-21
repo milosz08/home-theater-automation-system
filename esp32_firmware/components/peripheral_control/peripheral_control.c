@@ -22,17 +22,27 @@ static const uint8_t CMD_SCREEN_UP[] = {
 
 // public api ----------------------------------------------------------------------------------------------------------
 
-int peripheral_control_screen_down(void)
+esp_err_t peripheral_control_screen_down(void)
 {
   return uart_bus_rs485_send(CMD_SCREEN_DOWN, sizeof(CMD_SCREEN_DOWN));
 }
 
-int peripheral_control_screen_stop(void)
+esp_err_t peripheral_control_screen_stop(void)
 {
   return uart_bus_rs485_send(CMD_SCREEN_STOP, sizeof(CMD_SCREEN_STOP));
 }
 
-int peripheral_control_screen_up(void)
+esp_err_t peripheral_control_screen_up(void)
 {
   return uart_bus_rs485_send(CMD_SCREEN_UP, sizeof(CMD_SCREEN_UP));
+}
+
+esp_err_t peripheral_control_projector_on(void)
+{
+  return ESP_ERR_TIMEOUT;
+}
+
+esp_err_t peripheral_control_projector_off(void)
+{
+  return ESP_ERR_INVALID_STATE;
 }
