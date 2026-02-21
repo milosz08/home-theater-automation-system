@@ -11,7 +11,7 @@
 #define ETH_SPI_MISO_GPIO   GPIO_NUM_19   /*!< GPIO pin for master in slave out (MISO) - receiving data from W5500. */
 #define ETH_SPI_CS_GPIO     GPIO_NUM_5    /*!< GPIO pin for chip select (CS) - active low. */
 #define ETH_SPI_INT_GPIO    GPIO_NUM_4    /*!< GPIO pin for interrupt (INT) - signals incoming packets. */
-#define ETH_SPI_CLOCK_MHZ   16            /*!< SPI Clock speed in MHz. */
+#define ETH_SPI_CLOCK_MHZ   10            /*!< SPI Clock speed in MHz. */
 #define ETH_SPI_RST_GPIO    GPIO_NUM_32   /*!< GPIO pin for hardware reset (RST) of the W5500 chip. */
 
 /*! \brief Initial silent wait time for auto-negotiation before alerting the user. */
