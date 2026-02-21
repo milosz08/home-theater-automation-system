@@ -25,7 +25,19 @@ sealed class WsEvent {
   data class ParseError(val cause: Throwable) : WsEvent()
 }
 
+enum class EnvelopeType {
+  @SerializedName("env")
+  ENV,
+
+  @SerializedName("sys-info")
+  SYS_INFO,
+
+  @SerializedName("cmd-invocation")
+  CMD_INVOCATION,
+  ;
+}
+
 data class WsRawEnvelope(
-  @SerializedName("type") val type: String,
+  @SerializedName("type") val type: EnvelopeType,
   @SerializedName("data") val data: JsonElement,
 )

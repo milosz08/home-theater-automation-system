@@ -8,9 +8,14 @@ class WsEventParser(private val jsonParser: JsonParser) {
     return try {
       val envelope = jsonParser.parse<WsRawEnvelope>(jsonString)
       when (envelope.type) {
-        "env" -> jsonParser.fromJson(envelope.data.toString(), WsEvent.Env::class.java)
-        "sys-info" -> jsonParser.fromJson(envelope.data.toString(), WsEvent.SysInfo::class.java)
-        else -> WsEvent.Unknown(envelope.type)
+        EnvelopeType.ENV -> jsonParser.fromJson(envelope.data.toString(), WsEvent.Env::class.java)
+
+        EnvelopeType.SYS_INFO -> jsonParser.fromJson(envelope.data.toString(), WsEvent.SysInfo::class.java)
+
+        EnvelopeType.CMD_INVOCATION -> jsonParser.fromJson(
+          envelope.data.toString(),
+          WsEvent.CommandInvocation::class.java
+        )
       }
     } catch (ex: Exception) {
       WsEvent.ParseError(ex)
