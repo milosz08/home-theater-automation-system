@@ -112,7 +112,7 @@ class WsClient(private val jsonParser: JsonParser) : NetworkClient() {
       Log.w(TAG, "cannot send action '${action.key}', ws is null")
       return false
     }
-    val request = WsRequest(action.key, value)
+    val request = WsRequest(action, value)
     val jsonString = jsonParser.toJson(request)
 
     Log.d(TAG, "sending action: $jsonString")

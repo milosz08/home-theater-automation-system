@@ -10,4 +10,6 @@ enum class WsAction(val key: String) {
 data class WsRequest(
   @SerializedName("action") val action: String,
   @SerializedName("value") val value: Any? = null,
-)
+) {
+  constructor(action: WsAction, value: Any? = null) : this(action.key, value)
+}
