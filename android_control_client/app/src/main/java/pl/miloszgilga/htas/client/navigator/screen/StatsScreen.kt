@@ -2,7 +2,6 @@ package pl.miloszgilga.htas.client.navigator.screen
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import pl.miloszgilga.htas.client.R

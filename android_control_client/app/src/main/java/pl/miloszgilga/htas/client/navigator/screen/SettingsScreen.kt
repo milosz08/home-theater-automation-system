@@ -2,7 +2,6 @@ package pl.miloszgilga.htas.client.navigator.screen
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,12 +30,9 @@ import pl.miloszgilga.htas.client.composable.settings.ConnectionStatusBadgeRow
 import pl.miloszgilga.htas.client.composable.settings.FooterText
 import pl.miloszgilga.htas.client.composable.settings.PasswordSettingsRow
 import pl.miloszgilga.htas.client.util.formatTimestamp
-import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.util.Date
-import java.util.Locale
 
 enum class ActiveDialog {
   NONE,
