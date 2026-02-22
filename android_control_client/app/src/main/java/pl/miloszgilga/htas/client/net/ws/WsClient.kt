@@ -58,7 +58,7 @@ class WsClient(private val jsonParser: JsonParser) : NetworkClient() {
         client = baseClient.newBuilder()
           .readTimeout(0, TimeUnit.MILLISECONDS)
           .connectTimeout(10, TimeUnit.SECONDS)
-          .pingInterval(5, TimeUnit.SECONDS)
+          .pingInterval(45, TimeUnit.SECONDS)
           .build()
 
         val request = Request.Builder()
