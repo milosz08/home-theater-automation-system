@@ -87,6 +87,8 @@
   <string name="waiting_for_data">Waiting for data</string>
   <string name="readings">Readings</string>
 
+  <string name="reconnecting">Connection is being refreshed</string>
+  <string name="send_failed">Sending error - no connection</string>
   <string name="device_is_not_connected">Device is not connected</string>
   <string name="password_changed">Password changed</string>
   <string name="password_reset">Password reset</string>

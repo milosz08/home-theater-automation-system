@@ -21,6 +21,7 @@ import pl.miloszgilga.htas.client.net.NetworkClient
 import pl.miloszgilga.htas.client.net.NetworkEvent
 import pl.miloszgilga.htas.client.net.TofuClient
 import pl.miloszgilga.htas.client.store.ServerConfig
+import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 class WsClient(private val jsonParser: JsonParser) : NetworkClient() {
@@ -30,6 +31,9 @@ class WsClient(private val jsonParser: JsonParser) : NetworkClient() {
     private const val HEARTBEAT_TIMEOUT_MS = 12000L
     private const val REASON_SCOPE_CLOSED = "Scope closed"
     private const val REASON_USER_DISCONNECTED = "User disconnected"
+
+    private const val MAX_RECONNECT_ATTEMPTS = 2
+    private const val RECONNECT_DELAY_MS = 1500L
   }
 
   private var webSocket: WebSocket? = null
@@ -42,58 +46,83 @@ class WsClient(private val jsonParser: JsonParser) : NetworkClient() {
     Log.d(TAG, "initiating ws connection to ${config.ip}:${config.port}")
 
     disconnect()
+
+    var attempt = 0
     watchdogScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
-    try {
-      val tofuWrapper = TofuClient(config.hash)
-      val baseClient = tofuWrapper.getClient()
 
-      client = baseClient.newBuilder()
-        .readTimeout(0, TimeUnit.MILLISECONDS)
-        .connectTimeout(10, TimeUnit.SECONDS)
-        .pingInterval(5, TimeUnit.SECONDS)
-        .build()
+    fun establishConnection() {
+      try {
+        val tofuWrapper = TofuClient(config.hash)
+        val baseClient = tofuWrapper.getClient()
 
-      val request = Request.Builder()
-        .url("wss://${config.ip}:${config.port}/ws/control")
-        .addHeader(AUTH_HEADER_NAME, config.pass)
-        .build()
+        client = baseClient.newBuilder()
+          .readTimeout(0, TimeUnit.MILLISECONDS)
+          .connectTimeout(10, TimeUnit.SECONDS)
+          .pingInterval(5, TimeUnit.SECONDS)
+          .build()
 
-      val listener = object : WebSocketListener() {
-        override fun onOpen(webSocket: WebSocket, response: Response) {
-          Log.d(TAG, "ws opened successfully")
-          trySend(NetworkEvent.Connected)
-          resetWatchdog()
+        val request = Request.Builder()
+          .url("wss://${config.ip}:${config.port}/ws/control")
+          .addHeader(AUTH_HEADER_NAME, config.pass)
+          .build()
+
+        val listener = object : WebSocketListener() {
+          override fun onOpen(webSocket: WebSocket, response: Response) {
+            Log.d(TAG, "ws opened successfully")
+            this@WsClient.webSocket = webSocket
+            attempt = 0
+            trySend(NetworkEvent.Connected)
+            resetWatchdog()
+          }
+
+          override fun onMessage(webSocket: WebSocket, text: String) {
+            Log.d(TAG, "ws received message: $text")
+            resetWatchdog()
+            trySend(NetworkEvent.MessageReceived(text))
+          }
+
+          override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+            Log.e(TAG, "ws failure: ${t.message}")
+            webSocket.cancel()
+            this@WsClient.webSocket = null
+            if (t is IOException && attempt < MAX_RECONNECT_ATTEMPTS) {
+              attempt++
+              trySend(NetworkEvent.Reconnecting)
+              Log.w(
+                TAG, "recoverable network error, retrying attempt " +
+                  "$attempt/$MAX_RECONNECT_ATTEMPTS in ${RECONNECT_DELAY_MS}ms..."
+              )
+              launch {
+                delay(RECONNECT_DELAY_MS)
+                establishConnection()
+              }
+            } else {
+              Log.e(TAG, "fatal error or max retries reached, closing flow", t)
+              trySend(NetworkEvent.Error(t))
+              close()
+            }
+          }
+
+          override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
+            Log.w(TAG, "ws closing by server, code: $code, reason: $reason")
+            trySend(NetworkEvent.Disconnected(reason))
+            close()
+          }
         }
-
-        override fun onMessage(webSocket: WebSocket, text: String) {
-          Log.d(TAG, "ws received message: $text")
-          resetWatchdog()
-          trySend(NetworkEvent.MessageReceived(text))
-        }
-
-        override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-          Log.e(TAG, "ws failure: ${t.message}", t)
-          trySend(NetworkEvent.Error(t))
-          close()
-        }
-
-        override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
-          Log.w(TAG, "ws closing by server, code: $code, reason: $reason")
-          trySend(NetworkEvent.Disconnected(reason))
-          close()
-        }
+        webSocket = client?.newWebSocket(request, listener)
+      } catch (ex: Exception) {
+        Log.e(TAG, "exception during ws setup: ${ex.message}", ex)
+        trySend(NetworkEvent.Error(ex))
+        close()
       }
-      webSocket = client?.newWebSocket(request, listener)
-    } catch (ex: Exception) {
-      Log.e(TAG, "exception during ws setup: ${ex.message}", ex)
-      trySend(NetworkEvent.Error(ex))
-      close()
     }
+    establishConnection()
     awaitClose {
       Log.d(TAG, "flow scope closed, cleaning up ws")
       stopWatchdog()
       webSocket?.close(1000, REASON_SCOPE_CLOSED)
       webSocket = null
+      client = null
     }
   }
 

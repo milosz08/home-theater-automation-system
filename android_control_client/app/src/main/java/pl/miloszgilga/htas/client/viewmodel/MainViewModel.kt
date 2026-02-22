@@ -52,11 +52,14 @@ class MainViewModel(
 
   var uiState by mutableStateOf<AppUiState>(AppUiState.Loading)
     private set
-  var lastConnectedTimestamp by mutableStateOf<Long?>(null)
-    private set
   var sysInfo by mutableStateOf<WsEvent.SysInfo?>(null)
     private set
   val envHistory = mutableStateListOf<WsEvent.Env>()
+
+  var lastConnectedTimestamp by mutableStateOf<Long?>(null)
+    private set
+  var isReconnecting by mutableStateOf(false)
+    private set
 
   var isUiLocked by mutableStateOf(false)
     private set
@@ -173,10 +176,18 @@ class MainViewModel(
       Log.w(TAG, "ignored command ${action.key}, ui is in cooldown")
       return
     }
-    repository.sendAction(action, value)
-    if (isCooldownEnabled) {
-      startCooldown()
+    if (isReconnecting) {
+      Log.w(TAG, "ignored command ${action.key}, reconnecting")
+      ToastManager.show(application.getString(R.string.reconnecting), ToastType.ERROR)
+      return
     }
+    val success = repository.sendAction(action, value)
+    if (success && isCooldownEnabled) {
+      startCooldown()
+      return
+    }
+    Log.w(TAG, "unable to send command: ${action.key}")
+    ToastManager.show(application.getString(R.string.send_failed), ToastType.ERROR)
   }
 
   fun disconnect() {
@@ -272,11 +283,16 @@ class MainViewModel(
       repository.connectWebSocket(config).collect { event ->
         when (event) {
           is NetworkEvent.Connected -> {
+            isReconnecting = false
             Log.d(TAG, "NetworkEvent.Connected received, requesting system info")
-            val now = System.currentTimeMillis()
-            store.saveLastConnected(now)
+            store.saveLastConnected(System.currentTimeMillis())
             repository.sendAction(WsAction.GET_SYS_INFO)
             uiState = AppUiState.Connected(config)
+          }
+
+          is NetworkEvent.Reconnecting -> {
+            Log.w(TAG, "NetworkEvent.Reconnecting received, reconnect attempt")
+            isReconnecting = true
           }
 
           is NetworkEvent.Error -> {
