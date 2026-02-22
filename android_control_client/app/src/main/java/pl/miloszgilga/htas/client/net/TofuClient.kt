@@ -21,7 +21,7 @@ class TofuClient(expectedSha256Hash: String) {
   companion object {
     private const val TAG = "TofuClient"
 
-    private const val TIMEOUT_SEC = 30L
+    private const val TIMEOUT_SEC = 60L
   }
 
   @SuppressLint("CustomX509TrustManager")
