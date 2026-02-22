@@ -36,11 +36,19 @@ jobs:
         working-directory: ${{ env.ESP32_PROJECT_PATH }}/build
         run: mv esp32_firmware.bin esp32-firmware-v${{ inputs.version }}.bin
 
+      - name: Generate firmware hash
+        working-directory: ${{ env.ESP32_PROJECT_PATH }}/build
+        run: |
+          HASH=$(sha256sum esp32-firmware-v${{ inputs.version }}.bin | awk '{print $1}')
+          echo "sha256:$HASH" > esp32-firmware-v${{ inputs.version }}-hash.txt
+
       - name: Upload firmware artifact
         uses: actions/upload-artifact@v6
         with:
           name: htas-esp32-firmware
-          path: ${{ env.ESP32_PROJECT_PATH }}/build/esp32-firmware-v${{ inputs.version }}.bin
+          path: |
+            ${{ env.ESP32_PROJECT_PATH }}/build/esp32-firmware-v${{ inputs.version }}.bin
+            ${{ env.ESP32_PROJECT_PATH }}/build/esp32-firmware-v${{ inputs.version }}-hash.txt
 
   esp32-firmware-doxygen:
     runs-on: ubuntu-latest
