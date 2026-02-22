@@ -1,4 +1,4 @@
-package pl.miloszgilga.htas.client.toast
+package pl.miloszgilga.htas.client.toast.composable
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import pl.miloszgilga.htas.client.toast.ToastManager
 
 @Composable
 fun GlobalToastHost() {

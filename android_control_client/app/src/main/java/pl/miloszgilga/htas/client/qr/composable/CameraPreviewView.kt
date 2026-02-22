@@ -1,4 +1,4 @@
-package pl.miloszgilga.htas.client.qr
+package pl.miloszgilga.htas.client.qr.composable
 
 import android.content.Context
 import android.view.ViewGroup
@@ -18,6 +18,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import pl.miloszgilga.htas.client.qr.QrCodeAnalyzer
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 

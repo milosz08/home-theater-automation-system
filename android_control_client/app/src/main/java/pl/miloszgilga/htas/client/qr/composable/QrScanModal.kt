@@ -1,4 +1,4 @@
-package pl.miloszgilga.htas.client.qr
+package pl.miloszgilga.htas.client.qr.composable
 
 import android.Manifest
 import androidx.compose.foundation.background

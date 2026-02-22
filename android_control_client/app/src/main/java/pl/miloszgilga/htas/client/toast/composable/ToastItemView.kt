@@ -1,4 +1,4 @@
-package pl.miloszgilga.htas.client.toast
+package pl.miloszgilga.htas.client.toast.composable
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -21,6 +21,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
+import pl.miloszgilga.htas.client.toast.ToastManager
+import pl.miloszgilga.htas.client.toast.ToastModel
+import pl.miloszgilga.htas.client.toast.ToastType
 
 @Composable
 fun ToastItemView(toast: ToastModel) {

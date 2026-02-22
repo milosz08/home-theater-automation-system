@@ -48,13 +48,13 @@
   <string name="ip_address">IP address</string>
   <string name="port">Port</string>
   <string name="password">Password</string>
+  <string name="change_password">Change password</string>
+  <string name="reset_password">Reset password</string>
   <string name="last_connection">Last connection</string>
   <string name="device_firmware">Device firmware</string>
   <string name="firmware_name">Firmware name</string>
   <string name="firmware_version">Firmware version</string>
   <string name="compiled_at">Compiled at</string>
-  <string name="change_password">Change password</string>
-  <string name="reset_password">Reset password</string>
   <string name="danger_zone">Danger zone</string>
   <string name="disconnect">Disconnect</string>
   <string name="forget_unpair">Forget (unpair)</string>
