@@ -100,9 +100,9 @@ void ws_cmd_handle(uint8_t *payload, size_t len)
           free(resp_str);
         }
         cJSON_Delete(resp);
+        if (s_on_error_cb != NULL && res != ESP_OK) s_on_error_cb(s_commands[i].friendly_name, res);
+        else if (s_on_executed_cb != NULL && res == ESP_OK) s_on_executed_cb(s_commands[i].friendly_name);
       }
-      if (s_on_error_cb != NULL && res != ESP_OK) s_on_error_cb(s_commands[i].friendly_name, res);
-      else if (s_on_executed_cb != NULL && res == ESP_OK) s_on_executed_cb(s_commands[i].friendly_name);
       break;
     }
   }
