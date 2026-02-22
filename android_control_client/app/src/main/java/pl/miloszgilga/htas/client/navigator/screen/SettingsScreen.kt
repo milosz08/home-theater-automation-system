@@ -1,5 +1,8 @@
 package pl.miloszgilga.htas.client.navigator.screen
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
@@ -10,6 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import pl.miloszgilga.htas.client.BuildConfig
 import pl.miloszgilga.htas.client.R
+import pl.miloszgilga.htas.client.composable.ActionPropertyRow
 import pl.miloszgilga.htas.client.composable.AppSlider
 import pl.miloszgilga.htas.client.viewmodel.AppUiState
 import pl.miloszgilga.htas.client.viewmodel.MainViewModel
@@ -52,6 +56,7 @@ fun SettingsScreen(
 ) {
   val state = viewModel.uiState
   var activeDialog by remember { mutableStateOf(ActiveDialog.NONE) }
+  var isPasswordVisible by remember { mutableStateOf(false) }
 
   val config = when (state) {
     is AppUiState.Connected -> state.config
@@ -106,7 +111,13 @@ fun SettingsScreen(
         DataSection(stringResource(R.string.connection_details)) {
           TextPropertyRow(label = stringResource(R.string.ip_address), value = it.ip)
           TextPropertyRow(label = stringResource(R.string.port), value = it.port.toString())
-          PasswordSettingsRow(label = stringResource(R.string.password), password = it.pass)
+          ActionPropertyRow(
+            label = stringResource(R.string.password),
+            value = if (isPasswordVisible) it.pass else "*******",
+            icon = if (isPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+            contentDescription = stringResource(R.string.show_hide_password),
+            onClick = { isPasswordVisible = !isPasswordVisible },
+          )
           sysInfo?.let {
             ResponsiveMultipleActionLayout(
               includeHorizontalSpace = false,

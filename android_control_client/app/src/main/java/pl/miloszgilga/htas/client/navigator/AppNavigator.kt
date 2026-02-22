@@ -16,6 +16,7 @@ import pl.miloszgilga.htas.client.viewmodel.AppUiState
 fun AppNavigator() {
   val navController = rememberNavController()
   val viewModel: MainViewModel = viewModel(factory = MainViewModel.Factory)
+
   val isConnected = viewModel.uiState is AppUiState.Connected
 
   NavHost(
