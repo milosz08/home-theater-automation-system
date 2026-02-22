@@ -17,6 +17,11 @@ static httpd_handle_t s_server_handle = NULL;
 
 static void send_ws_json(httpd_handle_t server, int socket, const char *event, const char *data)
 {
+  if (httpd_ws_get_fd_info(server, socket) != HTTPD_WS_CLIENT_WEBSOCKET)
+  {
+    s_active_socket = -1;
+    return;
+  }
   size_t len = strlen(event) + strlen(data) + 30;
   char *buffer = malloc(len);
   if (!buffer) return;
