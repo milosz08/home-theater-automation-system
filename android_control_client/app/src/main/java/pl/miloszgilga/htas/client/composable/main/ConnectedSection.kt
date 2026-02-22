@@ -26,7 +26,7 @@ fun ConnectedSection(viewModel: MainViewModel) {
 
   ScrollableScreenWrapper {
     AnimatedProgressBar(
-      isVisible = isLocked,
+      isVisible = isLocked && viewModel.cooldownProgress > 0f,
       progress = viewModel.cooldownProgress,
       modifier = Modifier.padding(bottom = 8.dp)
     )

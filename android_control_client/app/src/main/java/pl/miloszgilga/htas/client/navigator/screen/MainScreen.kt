@@ -5,6 +5,8 @@ import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.CloudOff
 import androidx.compose.material.icons.filled.DeviceUnknown
 import androidx.compose.material.icons.filled.LinkOff
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,6 +44,13 @@ fun MainScreen(
     title = stringResource(R.string.app_name),
     topBarType = TopBarType.ROOT_PAGE,
     mainNavigationContent = {
+      TooltipIconButton(
+        icon = if (viewModel.isUiLocked) Icons.Default.Lock else Icons.Default.LockOpen,
+        contentDescription = stringResource(if (viewModel.isUiLocked) R.string.unblock_ui else R.string.block_ui),
+        onClick = { viewModel.toggleUiLock() },
+        enabled = state is AppUiState.Connected,
+        disabledMessage = stringResource(R.string.unblock_block_ui_tooltip),
+      )
       TooltipIconButton(
         icon = Icons.Default.BarChart,
         contentDescription = stringResource(R.string.device_statistics),

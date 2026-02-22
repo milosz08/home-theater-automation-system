@@ -161,6 +161,13 @@ class MainViewModel(
     }
   }
 
+  fun toggleUiLock() {
+    cooldownJob?.cancel()
+    cooldownProgress = 0f
+    isUiLocked = !isUiLocked
+    Log.d(TAG, "ui manually ${if (isUiLocked) "locked" else "unlocked"} by user")
+  }
+
   fun sendCommand(action: WsAction, value: Any? = null) {
     if (isUiLocked) {
       Log.w(TAG, "ignored command ${action.key}, ui is in cooldown")

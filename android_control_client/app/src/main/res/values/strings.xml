@@ -71,6 +71,10 @@
   <string name="forget_unpair_alert">Forget device?</string>
   <string name="forget_unpair_alert_description">This will delete all saved connection details. This action cannot be undone.</string>
 
+  <string name="unblock_ui">Unblock UI</string>
+  <string name="block_ui">Block UI</string>
+  <string name="unblock_block_ui_tooltip">Connect to device to toggle UI block/unblock state</string>
+
   <string name="device_statistics">Device statistics</string>
   <string name="device_statistics_tooltip">Connect to device to view statistics</string>
   <string name="current_readings">Current readings</string>
