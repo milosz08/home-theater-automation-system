@@ -6,6 +6,7 @@ idf_component_register(
     "include"
 
   REQUIRES
+    esp_app_format
     esp_timer
     log
     env_sensor

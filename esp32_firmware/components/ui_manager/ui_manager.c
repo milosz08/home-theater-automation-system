@@ -5,6 +5,7 @@
 #include "ui.h"
 #include "env_sensor.h"
 
+#include "esp_app_desc.h"
 #include "esp_heap_caps.h"
 #include "esp_log.h"
 #include "esp_timer.h"
@@ -22,6 +23,7 @@ typedef enum
   PAGE_NETWORK,
   PAGE_ENV,
   PAGE_RESOURCES,
+  PAGE_FIRMWARE_VERSION,
   PAGE_COUNT
 } ui_page_t;
 
@@ -90,15 +92,22 @@ static void render_resources_page(void)
   ui_set_text(line0, line1);
 }
 
+static void render_firmware_version_page(void)
+{
+  const esp_app_desc_t *app_desc = esp_app_get_description();
+  ui_set_text("Firmware ver:", app_desc->version);
+}
+
 static void render_current_page(void)
 {
   switch (current_page)
   {
-    case PAGE_SYSTEM:     render_system_page();     break;
-    case PAGE_NETWORK:    render_network_page();    break;
-    case PAGE_CLOCK:      render_clock_page();      break;
-    case PAGE_ENV:        render_env_page();        break;
-    case PAGE_RESOURCES:  render_resources_page();  break;
+    case PAGE_SYSTEM:             render_system_page();             break;
+    case PAGE_NETWORK:            render_network_page();            break;
+    case PAGE_CLOCK:              render_clock_page();              break;
+    case PAGE_ENV:                render_env_page();                break;
+    case PAGE_RESOURCES:          render_resources_page();          break;
+    case PAGE_FIRMWARE_VERSION:   render_firmware_version_page();   break;
     default: break;
   }
 }
