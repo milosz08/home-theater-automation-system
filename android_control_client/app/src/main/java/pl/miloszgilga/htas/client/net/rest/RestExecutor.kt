@@ -19,7 +19,8 @@ class RestExecutor(@PublishedApi internal val jsonParser: JsonParser) {
     config: ServerConfig,
     endpoint: String,
     method: HttpMethod = HttpMethod.GET,
-    payload: Map<String, String>? = null,
+    payload: Any? = null,
+    contentType: String? = null,
     crossinline onSuccess: suspend (response: T?) -> Unit,
     crossinline onError: suspend (errorText: UiText) -> Unit,
   ) {
@@ -31,6 +32,7 @@ class RestExecutor(@PublishedApi internal val jsonParser: JsonParser) {
         endpoint = endpoint,
         method = method,
         bodyPayload = payload,
+        contentType = contentType,
       )
       onSuccess(result)
     } catch (e: Exception) {

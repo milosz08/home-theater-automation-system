@@ -5,9 +5,11 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.FormBody
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import pl.miloszgilga.htas.client.net.JsonParser
 import pl.miloszgilga.htas.client.net.NetworkClient
@@ -30,17 +32,31 @@ class RestClient(
     config: ServerConfig,
     endpoint: String,
     method: HttpMethod = HttpMethod.GET,
-    bodyPayload: Map<String, String>? = null,
+    bodyPayload: Any? = null,
+    contentType: String? = null,
   ): T? = suspendCancellableCoroutine { continuation ->
     val url = "https://${config.ip}:${config.port}$endpoint"
 
     val requestBody: RequestBody? = if (bodyPayload != null && method != HttpMethod.GET) {
-      val formBuilder = FormBody.Builder()
-      bodyPayload.forEach { (key, value) ->
-        formBuilder.add(key, value)
+      when (bodyPayload) {
+        is Map<*, *> -> {
+          val formBuilder = FormBody.Builder()
+          bodyPayload.forEach { (key, value) ->
+            formBuilder.add(key.toString(), value.toString())
+          }
+          formBuilder.build()
+        }
+
+        is ByteArray -> {
+          val mediaType = (contentType ?: "application/octet-stream").toMediaTypeOrNull()
+          bodyPayload.toRequestBody(mediaType)
+        }
+
+        else -> null
       }
-      formBuilder.build()
-    } else null
+    } else {
+      null
+    }
 
     val request = Request.Builder()
       .url(url)
