@@ -40,7 +40,7 @@ jobs:
         working-directory: ${{ env.ESP32_PROJECT_PATH }}/build
         run: |
           HASH=$(sha256sum esp32-firmware-v${{ inputs.version }}.bin | awk '{print $1}')
-          echo "sha256:$HASH" > esp32-firmware-v${{ inputs.version }}-hash.txt
+          echo "SHA-256:$HASH" > esp32-firmware-v${{ inputs.version }}-hash.txt
 
       - name: Upload firmware artifact
         uses: actions/upload-artifact@v6
