@@ -41,6 +41,9 @@
   <string name="connection_status">Connection status</string>
   <string name="connected">CONNECTED</string>
   <string name="disconnected">DISCONNECTED</string>
+  <string name="safety_and_delays">Safety and delays</string>
+  <string name="action_cooldown">Action cooldown</string>
+  <string name="cooldown_duration">Cooldown duration:</string>
   <string name="connection_details">Connection details</string>
   <string name="ip_address">IP address</string>
   <string name="port">Port</string>

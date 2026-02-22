@@ -1,12 +1,16 @@
 package pl.miloszgilga.htas.client.composable.main
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import pl.miloszgilga.htas.client.R
+import pl.miloszgilga.htas.client.composable.AnimatedProgressBar
 import pl.miloszgilga.htas.client.composable.ScrollableScreenWrapper
 import pl.miloszgilga.htas.client.composable.SectionHeader
 import pl.miloszgilga.htas.client.composable.button.AppButton
@@ -18,24 +22,34 @@ import pl.miloszgilga.htas.client.viewmodel.MainViewModel
 
 @Composable
 fun ConnectedSection(viewModel: MainViewModel) {
+  val isLocked = viewModel.isUiLocked
+
   ScrollableScreenWrapper {
+    AnimatedProgressBar(
+      isVisible = isLocked,
+      progress = viewModel.cooldownProgress,
+      modifier = Modifier.padding(bottom = 8.dp)
+    )
+
     SectionHeader(stringResource(R.string.macros))
     ResponsiveMultipleActionLayout(
       actions = listOf(
         { weightModifier ->
           AppButton(
             text = stringResource(R.string.start_projection),
-            onClick = { viewModel.sendCommand(WsAction.START_PROJECTION) },
             size = ButtonSize.LARGE,
+            enabled = !isLocked,
+            onClick = { viewModel.sendCommand(WsAction.START_PROJECTION) },
             modifier = weightModifier,
           )
         },
         { weightModifier ->
           AppButton(
             text = stringResource(R.string.end_projection),
-            onClick = { viewModel.sendCommand(WsAction.END_PROJECTION) },
             type = ButtonType.ERROR,
             size = ButtonSize.LARGE,
+            enabled = !isLocked,
+            onClick = { viewModel.sendCommand(WsAction.END_PROJECTION) },
             modifier = weightModifier,
           )
         },
@@ -48,8 +62,9 @@ fun ConnectedSection(viewModel: MainViewModel) {
           AppButton(
             text = stringResource(R.string.screen_up),
             icon = Icons.Default.ArrowUpward,
-            onClick = { viewModel.sendCommand(WsAction.SCREEN_UP) },
             size = ButtonSize.LARGE,
+            enabled = !isLocked,
+            onClick = { viewModel.sendCommand(WsAction.SCREEN_UP) },
             modifier = weightModifier,
           )
         },
@@ -57,9 +72,10 @@ fun ConnectedSection(viewModel: MainViewModel) {
           AppButton(
             text = stringResource(R.string.screen_stop),
             icon = Icons.Default.Stop,
-            onClick = { viewModel.sendCommand(WsAction.SCREEN_STOP) },
             type = ButtonType.ERROR,
             size = ButtonSize.LARGE,
+            enabled = !isLocked,
+            onClick = { viewModel.sendCommand(WsAction.SCREEN_STOP) },
             modifier = weightModifier,
           )
         },
@@ -67,8 +83,9 @@ fun ConnectedSection(viewModel: MainViewModel) {
           AppButton(
             text = stringResource(R.string.screen_down),
             icon = Icons.Default.ArrowDownward,
-            onClick = { viewModel.sendCommand(WsAction.SCREEN_DOWN) },
             size = ButtonSize.LARGE,
+            enabled = !isLocked,
+            onClick = { viewModel.sendCommand(WsAction.SCREEN_DOWN) },
             modifier = weightModifier,
           )
         },
@@ -80,17 +97,19 @@ fun ConnectedSection(viewModel: MainViewModel) {
         { weightModifier ->
           AppButton(
             text = stringResource(R.string.projector_on),
-            onClick = { viewModel.sendCommand(WsAction.PROJECTOR_ON) },
             size = ButtonSize.LARGE,
+            enabled = !isLocked,
+            onClick = { viewModel.sendCommand(WsAction.PROJECTOR_ON) },
             modifier = weightModifier,
           )
         },
         { weightModifier ->
           AppButton(
             text = stringResource(R.string.projector_off),
-            onClick = { viewModel.sendCommand(WsAction.PROJECTOR_OFF) },
             type = ButtonType.ERROR,
             size = ButtonSize.LARGE,
+            enabled = !isLocked,
+            onClick = { viewModel.sendCommand(WsAction.PROJECTOR_OFF) },
             modifier = weightModifier,
           )
         },

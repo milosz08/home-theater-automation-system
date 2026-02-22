@@ -1,6 +1,7 @@
 package pl.miloszgilga.htas.client.navigator.screen
 
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -9,6 +10,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import pl.miloszgilga.htas.client.BuildConfig
 import pl.miloszgilga.htas.client.R
+import pl.miloszgilga.htas.client.composable.AppSlider
 import pl.miloszgilga.htas.client.viewmodel.AppUiState
 import pl.miloszgilga.htas.client.viewmodel.MainViewModel
 import pl.miloszgilga.htas.client.composable.button.ButtonType
@@ -22,6 +24,7 @@ import pl.miloszgilga.htas.client.composable.SectionSpacer
 import pl.miloszgilga.htas.client.composable.row.TextPropertyRow
 import pl.miloszgilga.htas.client.composable.TopBarWrapper
 import pl.miloszgilga.htas.client.composable.responsive.ResponsiveMultipleActionLayout
+import pl.miloszgilga.htas.client.composable.row.RowBase
 import pl.miloszgilga.htas.client.composable.settings.ChangePasswordModal
 import pl.miloszgilga.htas.client.composable.settings.ConnectionStatusBadgeRow
 import pl.miloszgilga.htas.client.composable.settings.FooterText
@@ -72,6 +75,30 @@ fun SettingsScreen(
     ScrollableScreenWrapper {
       DataSection(stringResource(R.string.basic_info)) {
         ConnectionStatusBadgeRow(state is AppUiState.Connected)
+      }
+      SectionSpacer()
+
+      DataSection(stringResource(R.string.safety_and_delays)) {
+        RowBase(
+          label = stringResource(R.string.action_cooldown),
+          bottomContent = {
+            if (viewModel.isCooldownEnabled) {
+              AppSlider(
+                label = stringResource(R.string.cooldown_duration),
+                formattedValue = "${viewModel.cooldownDurationSec} s",
+                value = viewModel.cooldownDurationSec.toFloat(),
+                valueRange = MainViewModel.MIN_COOLDOWN_SEC..MainViewModel.MAX_COOLDOWN_SEC,
+                steps = MainViewModel.COOLDOWN_STEPS,
+                onValueChange = { viewModel.setCooldownDuration(it.toInt()) },
+              )
+            }
+          }
+        ) {
+          Switch(
+            checked = viewModel.isCooldownEnabled,
+            onCheckedChange = { viewModel.toggleCooldownEnabled(it) }
+          )
+        }
       }
       SectionSpacer()
 

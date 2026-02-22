@@ -3,6 +3,8 @@ package pl.miloszgilga.htas.client.viewmodel
 import android.app.Application
 import android.util.Log
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -13,6 +15,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import pl.miloszgilga.htas.client.net.GsonJsonParser
@@ -23,7 +26,7 @@ import pl.miloszgilga.htas.client.net.ws.WsAction
 import pl.miloszgilga.htas.client.net.ws.WsEvent
 import pl.miloszgilga.htas.client.net.ws.WsEventParser
 import pl.miloszgilga.htas.client.net.parse
-import pl.miloszgilga.htas.client.store.AppStore
+import pl.miloszgilga.htas.client.store.SettingsStore
 import pl.miloszgilga.htas.client.store.ServerConfig
 import pl.miloszgilga.htas.client.util.UiText
 import pl.miloszgilga.htas.client.R
@@ -39,12 +42,13 @@ class MainViewModel(
   application: Application,
   private val jsonParser: JsonParser,
 ) : AndroidViewModel(application) {
-  private val store = AppStore(application)
+  private val store = SettingsStore(application)
   private val repository = WsClient(jsonParser)
   private val eventParser = WsEventParser(jsonParser)
   private val restExecutor = RestExecutor(jsonParser)
 
   private var connectionJob: Job? = null
+  private var cooldownJob: Job? = null
 
   var uiState by mutableStateOf<AppUiState>(AppUiState.Loading)
     private set
@@ -53,6 +57,15 @@ class MainViewModel(
   var sysInfo by mutableStateOf<WsEvent.SysInfo?>(null)
     private set
   val envHistory = mutableStateListOf<WsEvent.Env>()
+
+  var isUiLocked by mutableStateOf(false)
+    private set
+  var cooldownProgress by mutableFloatStateOf(0f)
+    private set
+  var isCooldownEnabled by mutableStateOf(true)
+    private set
+  var cooldownDurationSec by mutableIntStateOf(SettingsStore.INIT_COOLDOWN_DURATION_SEC)
+    private set
 
   companion object {
     private const val TAG = "MainViewModel"
@@ -67,11 +80,21 @@ class MainViewModel(
       }
     }
     private const val MAX_HISTORY_SIZE = 50
+
+    const val MIN_COOLDOWN_SEC = 1f
+    const val MAX_COOLDOWN_SEC = 30f
+    const val COOLDOWN_STEPS = 28
   }
 
   init {
     viewModelScope.launch {
       store.lastConnected.collect { lastConnectedTimestamp = it }
+    }
+    viewModelScope.launch {
+      store.cooldownEnabled.collect { isCooldownEnabled = it }
+    }
+    viewModelScope.launch {
+      store.cooldownDurationSec.collect { cooldownDurationSec = it }
     }
     viewModelScope.launch {
       val saved = store.savedConfig.first()
@@ -124,8 +147,29 @@ class MainViewModel(
     }
   }
 
+  fun toggleCooldownEnabled(enabled: Boolean) {
+    isCooldownEnabled = enabled
+    viewModelScope.launch {
+      store.saveCooldownEnabled(enabled)
+    }
+  }
+
+  fun setCooldownDuration(seconds: Int) {
+    cooldownDurationSec = seconds
+    viewModelScope.launch {
+      store.saveCooldownDuration(seconds)
+    }
+  }
+
   fun sendCommand(action: WsAction, value: Any? = null) {
+    if (isUiLocked) {
+      Log.w(TAG, "ignored command ${action.key}, ui is in cooldown")
+      return
+    }
     repository.sendAction(action, value)
+    if (isCooldownEnabled) {
+      startCooldown()
+    }
   }
 
   fun disconnect() {
@@ -185,6 +229,23 @@ class MainViewModel(
   override fun onCleared() {
     super.onCleared()
     disconnect()
+  }
+
+  private fun startCooldown() {
+    cooldownJob?.cancel()
+    cooldownJob = viewModelScope.launch {
+      isUiLocked = true
+      val totalMs = cooldownDurationSec * 1000L
+      val refreshRateMs = 30L
+      var remainingMs = totalMs
+      while (remainingMs > 0) {
+        cooldownProgress = remainingMs.toFloat() / totalMs.toFloat()
+        delay(refreshRateMs)
+        remainingMs -= refreshRateMs
+      }
+      cooldownProgress = 0f
+      isUiLocked = false
+    }
   }
 
   private fun getCurrentConfigBasedConnectionState(): ServerConfig? {
