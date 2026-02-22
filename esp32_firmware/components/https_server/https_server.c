@@ -121,6 +121,7 @@ static esp_err_t https_server_start(const https_server_config_t *cfg)
   conf.httpd.lru_purge_enable = true;
   conf.httpd.global_user_ctx = ctx;
   conf.httpd.global_user_ctx_free_fn = free; // automatic free after stopped server
+  conf.httpd.recv_wait_timeout = 30;
   conf.httpd.send_wait_timeout = 10;
 
   ESP_LOGI(TAG, "starting https server on port %d", cfg->port);

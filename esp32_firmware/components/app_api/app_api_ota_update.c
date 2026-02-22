@@ -43,7 +43,7 @@ esp_err_t app_api_ota_update(httpd_req_t *req)
 {
   ui_manager_suspend();
 
-  char content_type[32];
+  char content_type[64];
   if (httpd_req_get_hdr_value_str(req, "Content-Type", content_type, sizeof(content_type)) == ESP_OK &&
       strcmp(content_type, "application/octet-stream") != 0)
   {
