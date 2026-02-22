@@ -37,7 +37,7 @@
 
   <string name="settings">Settings</string>
   <string name="settings_tooltip">Pair a device first</string>
-  <string name="base_info">Base info</string>
+  <string name="basic_info">Basic info</string>
   <string name="connection_status">Connection status</string>
   <string name="connected">CONNECTED</string>
   <string name="disconnected">DISCONNECTED</string>

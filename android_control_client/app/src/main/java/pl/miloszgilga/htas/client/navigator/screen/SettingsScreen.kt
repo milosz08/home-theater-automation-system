@@ -70,7 +70,7 @@ fun SettingsScreen(
     onBack = onBack,
   ) {
     ScrollableScreenWrapper {
-      DataSection(stringResource(R.string.base_info)) {
+      DataSection(stringResource(R.string.basic_info)) {
         ConnectionStatusBadgeRow(state is AppUiState.Connected)
       }
       SectionSpacer()
