@@ -17,7 +17,6 @@ load_dotenv(dotenv_path=env_path)
 print(f"load config from: {env_path}")
 
 LOCAL_STAGING_DIR = "../setup_data"
-ANDROID_PROJECT_ROOT = "../android_control_client"
 ESP_DATA_DIR = "../esp32_firmware/data"
 
 ESP_IP = os.getenv("ESP_IP_ADDRESS", "192.168.0.2")
@@ -28,23 +27,6 @@ ESP_PORT = int(os.getenv("ESP_PORT", "443"))
 ESP_NTP_TIMEZONE = os.getenv("ESP_NTP_TIMEZONE", "CET-1CEST,M3.5.0,M10.5.0/3")
 ESP_NTP_SERVER = os.getenv("ESP_NTP_SERVER", "pool.ntp.org")
 ESP_PASS = os.getenv("ESP_DEFAULT_PASSWORD", "admin")
-
-def update_android_local_properties(hash_val):
-  prop_file = os.path.join(ANDROID_PROJECT_ROOT, "local.properties")
-  lines = []
-  if os.path.exists(prop_file):
-    with open(prop_file, "r") as f:
-      lines = f.readlines()
-
-  lines = [l for l in lines if not l.startswith("dev.esp.")]
-
-  lines.append(f"dev.esp.hash=\"{hash_val}\"\n")
-  lines.append(f"dev.esp.ip=\"{ESP_IP}\"\n")
-  lines.append(f"dev.esp.port=\"{ESP_PORT}\"\n")
-  lines.append(f"dev.esp.password=\"{ESP_PASS}\"\n")
-
-  with open(prop_file, "w") as f:
-    f.writelines(lines)
 
 def deploy_to_esp32_folder():
   files_to_deploy = ["prvtkey.pem", "cacert.pem", "config.json"]
@@ -88,9 +70,6 @@ def main():
 
   deploy_to_esp32_folder()
   print(f"copied files to: {ESP_DATA_DIR}")
-
-  update_android_local_properties(fingerprint)
-  print(f"updated local.properties file in: {ANDROID_PROJECT_ROOT}")
 
 if __name__ == "__main__":
   main()
