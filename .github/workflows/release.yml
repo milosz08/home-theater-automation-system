@@ -145,9 +145,9 @@ jobs:
           python-version: "3.12"
           cache: "pip"
 
-      - name: Install Make (win)
+      - name: Install Make via Winget
         if: runner.os == 'Windows'
-        run: choco install make
+        run: winget install MSYS2.MSYS2
 
       - name: Build with Make
         working-directory: ${{ env.ESP32_PROVISIONING_TOOL_PATH }}
