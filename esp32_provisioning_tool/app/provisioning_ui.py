@@ -12,9 +12,14 @@ from .provisioning_generator import ProvisioningGenerator
 from .esp_device_manager import EspDeviceManager
 from .ntp_service import NtpService
 
+try:
+  from version import APP_VER # type: ignore
+except ImportError:
+  APP_VER = "0.0.1-local-dev"
+
 class ProvisioningUI:
   def __init__(self, root):
-    self.app_version = os.getenv("APP_VER", "0.0.1-local-dev")
+    self.app_version = APP_VER
 
     self.root = root
     self.root.title(f"ESP32 provisioning tool (by Miłosz Gilga, v{self.app_version})")

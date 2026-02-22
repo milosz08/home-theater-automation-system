@@ -50,6 +50,7 @@ setup: venv
 
 build: venv
 	$(PIP) install pyinstaller Pillow
+	@echo APP_VER = \'$(APP_VER)\' > version.py
 	$(PYINSTALLER) --noconfirm \
 		--onefile \
 		--windowed \
@@ -57,8 +58,8 @@ build: venv
 		--add-data "res/icon.png$(SEP)res" \
 		--collect-all esptool \
 		--name $(APP_NAME)-v$(APP_VER) \
-		--define APP_VER=$(APP_VER) \
 		$(MAIN_FILE)
 
 clean:
 	@$(CLEAN_CMD)
+	@$(RM_FILE) version.py
