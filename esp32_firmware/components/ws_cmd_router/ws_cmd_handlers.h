@@ -6,7 +6,7 @@
 #include "cJSON.h"
 #include "esp_err.h"
 
-#define MAX_COMMANDS 8  /*!< Max number of commands we can register in the router. */
+#define MAX_COMMANDS 10  /*!< Max number of commands we can register in the router. */
 
 /*! \brief Handles the GET_SYS_INFO command.
  *
@@ -104,5 +104,29 @@ esp_err_t ws_cmd_projector_on(const cJSON *payload, bool *notify);
  * \retval ESP_FAIL If an error occurred during execution.
  */
 esp_err_t ws_cmd_projector_off(const cJSON *payload, bool *notify);
+
+/*! \brief Handles the AV_MUTE_ON command.
+ *
+ * Triggers the logic to enable the AV Mute (blank screen) feature on the projector.
+ *
+ * \param payload The JSON object (unused here, but required by typedef signature).
+ * \param notify  Pointer to a boolean flag. Set to true if a command status response should be sent, false to skip.
+ *
+ * \retval ESP_OK   On successful execution.
+ * \retval ESP_FAIL If an error occurred during execution.
+ */
+esp_err_t ws_cmd_av_mute_on(const cJSON *payload, bool *notify);
+
+/*! \brief Handles the AV_MUTE_OFF command.
+ *
+ * Triggers the logic to disable the AV Mute feature on the projector, restoring the image.
+ *
+ * \param payload The JSON object (unused here, but required by typedef signature).
+ * \param notify  Pointer to a boolean flag. Set to true if a command status response should be sent, false to skip.
+ *
+ * \retval ESP_OK   On successful execution.
+ * \retval ESP_FAIL If an error occurred during execution.
+ */
+esp_err_t ws_cmd_av_mute_off(const cJSON *payload, bool *notify);
 
 #endif // WS_CMD_HANDLERS_H_

@@ -55,6 +55,8 @@ esp_err_t ws_cmd_router_init(ws_cmd_executed_cb_t on_executed_cb, ws_cmd_error_c
   // projector
   ws_cmd_register("cmd_projector_on",     "PROJECTOR ON",     ws_cmd_projector_on);
   ws_cmd_register("cmd_projector_off",    "PROJECTOR OFF",    ws_cmd_projector_off);
+  ws_cmd_register("cmd_av_mute_on",       "AV MUTE ON",       ws_cmd_av_mute_on);
+  ws_cmd_register("cmd_av_mute_off",      "AV MUTE OFF",      ws_cmd_av_mute_off);
   return ESP_OK;
 }
 

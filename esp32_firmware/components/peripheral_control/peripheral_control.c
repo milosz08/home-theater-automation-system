@@ -30,6 +30,16 @@ static const uint8_t CMD_PROJECTOR_OFF[] = {
   0x7E, 0x30, 0x30, 0x30, 0x30, 0x20, 0x30, 0x0D
 };
 
+//  ~0004 1\r
+static const uint8_t CMD_AV_MUTE_ON[] = {
+  0x7E, 0x30, 0x30, 0x30, 0x34, 0x20, 0x31, 0x0D
+};
+
+//  ~0004 0\r
+static const uint8_t CMD_AV_MUTE_OFF[] = {
+  0x7E, 0x30, 0x30, 0x30, 0x34, 0x20, 0x30, 0x0D
+};
+
 // public api ----------------------------------------------------------------------------------------------------------
 
 esp_err_t peripheral_control_screen_down(void)
@@ -55,4 +65,14 @@ esp_err_t peripheral_control_projector_on(void)
 esp_err_t peripheral_control_projector_off(void)
 {
   return uart_bus_rs232_send(CMD_PROJECTOR_OFF, sizeof(CMD_PROJECTOR_OFF));
+}
+
+esp_err_t peripheral_control_av_mute_on(void)
+{
+  return uart_bus_rs232_send(CMD_AV_MUTE_ON, sizeof(CMD_AV_MUTE_ON));
+}
+
+esp_err_t peripheral_control_av_mute_off(void)
+{
+  return uart_bus_rs232_send(CMD_AV_MUTE_OFF, sizeof(CMD_AV_MUTE_OFF));
 }

@@ -48,4 +48,23 @@ esp_err_t peripheral_control_projector_on(void);
  */
 esp_err_t peripheral_control_projector_off(void);
 
+/*! \brief Enables AV mute on the projector.
+ *
+ * Sends the RS232 command to enable AV Mute, which blanks the screen. Useful for hiding the image temporarily without
+ * turning off the projector.
+ *
+ * \retval ESP_OK   If the AV mute enable command was transmitted successfully.
+ * \retval ESP_FAIL If communication with the projector failed.
+ */
+esp_err_t peripheral_control_av_mute_on(void);
+
+/*! \brief Disables AV mute on the projector.
+ *
+ * Sends the RS232 command to disable AV Mute, restoring the projected image.
+ *
+ * \retval ESP_OK   If the AV mute disable command was transmitted successfully.
+ * \retval ESP_FAIL If communication with the projector failed.
+ */
+esp_err_t peripheral_control_av_mute_off(void);
+
 #endif // PERIPHERAL_CONTROL_H_

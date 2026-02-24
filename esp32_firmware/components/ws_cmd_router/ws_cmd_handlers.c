@@ -108,3 +108,23 @@ esp_err_t ws_cmd_projector_off(const cJSON *payload, bool *notify)
   *notify = true;
   return res;
 }
+
+// user ----> system
+esp_err_t ws_cmd_av_mute_on(const cJSON *payload, bool *notify)
+{
+  esp_err_t res;
+  ESP_LOGI(TAG, "set av mute on");
+  res = peripheral_control_av_mute_on();
+  *notify = true;
+  return res;
+}
+
+// user ----> system
+esp_err_t ws_cmd_av_mute_off(const cJSON *payload, bool *notify)
+{
+  esp_err_t res;
+  ESP_LOGI(TAG, "set av mute off");
+  res = peripheral_control_av_mute_off();
+  *notify = true;
+  return res;
+}
