@@ -25,7 +25,7 @@ fun SimpleLineChart(
   val labelColor = MaterialTheme.colorScheme.onSurfaceVariant.toArgb()
   val gridColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f).toArgb()
 
-  val waitingForDataMsg = stringResource(R.string.no_device_paired)
+  val waitingForDataMsg = "${stringResource(R.string.waiting_for_data)}..."
   val readingsMsg = stringResource(R.string.readings)
 
   AndroidView(

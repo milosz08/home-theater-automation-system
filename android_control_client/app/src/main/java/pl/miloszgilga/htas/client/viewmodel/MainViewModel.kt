@@ -178,7 +178,7 @@ class MainViewModel(
     }
     if (isReconnecting) {
       Log.w(TAG, "ignored command ${action.key}, reconnecting")
-      ToastManager.show(application.getString(R.string.reconnecting), ToastType.ERROR)
+      ToastManager.show("${application.getString(R.string.reconnecting)}...", ToastType.ERROR)
       return
     }
     val success = repository.sendAction(action, value)

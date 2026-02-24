@@ -3,6 +3,7 @@ package pl.miloszgilga.htas.client.composable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -40,6 +41,7 @@ fun TopBarWrapper(
     topBar = {
       TopAppBar(
         title = { Text(title) },
+        windowInsets = WindowInsets(0, 0, 0, 0),
         navigationIcon = {
           if (topBarType == TopBarType.SUB_PAGE) {
             IconButton(onClick = onBack) {
