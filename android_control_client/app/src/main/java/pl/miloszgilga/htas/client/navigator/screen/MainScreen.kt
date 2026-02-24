@@ -21,7 +21,7 @@ import pl.miloszgilga.htas.client.viewmodel.AppUiState
 import pl.miloszgilga.htas.client.viewmodel.MainViewModel
 import pl.miloszgilga.htas.client.composable.TopBarType
 import pl.miloszgilga.htas.client.composable.TopBarWrapper
-import pl.miloszgilga.htas.client.qr.QrScanModal
+import pl.miloszgilga.htas.client.qr.composable.QrScanModal
 import pl.miloszgilga.htas.client.toast.ToastManager
 import pl.miloszgilga.htas.client.toast.ToastType
 import pl.miloszgilga.htas.client.R
