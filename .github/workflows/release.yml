@@ -101,8 +101,10 @@ jobs:
 
       - name: Decode Keystore
         working-directory: ${{ env.ANDROID_CONTROL_CLIENT_PATH }}/app
+        env:
+          ENCODED_STRING: ${{ secrets.KEYSTORE_BASE64 }}
         run: |
-          echo ${{ secrets.KEYSTORE_BASE64 }} | base64 -d > htas-release-key.jks
+          echo "$ENCODED_STRING" | base64 -d > htas-release-key.jks
 
       - name: Create keystore.properties
         working-directory: ${{ env.ANDROID_CONTROL_CLIENT_PATH }}/app
