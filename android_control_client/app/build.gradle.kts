@@ -1,3 +1,5 @@
+import java.io.FileInputStream
+import java.util.Properties
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -6,12 +8,17 @@ plugins {
   alias(libs.plugins.kotlin.compose)
 }
 
+val keystorePropertiesFile: File = rootProject.file("keystore.properties")
+val keystoreProperties = Properties()
+if (keystorePropertiesFile.exists()) {
+  keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+}
+
 android {
   namespace = "pl.miloszgilga.htas.client"
   compileSdk {
     version = release(36)
   }
-
   defaultConfig {
     applicationId = "pl.miloszgilga.htas"
     minSdk = 26
@@ -23,13 +30,25 @@ android {
     buildConfigField("String", "CI_BUILD_VERSION", "\"$appVersion\"")
     buildConfigField("long", "BUILD_TIME", "${System.currentTimeMillis()}L")
   }
-
+  signingConfigs {
+    create("release") {
+      if (keystorePropertiesFile.exists()) {
+        storeFile = file(keystoreProperties.getProperty("storeFile"))
+        storePassword = keystoreProperties.getProperty("storePassword")
+        keyAlias = keystoreProperties.getProperty("keyAlias")
+        keyPassword = keystoreProperties.getProperty("keyPassword")
+      }
+    }
+  }
   buildTypes {
     release {
       isMinifyEnabled = false
       proguardFiles(
         getDefaultProguardFile("proguard-android-optimize.txt")
       )
+      if (keystorePropertiesFile.exists()) {
+        signingConfig = signingConfigs.getByName("release")
+      }
     }
   }
   compileOptions {

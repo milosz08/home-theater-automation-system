@@ -87,3 +87,25 @@ $ make build
 ```
 
 The output file will be located in the `dist/` directory.
+
+### Android app development setup
+
+To build the release version of the Android app locally, you need to generate a signing key and configure the keystore
+properties.
+
+1. Generate a Java KeyStore (.jks) file using the keytool utility. Run this command in the root directory of the Android
+project:
+
+```bash
+$ keytool -genkey -v -keystore htas-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias htas-key
+```
+
+2. Create a keystore.properties file in the root directory of the project.
+3. Fill it with the credentials you provided during the key generation:
+
+```properties
+storeFile=htas-release-key.jks
+storePassword=<your_keystore_password>
+keyAlias=htas-key
+keyPassword=<your_key_password>
+```
