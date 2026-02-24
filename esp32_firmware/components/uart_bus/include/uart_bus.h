@@ -16,7 +16,7 @@
 #define RS232_UART_PORT       UART_NUM_1    /*!< UART port used for RS232. */
 #define RS232_TX_PIN          GPIO_NUM_21   /*!< TX Pin for RS232. */
 #define RS232_RX_PIN          GPIO_NUM_22   /*!< RX Pin for RS232. */
-#define RS232_BAUD_RATE       115200        /*!< Baud rate for RS232. */
+#define RS232_BAUD_RATE       19200         /*!< Baud rate for RS232. */
 #define RS232_BUF_SIZE        1024          /*!< Buffer size for RS232. */
 
 /*! \brief Initializes the RS485 interface.
