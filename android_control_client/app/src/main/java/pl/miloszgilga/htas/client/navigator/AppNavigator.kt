@@ -2,7 +2,6 @@ package pl.miloszgilga.htas.client.navigator
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -13,11 +12,17 @@ import pl.miloszgilga.htas.client.navigator.screen.StatsScreen
 import pl.miloszgilga.htas.client.viewmodel.AppUiState
 
 @Composable
-fun AppNavigator() {
+fun AppNavigator(viewModel: MainViewModel) {
   val navController = rememberNavController()
-  val viewModel: MainViewModel = viewModel(factory = MainViewModel.Factory)
 
   val isConnected = viewModel.uiState is AppUiState.Connected
+  val isFirmwareUpdating = viewModel.uiState is AppUiState.FirmwareUpdating
+
+  LaunchedEffect(viewModel.uiState) {
+    if (isConnected || isFirmwareUpdating) {
+      navController.popBackStack(Screen.Home.route, inclusive = false)
+    }
+  }
 
   NavHost(
     navController = navController,
@@ -43,11 +48,6 @@ fun AppNavigator() {
       )
     }
     composable(route = Screen.Stats.route) {
-      LaunchedEffect(isConnected) {
-        if (!isConnected) {
-          navController.popBackStack(Screen.Home.route, inclusive = false)
-        }
-      }
       StatsScreen(
         viewModel = viewModel,
         onBack = { navController.popBackStack() },

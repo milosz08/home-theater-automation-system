@@ -11,4 +11,6 @@ sealed class AppUiState {
   data class Disconnected(val config: ServerConfig) : AppUiState()
   data class Connected(val config: ServerConfig) : AppUiState()
   data class ConnectionFailed(val config: ServerConfig, val error: UiText) : AppUiState()
+  data class FirmwareUpdating(val statusText: UiText? = null, val progressPercent: Int = 0) : AppUiState()
+  data class FirmwareUpdateError(val config: ServerConfig, val error: UiText) : AppUiState()
 }

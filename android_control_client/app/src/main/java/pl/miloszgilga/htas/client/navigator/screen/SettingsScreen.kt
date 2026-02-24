@@ -1,6 +1,7 @@
 package pl.miloszgilga.htas.client.navigator.screen
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.MaterialTheme
@@ -11,6 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewModelScope
 import pl.miloszgilga.htas.client.BuildConfig
 import pl.miloszgilga.htas.client.R
 import pl.miloszgilga.htas.client.composable.ActionPropertyRow
@@ -32,7 +34,7 @@ import pl.miloszgilga.htas.client.composable.row.RowBase
 import pl.miloszgilga.htas.client.composable.settings.ChangePasswordModal
 import pl.miloszgilga.htas.client.composable.settings.ConnectionStatusBadgeRow
 import pl.miloszgilga.htas.client.composable.settings.FooterText
-import pl.miloszgilga.htas.client.composable.settings.PasswordSettingsRow
+import pl.miloszgilga.htas.client.toast.ToastManager
 import pl.miloszgilga.htas.client.util.formatTimestamp
 import java.time.Instant
 import java.time.ZoneId
@@ -55,6 +57,8 @@ fun SettingsScreen(
   onBack: () -> Unit,
 ) {
   val state = viewModel.uiState
+  val checkingFirmwareNewestVersionStr = "${stringResource(R.string.checking_firmware_newest_version)}..."
+
   var activeDialog by remember { mutableStateOf(ActiveDialog.NONE) }
   var isPasswordVisible by remember { mutableStateOf(false) }
 
@@ -151,7 +155,16 @@ fun SettingsScreen(
       sysInfo?.let {
         DataSection(stringResource(R.string.device_firmware)) {
           TextPropertyRow(label = stringResource(R.string.firmware_name), value = it.project)
-          TextPropertyRow(label = stringResource(R.string.firmware_version), value = it.version)
+          ActionPropertyRow(
+            label = stringResource(R.string.firmware_version),
+            value = it.version,
+            icon = Icons.Default.Refresh,
+            contentDescription = stringResource(R.string.check_update),
+            onClick = {
+              viewModel.firmwareUpdateManager.manualCheck(viewModel.viewModelScope)
+              ToastManager.show(checkingFirmwareNewestVersionStr)
+            }
+          )
           TextPropertyRow(label = stringResource(R.string.compiled_at), value = "${it.compileDate} ${it.compileTime}")
         }
       }

@@ -27,6 +27,7 @@ import pl.miloszgilga.htas.client.toast.ToastType
 import pl.miloszgilga.htas.client.R
 import pl.miloszgilga.htas.client.composable.main.CircularProgressSection
 import pl.miloszgilga.htas.client.composable.main.ConnectedSection
+import pl.miloszgilga.htas.client.composable.main.FirmwareUpdateSection
 import pl.miloszgilga.htas.client.composable.main.StateMessageType
 import pl.miloszgilga.htas.client.composable.main.UnifiedStateSection
 
@@ -62,7 +63,7 @@ fun MainScreen(
         icon = Icons.Default.Settings,
         contentDescription = stringResource(R.string.settings),
         onClick = onNavigateToSettings,
-        enabled = state !is AppUiState.Unpaired,
+        enabled = state !is AppUiState.Unpaired && state !is AppUiState.FirmwareUpdating,
         disabledMessage = stringResource(R.string.settings_tooltip),
       )
     },
@@ -73,6 +74,8 @@ fun MainScreen(
       is AppUiState.Connecting -> CircularProgressSection(stringResource(R.string.connecting))
 
       is AppUiState.Connected -> ConnectedSection(viewModel)
+
+      is AppUiState.FirmwareUpdating -> FirmwareUpdateSection(state.statusText, state.progressPercent)
 
       is AppUiState.Unpaired -> UnifiedStateSection(
         icon = Icons.Default.DeviceUnknown,
@@ -109,6 +112,17 @@ fun MainScreen(
         description = state.error.asString(),
         primaryButtonText = stringResource(R.string.try_again),
         onPrimaryClick = { viewModel.retryConnection(state.config) },
+        type = StateMessageType.ERROR,
+      )
+
+      is AppUiState.FirmwareUpdateError -> UnifiedStateSection(
+        icon = Icons.Default.Warning,
+        title = stringResource(R.string.firmware_update_failed),
+        description = state.error.asString(),
+        primaryButtonText = stringResource(R.string.try_again),
+        onPrimaryClick = { viewModel.startFirmwareUpdate() },
+        secondaryButtonText = stringResource(R.string.cancel),
+        onSecondaryClick = { viewModel.cancelFirmwareUpdate() },
         type = StateMessageType.ERROR,
       )
     }

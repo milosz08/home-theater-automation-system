@@ -36,6 +36,7 @@ import pl.miloszgilga.htas.client.net.rest.ResetPasswordResponse
 import pl.miloszgilga.htas.client.net.rest.RestExecutor
 import pl.miloszgilga.htas.client.toast.ToastManager
 import pl.miloszgilga.htas.client.toast.ToastType
+import pl.miloszgilga.htas.client.update.FirmwareUpdateManager
 import pl.miloszgilga.htas.client.util.mapDeviceError
 
 class MainViewModel(
@@ -46,6 +47,7 @@ class MainViewModel(
   private val repository = WsClient(jsonParser)
   private val eventParser = WsEventParser(jsonParser)
   private val restExecutor = RestExecutor(jsonParser)
+  val firmwareUpdateManager = FirmwareUpdateManager(jsonParser)
 
   private var connectionJob: Job? = null
   private var cooldownJob: Job? = null
@@ -109,6 +111,7 @@ class MainViewModel(
         uiState = AppUiState.Unpaired
       }
     }
+    firmwareUpdateManager.startPeriodicChecks(viewModelScope)
   }
 
   fun onQrScanned(json: String): Boolean {
@@ -188,6 +191,59 @@ class MainViewModel(
     }
     Log.w(TAG, "unable to send command: ${action.key}")
     ToastManager.show(application.getString(R.string.send_failed), ToastType.ERROR)
+  }
+
+  fun startFirmwareUpdate() {
+    val config = when (val currentState = uiState) {
+      is AppUiState.Connected -> currentState.config
+      is AppUiState.FirmwareUpdateError -> currentState.config
+      else -> return
+    }
+    firmwareUpdateManager.hideBanner()
+    firmwareUpdateManager.pauseChecks()
+    uiState = AppUiState.FirmwareUpdating()
+    viewModelScope.launch {
+      val firmwareBytes = firmwareUpdateManager.downloadAndVerifyFirmware(
+        onProgress = { statusText ->
+          Log.d(TAG, "update progress: ${statusText.asString(application)}")
+          val currentUpdateState = uiState as? AppUiState.FirmwareUpdating
+          uiState = currentUpdateState?.copy(statusText = statusText) ?: AppUiState.FirmwareUpdating(statusText)
+        },
+        onError = { errorText ->
+          uiState = AppUiState.FirmwareUpdateError(config, errorText)
+        },
+      )
+      if (firmwareBytes != null) {
+        restExecutor.execute<Unit>(
+          config = config,
+          endpoint = "/api/update",
+          method = HttpMethod.POST,
+          payload = firmwareBytes,
+          contentType = "application/octet-stream",
+          onSuccess = {
+            Log.d(TAG, "firmware sent to device successfully")
+            val currentUpdateState = uiState as? AppUiState.FirmwareUpdating
+            if (currentUpdateState != null) {
+              uiState = currentUpdateState.copy(statusText = UiText.StringResource(R.string.ota_device_rebooting))
+            }
+          },
+          onError = { uiError ->
+            ToastManager.show(uiError.asString(application), ToastType.ERROR)
+            uiState = AppUiState.FirmwareUpdateError(config, uiError)
+          }
+        )
+      }
+    }
+  }
+
+  fun cancelFirmwareUpdate() {
+    val currentState = uiState
+    if (currentState !is AppUiState.FirmwareUpdateError) {
+      return
+    }
+    Log.d(TAG, "user cancelled firmware update after error")
+    uiState = AppUiState.Connected(currentState.config)
+    firmwareUpdateManager.resumeChecks()
   }
 
   fun disconnect() {
@@ -285,6 +341,7 @@ class MainViewModel(
           is NetworkEvent.Connected -> {
             isReconnecting = false
             Log.d(TAG, "NetworkEvent.Connected received, requesting system info")
+            firmwareUpdateManager.resumeChecks()
             store.saveLastConnected(System.currentTimeMillis())
             repository.sendAction(WsAction.GET_SYS_INFO)
             uiState = AppUiState.Connected(config)
@@ -319,6 +376,7 @@ class MainViewModel(
     when (event) {
       is WsEvent.SysInfo -> {
         sysInfo = event
+        firmwareUpdateManager.onDeviceVersionReceived(event.version)
       }
 
       is WsEvent.Env -> {
@@ -342,8 +400,12 @@ class MainViewModel(
         }
       }
 
-      is WsEvent.Unknown -> {
-        Log.w(TAG, "received unknown ws event type: ${event.type}")
+      is WsEvent.UpdateOtaProgress -> {
+        Log.d(TAG, "ota firmware update progress: ${event.progress}%, ${event.bytesProcessed}/${event.bytesTotal}")
+        val currentState = uiState
+        if (currentState is AppUiState.FirmwareUpdating) {
+          uiState = currentState.copy(progressPercent = event.progress)
+        }
       }
 
       is WsEvent.ParseError -> {

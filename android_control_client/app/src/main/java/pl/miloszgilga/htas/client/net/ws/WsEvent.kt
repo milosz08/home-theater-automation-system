@@ -26,7 +26,11 @@ sealed class WsEvent {
     @SerializedName("errorName") val errorName: String?,
   ) : WsEvent()
 
-  data class Unknown(val type: String) : WsEvent()
+  data class UpdateOtaProgress(
+    @SerializedName("progress") val progress: Int,
+    @SerializedName("bytes_processed") val bytesProcessed: Int,
+    @SerializedName("bytes_total") val bytesTotal: Int,
+  ) : WsEvent()
 
   data class ParseError(val cause: Throwable) : WsEvent()
 }
@@ -40,6 +44,9 @@ enum class EnvelopeType {
 
   @SerializedName("cmd-invocation")
   CMD_INVOCATION,
+
+  @SerializedName("update-progress")
+  UPDATE_PROGRESS,
   ;
 }
 

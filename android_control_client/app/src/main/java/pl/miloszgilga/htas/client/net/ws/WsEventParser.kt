@@ -14,7 +14,12 @@ class WsEventParser(private val jsonParser: JsonParser) {
 
         EnvelopeType.CMD_INVOCATION -> jsonParser.fromJson(
           envelope.data.toString(),
-          WsEvent.CommandInvocation::class.java
+          WsEvent.CommandInvocation::class.java,
+        )
+
+        EnvelopeType.UPDATE_PROGRESS -> jsonParser.fromJson(
+          envelope.data.toString(),
+          WsEvent.UpdateOtaProgress::class.java,
         )
       }
     } catch (ex: Exception) {
