@@ -59,7 +59,7 @@ If you only changed configuration files (LittleFS) and not the code, you can ski
 $ make erase
 ```
 
-### Prepare Python provisioning tool environment
+### Python provisioning tool environment
 
 1. Make sure you have installed at least Python 3.12.
 2. Navigate to the tool directory:
