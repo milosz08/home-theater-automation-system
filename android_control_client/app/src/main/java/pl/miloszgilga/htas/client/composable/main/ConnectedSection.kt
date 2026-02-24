@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import pl.miloszgilga.htas.client.R
-import pl.miloszgilga.htas.client.composable.AnimatedProgressBar
 import pl.miloszgilga.htas.client.composable.ScrollableScreenWrapper
 import pl.miloszgilga.htas.client.composable.SectionHeader
 import pl.miloszgilga.htas.client.composable.button.AppButton
@@ -25,12 +24,6 @@ fun ConnectedSection(viewModel: MainViewModel) {
   val isLocked = viewModel.isUiLocked
 
   ScrollableScreenWrapper {
-    AnimatedProgressBar(
-      isVisible = isLocked && viewModel.cooldownProgress > 0f,
-      progress = viewModel.cooldownProgress,
-      modifier = Modifier.padding(bottom = 8.dp)
-    )
-
     SectionHeader(stringResource(R.string.macros))
     ResponsiveMultipleActionLayout(
       actions = listOf(

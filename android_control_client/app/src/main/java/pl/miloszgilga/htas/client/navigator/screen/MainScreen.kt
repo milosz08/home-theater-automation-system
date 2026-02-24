@@ -25,6 +25,7 @@ import pl.miloszgilga.htas.client.qr.composable.QrScanModal
 import pl.miloszgilga.htas.client.toast.ToastManager
 import pl.miloszgilga.htas.client.toast.ToastType
 import pl.miloszgilga.htas.client.R
+import pl.miloszgilga.htas.client.composable.AnimatedProgressBar
 import pl.miloszgilga.htas.client.composable.main.CircularProgressSection
 import pl.miloszgilga.htas.client.composable.main.ConnectedSection
 import pl.miloszgilga.htas.client.composable.main.FirmwareUpdateSection
@@ -68,6 +69,10 @@ fun MainScreen(
       )
     },
   ) {
+    AnimatedProgressBar(
+      isVisible = viewModel.isUiLocked && viewModel.cooldownProgress > 0f,
+      progress = viewModel.cooldownProgress,
+    )
     when (state) {
       is AppUiState.Loading -> CircularProgressSection(stringResource(R.string.loading))
 
