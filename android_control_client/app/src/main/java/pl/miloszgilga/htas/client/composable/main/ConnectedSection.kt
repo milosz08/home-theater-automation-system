@@ -1,5 +1,6 @@
 package pl.miloszgilga.htas.client.composable.main
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDownward
@@ -15,6 +16,7 @@ import pl.miloszgilga.htas.client.composable.SectionHeader
 import pl.miloszgilga.htas.client.composable.button.AppButton
 import pl.miloszgilga.htas.client.composable.button.ButtonSize
 import pl.miloszgilga.htas.client.composable.button.ButtonType
+import pl.miloszgilga.htas.client.composable.responsive.ResponsiveGrid
 import pl.miloszgilga.htas.client.composable.responsive.ResponsiveMultipleActionLayout
 import pl.miloszgilga.htas.client.net.ws.WsAction
 import pl.miloszgilga.htas.client.viewmodel.MainViewModel
@@ -85,25 +87,45 @@ fun ConnectedSection(viewModel: MainViewModel) {
       ),
     )
     SectionHeader(stringResource(R.string.projector_control))
-    ResponsiveMultipleActionLayout(
-      actions = listOf(
-        { weightModifier ->
+    ResponsiveGrid(
+      modifier = Modifier.padding(16.dp),
+      items = listOf(
+        {
           AppButton(
             text = stringResource(R.string.projector_on),
             size = ButtonSize.LARGE,
             enabled = !isLocked,
             onClick = { viewModel.sendCommand(WsAction.PROJECTOR_ON) },
-            modifier = weightModifier,
+            modifier = Modifier.fillMaxWidth(),
           )
         },
-        { weightModifier ->
+        {
           AppButton(
             text = stringResource(R.string.projector_off),
             type = ButtonType.ERROR,
             size = ButtonSize.LARGE,
             enabled = !isLocked,
             onClick = { viewModel.sendCommand(WsAction.PROJECTOR_OFF) },
-            modifier = weightModifier,
+            modifier = Modifier.fillMaxWidth(),
+          )
+        },
+        {
+          AppButton(
+            text = stringResource(R.string.av_mute_on),
+            size = ButtonSize.LARGE,
+            enabled = !isLocked,
+            onClick = { viewModel.sendCommand(WsAction.AV_MUTE_ON) },
+            modifier = Modifier.fillMaxWidth(),
+          )
+        },
+        {
+          AppButton(
+            text = stringResource(R.string.av_mute_off),
+            type = ButtonType.ERROR,
+            size = ButtonSize.LARGE,
+            enabled = !isLocked,
+            onClick = { viewModel.sendCommand(WsAction.AV_MUTE_OFF) },
+            modifier = Modifier.fillMaxWidth(),
           )
         },
       ),

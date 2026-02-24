@@ -20,6 +20,8 @@ enum class HardwareCmd(
   // projector
   PROJECTOR_ON(WsAction.PROJECTOR_ON, R.string.cmd_projector_on),
   PROJECTOR_OFF(WsAction.PROJECTOR_OFF, R.string.cmd_projector_off),
+  AV_MUTE_ON(WsAction.AV_MUTE_ON, R.string.cmd_av_mute_on),
+  AV_MUTE_OFF(WsAction.AV_MUTE_OFF, R.string.cmd_av_mute_off),
   ;
 
   companion object {

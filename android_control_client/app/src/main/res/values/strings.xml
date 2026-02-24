@@ -49,6 +49,8 @@
   <string name="projector_control">Projector control</string>
   <string name="projector_on">Projector ON</string>
   <string name="projector_off">Projector OFF</string>
+  <string name="av_mute_on">AV mute ON</string>
+  <string name="av_mute_off">AV mute OFF</string>
 
   <string name="settings">Settings</string>
   <string name="settings_tooltip">Pair a device first.</string>
@@ -118,6 +120,8 @@
   <string name="cmd_screen_up">Starting to move screen up</string>
   <string name="cmd_projector_on">Turning on projector</string>
   <string name="cmd_projector_off">Turning off projector</string>
+  <string name="cmd_av_mute_on">Turning on AV mute</string>
+  <string name="cmd_av_mute_off">Turning off AV mute</string>
 
   <string name="error_qr_invalid_format">Invalid QR code format. Please scan a valid configuration code.</string>
   <string name="error_camera_general">Failed to initialize the camera. Please check permissions.</string>

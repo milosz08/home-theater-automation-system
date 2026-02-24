@@ -17,6 +17,8 @@ enum class WsAction(val key: String) {
   // projector
   PROJECTOR_ON("cmd_projector_on"),
   PROJECTOR_OFF("cmd_projector_off"),
+  AV_MUTE_ON("cmd_av_mute_on"),
+  AV_MUTE_OFF("cmd_av_mute_off"),
   ;
 }
 
