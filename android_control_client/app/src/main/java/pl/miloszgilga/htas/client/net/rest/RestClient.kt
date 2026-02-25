@@ -96,9 +96,7 @@ class RestClient(
               )
             } catch (ex: Exception) {
               Log.e(TAG, "failed to parse error payload, raw body: $responseStr", ex)
-              continuation.resumeWithException(
-                RestException(response.code, "UNKNOWN", "Server returned ${response.code}")
-              )
+              continuation.resumeWithException(ex)
             }
             return
           }
