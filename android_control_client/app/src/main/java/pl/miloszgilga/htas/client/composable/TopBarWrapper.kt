@@ -58,7 +58,7 @@ fun TopBarWrapper(
           }
         },
       )
-    }
+    },
   ) { innerPadding ->
     Column(
       modifier = modifier

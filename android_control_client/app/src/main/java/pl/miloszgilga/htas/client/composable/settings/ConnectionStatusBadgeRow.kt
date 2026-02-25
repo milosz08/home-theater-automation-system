@@ -35,7 +35,7 @@ fun ConnectionStatusBadgeRow(isConnected: Boolean) {
     Surface(
       color = statusColor.copy(alpha = 0.1f),
       shape = RoundedCornerShape(16.dp),
-      border = BorderStroke(1.dp, statusColor.copy(alpha = 0.5f))
+      border = BorderStroke(1.dp, statusColor.copy(alpha = 0.5f)),
     ) {
       Row(
         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
@@ -57,7 +57,7 @@ fun ConnectionStatusBadgeRow(isConnected: Boolean) {
           ),
           style = MaterialTheme.typography.labelLarge,
           color = statusColor,
-          fontWeight = FontWeight.Bold
+          fontWeight = FontWeight.Bold,
         )
       }
     }

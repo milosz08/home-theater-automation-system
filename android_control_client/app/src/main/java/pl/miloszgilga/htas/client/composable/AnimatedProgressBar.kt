@@ -21,7 +21,7 @@ fun AnimatedProgressBar(
 ) {
   val progressAlpha by animateFloatAsState(
     targetValue = if (isVisible) 1f else 0f,
-    label = "progress_alpha_animation"
+    label = "progress_alpha_animation",
   )
 
   Box(
@@ -29,13 +29,13 @@ fun AnimatedProgressBar(
       .fillMaxWidth()
       .height(4.dp)
       .alpha(progressAlpha)
-      .background(MaterialTheme.colorScheme.surfaceVariant)
+      .background(MaterialTheme.colorScheme.surfaceVariant),
   ) {
     Box(
       modifier = Modifier
         .fillMaxHeight()
         .fillMaxWidth(fraction = progress.coerceIn(0f, 1f))
-        .background(MaterialTheme.colorScheme.primary)
+        .background(MaterialTheme.colorScheme.primary),
     )
   }
 }

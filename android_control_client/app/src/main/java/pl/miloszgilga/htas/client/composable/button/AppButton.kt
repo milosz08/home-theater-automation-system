@@ -184,7 +184,7 @@ fun AppTextButton(
       ButtonSize.NORMAL -> ButtonDefaults.ContentPadding
       ButtonSize.LARGE -> PaddingValues(horizontal = 32.dp, vertical = 16.dp)
     },
-    colors = ButtonDefaults.textButtonColors(contentColor = color)
+    colors = ButtonDefaults.textButtonColors(contentColor = color),
   ) {
     LoadingButtonContent(
       text = text,

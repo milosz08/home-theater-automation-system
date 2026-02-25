@@ -12,6 +12,9 @@ fun CircularProgressSection(loadingText: String) {
   CenteredScreenWrapper {
     CircularProgressIndicator()
     SectionSpacer()
-    Text("$loadingText...", style = MaterialTheme.typography.bodyLarge)
+    Text(
+      text = "$loadingText...",
+      style = MaterialTheme.typography.bodyLarge,
+    )
   }
 }

@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
         Column(
           modifier = Modifier
             .fillMaxSize()
-            .windowInsetsPadding(WindowInsets.statusBars)
+            .windowInsetsPadding(WindowInsets.statusBars),
         ) {
           FirmwareUpdateBanner(viewModel = viewModel)
           Box(modifier = Modifier.weight(1f)) {

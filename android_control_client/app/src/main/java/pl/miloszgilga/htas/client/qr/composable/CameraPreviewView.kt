@@ -44,7 +44,7 @@ fun CameraPreviewView(
         onScan = onScan,
         onError = onError,
       )
-    }
+    },
   )
 }
 
@@ -85,7 +85,7 @@ private fun bindCameraUseCases(
         lifecycleOwner,
         CameraSelector.DEFAULT_BACK_CAMERA,
         preview,
-        imageAnalyzer
+        imageAnalyzer,
       )
     } catch (ex: Exception) {
       onError(ex.message)

@@ -2,7 +2,6 @@ package pl.miloszgilga.htas.client.navigator.screen
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import pl.miloszgilga.htas.client.R
 import pl.miloszgilga.htas.client.viewmodel.AppUiState
@@ -89,8 +88,8 @@ fun StatsScreen(
                 chartColor = MaterialTheme.appColors.ramUsage,
                 leftSign = "kB",
               )
-            }
-          )
+            },
+          ),
         )
         SectionSpacer()
       }

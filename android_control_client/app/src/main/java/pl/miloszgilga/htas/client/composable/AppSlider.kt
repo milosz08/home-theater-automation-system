@@ -26,11 +26,11 @@ fun AppSlider(
   Column(
     modifier = modifier
       .fillMaxWidth()
-      .padding(vertical = 16.dp)
+      .padding(vertical = 16.dp),
   ) {
     Row(
       modifier = Modifier.fillMaxWidth(),
-      horizontalArrangement = Arrangement.SpaceBetween
+      horizontalArrangement = Arrangement.SpaceBetween,
     ) {
       Text(
         text = label,

@@ -31,7 +31,9 @@ fun ResponsiveGrid(
       items.chunked(2).forEach { rowItems ->
         Row(horizontalArrangement = Arrangement.spacedBy(spacing)) {
           rowItems.forEach { item ->
-            Box(modifier = Modifier.weight(1f)) { item() }
+            Box(modifier = Modifier.weight(1f)) {
+              item()
+            }
           }
           if (rowItems.size == 1) {
             Spacer(modifier = Modifier.weight(1f))

@@ -101,11 +101,11 @@ fun SettingsScreen(
                 onValueChange = { viewModel.setCooldownDuration(it.toInt()) },
               )
             }
-          }
+          },
         ) {
           Switch(
             checked = viewModel.isCooldownEnabled,
-            onCheckedChange = { viewModel.toggleCooldownEnabled(it) }
+            onCheckedChange = { viewModel.toggleCooldownEnabled(it) },
           )
         }
       }
@@ -163,7 +163,7 @@ fun SettingsScreen(
             onClick = {
               viewModel.firmwareUpdateManager.manualCheck(viewModel.viewModelScope)
               ToastManager.show(checkingFirmwareNewestVersionStr)
-            }
+            },
           )
           TextPropertyRow(label = stringResource(R.string.compiled_at), value = "${it.compileDate} ${it.compileTime}")
         }
@@ -208,7 +208,7 @@ fun SettingsScreen(
             onConfirm = { oldPass, newPass ->
               viewModel.changeDevicePassword(oldPass, newPass)
               activeDialog = ActiveDialog.NONE
-            }
+            },
           )
         }
 

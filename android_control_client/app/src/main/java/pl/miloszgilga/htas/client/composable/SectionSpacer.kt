@@ -37,6 +37,6 @@ fun SectionSpacer(
       modifier.height(sizeDp)
     } else {
       modifier.width(sizeDp)
-    }
+    },
   )
 }

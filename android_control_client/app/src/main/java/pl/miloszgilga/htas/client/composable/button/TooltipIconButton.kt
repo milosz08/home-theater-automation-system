@@ -55,9 +55,7 @@ fun TooltipIconButton(
         )
       }
       if (!enabled) {
-        Box(
-          modifier = Modifier.matchParentSize(),
-        )
+        Box(modifier = Modifier.matchParentSize())
       }
     }
   }

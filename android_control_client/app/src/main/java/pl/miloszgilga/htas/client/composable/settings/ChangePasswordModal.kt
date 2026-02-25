@@ -46,12 +46,12 @@ fun ChangePasswordModal(
         PasswordInputField(
           value = oldPass,
           onValueChange = { oldPass = it },
-          label = stringResource(R.string.current_password)
+          label = stringResource(R.string.current_password),
         )
         PasswordInputField(
           value = newPass,
           onValueChange = { newPass = it },
-          label = stringResource(R.string.new_password)
+          label = stringResource(R.string.new_password),
         )
         PasswordInputField(
           value = confirmPass,

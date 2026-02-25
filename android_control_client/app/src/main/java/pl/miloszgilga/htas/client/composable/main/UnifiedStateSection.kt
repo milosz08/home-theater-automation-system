@@ -79,15 +79,14 @@ fun UnifiedStateSection(
         text = primaryButtonText,
         onClick = onPrimaryClick,
         modifier = buttonModifier,
-        type = buttonType
+        type = buttonType,
       )
-
       if (secondaryButtonText != null) {
         AppOutlinedButton(
           text = secondaryButtonText,
           onClick = onSecondaryClick,
           modifier = buttonModifier,
-          type = buttonType
+          type = buttonType,
         )
       }
     }
