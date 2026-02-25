@@ -4,9 +4,9 @@ import android.util.Log
 import pl.miloszgilga.htas.client.R
 import pl.miloszgilga.htas.client.net.JsonParser
 import pl.miloszgilga.htas.client.net.TofuClient
+import pl.miloszgilga.htas.client.net.mapDeviceError
 import pl.miloszgilga.htas.client.store.ServerConfig
 import pl.miloszgilga.htas.client.util.UiText
-import pl.miloszgilga.htas.client.util.mapDeviceError
 import java.net.SocketTimeoutException
 
 class RestExecutor(@PublishedApi internal val jsonParser: JsonParser) {

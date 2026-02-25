@@ -31,13 +31,13 @@ import pl.miloszgilga.htas.client.store.ServerConfig
 import pl.miloszgilga.htas.client.util.UiText
 import pl.miloszgilga.htas.client.R
 import pl.miloszgilga.htas.client.net.TofuCertificateException
+import pl.miloszgilga.htas.client.net.mapDeviceError
 import pl.miloszgilga.htas.client.net.rest.HttpMethod
 import pl.miloszgilga.htas.client.net.rest.ResetPasswordResponse
 import pl.miloszgilga.htas.client.net.rest.RestExecutor
 import pl.miloszgilga.htas.client.toast.ToastManager
 import pl.miloszgilga.htas.client.toast.ToastType
 import pl.miloszgilga.htas.client.update.FirmwareUpdateManager
-import pl.miloszgilga.htas.client.util.mapDeviceError
 
 class MainViewModel(
   application: Application,
