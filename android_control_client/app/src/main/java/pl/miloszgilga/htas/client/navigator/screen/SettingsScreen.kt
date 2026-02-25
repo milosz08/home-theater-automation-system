@@ -12,7 +12,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewModelScope
 import pl.miloszgilga.htas.client.BuildConfig
 import pl.miloszgilga.htas.client.R
 import pl.miloszgilga.htas.client.composable.ActionPropertyRow
@@ -161,7 +160,7 @@ fun SettingsScreen(
             icon = Icons.Default.Refresh,
             contentDescription = stringResource(R.string.check_update),
             onClick = {
-              viewModel.firmwareUpdateManager.manualCheck(viewModel.viewModelScope)
+              viewModel.manualCheckUpdate()
               ToastManager.show(checkingFirmwareNewestVersionStr)
             },
           )

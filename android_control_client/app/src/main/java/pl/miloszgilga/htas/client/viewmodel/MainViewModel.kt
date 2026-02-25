@@ -47,7 +47,7 @@ class MainViewModel(
   private val repository = WsClient(jsonParser)
   private val eventParser = WsEventParser(jsonParser)
   private val restExecutor = RestExecutor(jsonParser)
-  val firmwareUpdateManager = FirmwareUpdateManager(jsonParser)
+  private val firmwareUpdateManager = FirmwareUpdateManager(jsonParser)
 
   private var connectionJob: Job? = null
   private var cooldownJob: Job? = null
@@ -71,6 +71,9 @@ class MainViewModel(
     private set
   var cooldownDurationSec by mutableIntStateOf(SettingsStore.INIT_COOLDOWN_DURATION_SEC)
     private set
+
+  val latestVersion
+    get() = firmwareUpdateManager.latestVersion
 
   companion object {
     private const val TAG = "MainViewModel"
@@ -192,6 +195,10 @@ class MainViewModel(
     Log.w(TAG, "unable to send command: ${action.key}")
     ToastManager.show(application.getString(R.string.send_failed), ToastType.ERROR)
   }
+
+  fun manualCheckUpdate() = firmwareUpdateManager.manualCheck(viewModelScope)
+
+  fun hideUpdateBanner() = firmwareUpdateManager.hideBanner()
 
   fun startFirmwareUpdate() {
     val config = when (val currentState = uiState) {

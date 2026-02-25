@@ -36,7 +36,7 @@ fun FirmwareUpdateBanner(
   modifier: Modifier = Modifier,
 ) {
   var showConfirmModal by remember { mutableStateOf(false) }
-  val latestVersion by viewModel.firmwareUpdateManager.latestVersion.collectAsState()
+  val latestVersion by viewModel.latestVersion.collectAsState()
 
   AnimatedVisibility(
     visible = latestVersion != null,
@@ -70,7 +70,7 @@ fun FirmwareUpdateBanner(
           }
         }
         IconButton(
-          onClick = { viewModel.firmwareUpdateManager.hideBanner() }
+          onClick = { viewModel.hideUpdateBanner() },
         ) {
           Icon(
             imageVector = Icons.Default.Clear,
@@ -92,7 +92,7 @@ fun FirmwareUpdateBanner(
         showConfirmModal = false
       },
       onDismiss = {
-        viewModel.firmwareUpdateManager.hideBanner()
+        viewModel.hideUpdateBanner()
         showConfirmModal = false
       },
       isSolidConfirmButton = true,
