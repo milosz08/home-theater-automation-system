@@ -7,10 +7,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,6 +30,8 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import pl.miloszgilga.htas.client.R
+import pl.miloszgilga.htas.client.composable.SectionSpacer
+import pl.miloszgilga.htas.client.composable.SpacerSize
 import pl.miloszgilga.htas.client.composable.button.AppOutlinedButton
 import pl.miloszgilga.htas.client.toast.ToastManager
 import pl.miloszgilga.htas.client.toast.ToastType
@@ -116,7 +116,7 @@ fun QrScanModal(
                 }
               }
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            SectionSpacer(size = SpacerSize.NORMAL)
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
               AppOutlinedButton(
                 text = stringResource(R.string.cancel),
