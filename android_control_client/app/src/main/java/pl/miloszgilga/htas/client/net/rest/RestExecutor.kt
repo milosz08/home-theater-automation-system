@@ -49,10 +49,7 @@ class RestExecutor(@PublishedApi internal val jsonParser: JsonParser) {
 
       is RestException -> mapDeviceError(throwable.errorName, throwable.errorCode)
 
-      else -> UiText.StringResource(
-        R.string.error_network_generic,
-        throwable.localizedMessage ?: "Unknown REST error"
-      )
+      else -> UiText.StringResource(R.string.error_network_generic, throwable.localizedMessage ?: "?")
     }
   }
 }
