@@ -73,6 +73,6 @@ esp_err_t app_api_auth_reset_password(httpd_req_t *req)
   cJSON *root = cJSON_CreateObject();
   if (root == NULL) return APP_API_RETURN_ERR(req, 500, ESP_ERR_NO_MEM);
   
-  cJSON_AddStringToObject(root, "defaultPassword", default_password);
+  cJSON_AddStringToObject(root, "default_password", default_password);
   return app_api_return_json(req, root);
 }

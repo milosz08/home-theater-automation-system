@@ -11,13 +11,13 @@
 // event names
 
 /*! \brief Event name for environmental updates (temp/hum). */
-#define WS_EVENT_TYPE_ENV_UPDATE "env"
+#define WS_EVENT_TYPE_ENV_UPDATE          "env"
 /*! \brief Event name for getting system info (e.g., version, name) */
-#define WS_EVENT_TYPE_SYS_INFO "sys-info"
+#define WS_EVENT_TYPE_SYS_INFO            "sys_info"
 /*! \brief Event name for getting firmware ota update status (e.g., percentage, bytes count) */
-#define WS_EVENT_TYPE_OTA_UPDATE_PROGRESS "update-progress"
+#define WS_EVENT_TYPE_OTA_UPDATE_PROGRESS "update_progress"
 /*! \brief Event name for getting info about command invocation (command name and invocation status) */
-#define WS_EVENT_TYPE_CMD_INVOCATION "cmd-invocation"
+#define WS_EVENT_TYPE_CMD_INVOCATION      "cmd_invocation"
 
 /*! \brief Structure representing a queued message. */
 typedef struct

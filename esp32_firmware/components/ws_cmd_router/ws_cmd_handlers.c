@@ -21,9 +21,9 @@ esp_err_t ws_cmd_get_sys_info(const cJSON *payload, bool *notify)
   cJSON *resp_root = cJSON_CreateObject();
   cJSON_AddStringToObject(resp_root, "version", app_desc->version);
   cJSON_AddStringToObject(resp_root, "project", app_desc->project_name);
-  cJSON_AddStringToObject(resp_root, "compileDate", app_desc->date);
-  cJSON_AddStringToObject(resp_root, "compileTime", app_desc->time);
-  cJSON_AddNumberToObject(resp_root, "ramMax", (unsigned long)total_heap);
+  cJSON_AddStringToObject(resp_root, "compile_date", app_desc->date);
+  cJSON_AddStringToObject(resp_root, "compile_time", app_desc->time);
+  cJSON_AddNumberToObject(resp_root, "ram_max", (unsigned long)total_heap);
 
   char *json_str = cJSON_PrintUnformatted(resp_root);
   if (json_str != NULL)

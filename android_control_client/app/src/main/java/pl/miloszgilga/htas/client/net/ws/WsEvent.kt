@@ -15,15 +15,15 @@ sealed class WsEvent {
   data class SysInfo(
     @SerializedName("version") val version: String,
     @SerializedName("project") val project: String,
-    @SerializedName("compileDate") val compileDate: String,
-    @SerializedName("compileTime") val compileTime: String,
-    @SerializedName("ramMax") val ramMax: Long,
+    @SerializedName("compile_date") val compileDate: String,
+    @SerializedName("compile_time") val compileTime: String,
+    @SerializedName("ram_max") val ramMax: Long,
   ) : WsEvent()
 
   data class CommandInvocation(
     @SerializedName("cmd") val cmd: String,
-    @SerializedName("errorCode") val errorCode: String?,
-    @SerializedName("errorName") val errorName: String?,
+    @SerializedName("error_code") val errorCode: String?,
+    @SerializedName("error_name") val errorName: String?,
   ) : WsEvent()
 
   data class UpdateOtaProgress(
@@ -39,13 +39,13 @@ enum class EnvelopeType {
   @SerializedName("env")
   ENV,
 
-  @SerializedName("sys-info")
+  @SerializedName("sys_info")
   SYS_INFO,
 
-  @SerializedName("cmd-invocation")
+  @SerializedName("cmd_invocation")
   CMD_INVOCATION,
 
-  @SerializedName("update-progress")
+  @SerializedName("update_progress")
   UPDATE_PROGRESS,
   ;
 }

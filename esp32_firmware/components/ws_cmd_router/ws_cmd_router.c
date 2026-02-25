@@ -87,13 +87,13 @@ void ws_cmd_handle(uint8_t *payload, size_t len)
         cJSON_AddStringToObject(resp, "cmd", s_commands[i].key);
         if (res != ESP_OK)
         {
-          cJSON_AddNumberToObject(resp, "errorCode", res);
-          cJSON_AddStringToObject(resp, "errorName", esp_err_to_name(res));
+          cJSON_AddNumberToObject(resp, "error_code", res);
+          cJSON_AddStringToObject(resp, "error_name", esp_err_to_name(res));
         }
         else
         {
-          cJSON_AddNullToObject(resp, "errorCode");
-          cJSON_AddNullToObject(resp, "errorName");
+          cJSON_AddNullToObject(resp, "error_code");
+          cJSON_AddNullToObject(resp, "error_name");
         }
         char *resp_str = cJSON_PrintUnformatted(resp);
         if (resp_str != NULL)
