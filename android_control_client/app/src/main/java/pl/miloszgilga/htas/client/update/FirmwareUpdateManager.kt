@@ -21,20 +21,21 @@ import java.util.concurrent.TimeUnit
 class FirmwareUpdateManager(
   private val jsonParser: JsonParser,
   private val repoOwner: String = "milosz08",
-  private val repoName: String = "home-theater-automation-system"
+  private val repoName: String = "home-theater-automation-system",
 ) {
   companion object {
     private const val TAG = "UpdateManager"
     private const val CHECK_INTERVAL_MS = 5L * 60L * 1000L // 5 minutes
+    private const val GITHUB_API_URL = "https://api.github.com"
+    private const val ACCEPT_HEADER = "application/vnd.github.v3+json"
   }
 
   private val client = OkHttpClient.Builder()
     .connectTimeout(10, TimeUnit.SECONDS)
     .build()
 
-  private val _latestVersion = MutableStateFlow<String?>(null)
-
-  val latestVersion = _latestVersion.asStateFlow()
+  private val latestVersionState = MutableStateFlow<String?>(null)
+  val latestVersion = latestVersionState.asStateFlow()
 
   private var deviceVersion: String? = null
   private var latestGithubVersion: String? = null
@@ -56,7 +57,7 @@ class FirmwareUpdateManager(
 
   fun pauseChecks() {
     isPaused = true
-    _latestVersion.value = null
+    latestVersionState.value = null
     Log.d(TAG, "updates checker paused")
   }
 
@@ -66,7 +67,7 @@ class FirmwareUpdateManager(
   }
 
   fun hideBanner() {
-    _latestVersion.value = null
+    latestVersionState.value = null
     Log.d(TAG, "update banner hided manually")
   }
 
@@ -151,8 +152,8 @@ class FirmwareUpdateManager(
 
   private fun fetchReleaseInfo(): GithubRelease {
     val request = Request.Builder()
-      .url("https://api.github.com/repos/$repoOwner/$repoName/releases/latest")
-      .header("Accept", "application/vnd.github.v3+json")
+      .url("$GITHUB_API_URL/repos/$repoOwner/$repoName/releases/latest")
+      .header("Accept", ACCEPT_HEADER)
       .build()
     client.newCall(request).execute().use { response ->
       if (!response.isSuccessful) {
@@ -186,7 +187,7 @@ class FirmwareUpdateManager(
   private fun checkIfUpdateNeeded() {
     val latest = latestGithubVersion ?: return
     val current = deviceVersion ?: return
-    _latestVersion.value = getHigherVersionOrNull(latest, current)
+    latestVersionState.value = getHigherVersionOrNull(latest, current)
   }
 
   private fun getHigherVersionOrNull(latest: String, current: String): String? {
