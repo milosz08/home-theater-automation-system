@@ -42,6 +42,9 @@ class FirmwareUpdateManager(
   private var checkJob: Job? = null
   private var isPaused = false
 
+  private var lastETag: String? = null
+  private var cachedRelease: GithubRelease? = null
+
   fun startPeriodicChecks(scope: CoroutineScope) {
     checkJob?.cancel()
     checkJob = scope.launch(Dispatchers.IO) {
@@ -151,16 +154,30 @@ class FirmwareUpdateManager(
   }
 
   private fun fetchReleaseInfo(): GithubRelease {
-    val request = Request.Builder()
+    val requestBuilder = Request.Builder()
       .url("$GITHUB_API_URL/repos/$repoOwner/$repoName/releases/latest")
       .header("Accept", ACCEPT_HEADER)
-      .build()
-    client.newCall(request).execute().use { response ->
-      if (!response.isSuccessful) {
-        throw Exception("GitHub API error: ${response.code}")
+
+    lastETag?.let { eTag ->
+      requestBuilder.header("If-None-Match", eTag)
+    }
+    client.newCall(requestBuilder.build()).execute().use { response ->
+      when (response.code) {
+        304 -> {
+          Log.d(TAG, "no new release on github (304 not modified)")
+          return cachedRelease ?: throw Exception("cache is empty")
+        }
+
+        200 -> {
+          lastETag = response.header("ETag")
+          val body = response.body.string()
+          val release = jsonParser.parse<GithubRelease>(body)
+          cachedRelease = release
+          return release
+        }
+
+        else -> throw Exception("github api error: ${response.code}")
       }
-      val body = response.body.string()
-      return jsonParser.parse<GithubRelease>(body)
     }
   }
 
