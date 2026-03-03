@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import pl.miloszgilga.htas.client.R
 import pl.miloszgilga.htas.client.composable.SectionSpacer
+import pl.miloszgilga.htas.client.composable.SpacerOrientation
 import pl.miloszgilga.htas.client.composable.SpacerSize
 import pl.miloszgilga.htas.client.composable.row.RowBase
 import pl.miloszgilga.htas.client.util.appColors
@@ -46,7 +47,10 @@ fun ConnectionStatusBadgeRow(isConnected: Boolean) {
             .size(8.dp)
             .background(statusColor, CircleShape),
         )
-        SectionSpacer(size = SpacerSize.SMALL)
+        SectionSpacer(
+          size = SpacerSize.SMALL,
+          orientation = SpacerOrientation.HORIZONTAL,
+        )
         Text(
           text = stringResource(
             if (isConnected) {
