@@ -77,7 +77,11 @@ void ui_show_network_dashboard(const char *ip_str, const uint8_t *mac_addr);
 
 /*! \brief Shows a temporary popup message.
  *
- * Replaces the screen content for `duration_ms` and then restores the previous screen.
+ * Temporarily replaces the screen content. Strings longer than 16 characters are automatically split across two lines.
+ * The message is ignored if an error screen is active. The previous screen is restored after `duration_ms`.
+ *
+ * \param text        The message text (max 32 characters).
+ * \param duration_ms Time in milliseconds to keep the message on screen.
  */
 void ui_show_temp_message(const char *text, uint32_t duration_ms);
 

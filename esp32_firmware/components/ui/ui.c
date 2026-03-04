@@ -182,9 +182,7 @@ void ui_show_temp_message(const char *text, uint32_t duration_ms)
 {
   if (text == NULL || is_error_active) return;
 
-  char l0[17] = {0};
-  char l1[17] = {0};
-
+  char l0[17] = {0}, l1[17] = {0};
   size_t full_len = strlen(text);
   if (full_len <= 16)
   {

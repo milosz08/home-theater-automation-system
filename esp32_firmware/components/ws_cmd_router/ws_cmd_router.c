@@ -66,7 +66,7 @@ void ws_cmd_handle(uint8_t *payload, size_t len)
   if (root == NULL) return;
 
   cJSON *action_item = cJSON_GetObjectItem(root, "action");
-  cJSON *val_item = cJSON_GetObjectItem(root, "val");
+  cJSON *val_item = cJSON_GetObjectItem(root, "value");
 
   if (!cJSON_IsString(action_item))
   {
