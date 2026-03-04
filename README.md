@@ -128,6 +128,45 @@ well as to avoid the cumulative latency inherent in standard REST-based interact
 operations, such as those involving UART or I2C interfaces, from blocking the network thread, asynchronous processing is
 enforced via queues utilizing a Producer-Consumer model.
 
+### Android control client
+
+Android application controlling the system allows to:
+* pair to the controller via QR code,
+* execute commands via WebSockets,
+* react to WebSockets events broadcasted by the controller,
+* lock buttons with a cooldown option to prevent network flooding and accidental projector shutdown or screen retraction,
+* change and reset the device password,
+* automatically update the controller's firmware with a single click,
+* view controller statistics such as temperature, humidity, RAM usage, and uptime.
+
+![](.github/assets/android-demo.gif)
+
+Below you will find video demos showcasing how individual system components work with the Android app.
+
+<details>
+  <summary>Pairing controller with ESP32 driver (demo)</summary>
+
+  https://github.com/user-attachments/assets/5c532112-a872-486d-b864-d24bd63e000b
+</details>
+
+<details>
+  <summary>ESP32 driver firmware update (demo)</summary>
+
+  https://github.com/user-attachments/assets/d8299d3c-6fdc-4270-9152-5bb1522a7507
+</details>
+
+<details>
+  <summary>Change device password (demo)</summary>
+
+  https://github.com/user-attachments/assets/8a7fbf52-980a-48c4-961a-ed00c6efef1f
+</details>
+
+<details>
+  <summary>Control buttons (demo)</summary>
+
+  https://github.com/user-attachments/assets/6a65abb9-788e-494a-a14f-dfd4cc346030
+</details>
+
 ### Provisioning tool (certgen and ESP32 flashing)
 
 This desktop tool handles the configuration and flashing of the ESP32 Home Theater firmware. It generates the necessary
@@ -137,10 +176,6 @@ instantly without manual setup. The application can flash the device via UART by
 partition table (located in `esp32_firmware/partitions.csv`).
 
 ![](.github/assets/esp32-provisioning-tool-demo.gif)
-
-### Android client
-
-[TBD] - under development
 
 ## RS485 data transmission example
 
