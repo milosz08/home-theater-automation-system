@@ -75,7 +75,7 @@ static void on_command_action(const char *friendly_name)
 static void on_command_error(const char *friendly_name, esp_err_t err)
 {
   sys_ind_led_io_error_execution();
-  sys_ind_buzzer_sound(3, 100);
+  sys_ind_fixed_buzzer_sound(2);
   ui_show_temp_error(friendly_name, err, 4000);
 }
 
@@ -85,7 +85,7 @@ static void on_eth_boot_wait(bool linked)
   {
     ui_show_error("No eth cable!");
     sys_ind_set_error(true);
-    sys_ind_fixed_buzzer_sound(1);
+    sys_ind_fixed_buzzer_sound(2);
   }
   else
   {
