@@ -35,6 +35,7 @@ import pl.miloszgilga.htas.client.net.mapDeviceError
 import pl.miloszgilga.htas.client.net.rest.HttpMethod
 import pl.miloszgilga.htas.client.net.rest.ResetPasswordResponse
 import pl.miloszgilga.htas.client.net.rest.RestExecutor
+import pl.miloszgilga.htas.client.net.ws.WsPayload
 import pl.miloszgilga.htas.client.toast.ToastManager
 import pl.miloszgilga.htas.client.toast.ToastType
 import pl.miloszgilga.htas.client.update.FirmwareUpdateManager
@@ -114,7 +115,7 @@ class MainViewModel(
       val saved = store.savedConfig.first()
       if (saved != null) {
         Log.d(TAG, "found saved device config, attempting auto-connect")
-        connectInternal(saved)
+        connectInternal(saved, false)
       } else {
         Log.d(TAG, "no saved device config found, setting state to unpaired")
         uiState = AppUiState.Unpaired
@@ -130,7 +131,7 @@ class MainViewModel(
         Log.d(TAG, "saving new device config to datastore")
         store.saveConfig(config)
       }
-      connectInternal(config)
+      connectInternal(config, true)
       true
     } catch (ex: Exception) {
       Log.e(TAG, "failed to parse qr code json", ex)
@@ -150,7 +151,7 @@ class MainViewModel(
 
   fun retryConnection(config: ServerConfig) {
     Log.d(TAG, "user requested connection retry")
-    connectInternal(config)
+    connectInternal(config, false)
   }
 
   fun forgetDevice() {
@@ -344,7 +345,7 @@ class MainViewModel(
     return currentState.config
   }
 
-  private fun connectInternal(config: ServerConfig) {
+  private fun connectInternal(config: ServerConfig, paired: Boolean) {
     connectionJob?.cancel()
 
     uiState = AppUiState.Connecting
@@ -356,6 +357,9 @@ class MainViewModel(
             Log.d(TAG, "NetworkEvent.Connected received, requesting system info")
             firmwareUpdateManager.resumeChecks()
             store.saveLastConnected(System.currentTimeMillis())
+            if (paired && deviceId != null) {
+              repository.sendAction(WsAction.DEVICE_PAIRED, WsPayload.DevicePaired(deviceId!!))
+            }
             repository.sendAction(WsAction.GET_SYS_INFO)
             uiState = AppUiState.Connected(config)
           }

@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 enum class WsAction(val key: String) {
   GET_SYS_INFO("cmd_get_sys_info"),
+  DEVICE_PAIRED("cmd_device_paired"),
 
   // macros
   START_PROJECTION("cmd_start_projection"),
@@ -20,6 +21,12 @@ enum class WsAction(val key: String) {
   AV_MUTE_ON("cmd_av_mute_on"),
   AV_MUTE_OFF("cmd_av_mute_off"),
   ;
+}
+
+sealed class WsPayload {
+  data class DevicePaired(
+    @SerializedName("device_id") val deviceId: String,
+  )
 }
 
 data class WsRequest(
