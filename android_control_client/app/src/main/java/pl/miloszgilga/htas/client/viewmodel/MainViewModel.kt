@@ -56,6 +56,9 @@ class MainViewModel(
     private set
   var sysInfo by mutableStateOf<WsEvent.SysInfo?>(null)
     private set
+  var deviceId by mutableStateOf<String?>(null)
+    private set
+
   val envHistory = mutableStateListOf<WsEvent.Env>()
 
   var lastConnectedTimestamp by mutableStateOf<Long?>(null)
@@ -103,6 +106,9 @@ class MainViewModel(
     }
     viewModelScope.launch {
       store.cooldownDurationSec.collect { cooldownDurationSec = it }
+    }
+    viewModelScope.launch {
+      deviceId = store.getOrCreateDeviceId()
     }
     viewModelScope.launch {
       val saved = store.savedConfig.first()

@@ -9,10 +9,13 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.security.SecureRandom
 
 val Context.dataStore by preferencesDataStore(name = "settings")
 
 class SettingsStore(private val context: Context) {
+  private val secureRandom = SecureRandom()
+
   companion object {
     const val INIT_COOLDOWN_DURATION_SEC = 5
 
@@ -23,6 +26,7 @@ class SettingsStore(private val context: Context) {
     private val LAST_CONNECTED_KEY = longPreferencesKey("last_connected")
     private val COOLDOWN_ENABLED_KEY = booleanPreferencesKey("cooldown_enabled")
     private val COOLDOWN_DURATION_KEY = intPreferencesKey("cooldown_duration")
+    private val DEVICE_ID_KEY = stringPreferencesKey("device_id")
   }
 
   val savedConfig: Flow<ServerConfig?> = context.dataStore.data.map { prefs ->
@@ -83,5 +87,20 @@ class SettingsStore(private val context: Context) {
     context.dataStore.edit { prefs ->
       prefs[COOLDOWN_DURATION_KEY] = seconds
     }
+  }
+
+  suspend fun getOrCreateDeviceId(): String {
+    var currentId: String? = null
+    context.dataStore.edit { prefs ->
+      currentId = prefs[DEVICE_ID_KEY]
+      if (currentId == null) {
+        val randomBytes = ByteArray(8)
+        secureRandom.nextBytes(randomBytes)
+        val newHexId = randomBytes.joinToString("") { "%02x".format(it) }
+        prefs[DEVICE_ID_KEY] = newHexId
+        currentId = newHexId
+      }
+    }
+    return currentId!!
   }
 }

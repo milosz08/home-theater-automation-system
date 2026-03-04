@@ -80,6 +80,7 @@
   <string name="forget_unpair">Forget (unpair)</string>
   <string name="app_version">App version</string>
   <string name="build_time">Build time</string>
+  <string name="device_id">Device identifier</string>
   <string name="current_password">Current password</string>
   <string name="new_password">New password</string>
   <string name="confirm_new_password">Confirm new password</string>

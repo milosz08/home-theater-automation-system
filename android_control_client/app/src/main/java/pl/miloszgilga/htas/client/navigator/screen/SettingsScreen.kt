@@ -198,6 +198,9 @@ fun SettingsScreen(
 
       FooterText(label = stringResource(R.string.app_version), value = BuildConfig.CI_BUILD_VERSION)
       FooterText(label = stringResource(R.string.build_time), value = buildDate)
+      viewModel.deviceId?.let {
+        FooterText(label = stringResource(R.string.device_id), value = it)
+      }
       SectionSpacer()
 
       when (activeDialog) {
