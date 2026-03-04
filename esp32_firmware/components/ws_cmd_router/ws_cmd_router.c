@@ -45,6 +45,7 @@ esp_err_t ws_cmd_router_init(ws_cmd_executed_cb_t on_executed_cb, ws_cmd_error_c
   s_on_executed_cb = on_executed_cb;
   s_on_error_cb = on_error_cb;
   ws_cmd_register("cmd_get_sys_info",     "GET SYS INFO",     ws_cmd_get_sys_info);
+  ws_cmd_register("cmd_device_paired",    "DEVICE PAIRED",    ws_cmd_device_paired);
   // macros
   ws_cmd_register("cmd_start_projection", "START PROJECTION", ws_cmd_start_projection);
   ws_cmd_register("cmd_end_projection",   "END PROJECTION",   ws_cmd_end_projection);

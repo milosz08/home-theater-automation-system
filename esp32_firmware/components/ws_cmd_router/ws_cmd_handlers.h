@@ -6,7 +6,7 @@
 #include "cJSON.h"
 #include "esp_err.h"
 
-#define MAX_COMMANDS 10  /*!< Max number of commands we can register in the router. */
+#define MAX_COMMANDS 11  /*!< Max number of commands we can register in the router. */
 
 /*! \brief Handles the GET_SYS_INFO command.
  *
@@ -20,6 +20,19 @@
  * \retval ESP_FAIL If an error occurred during execution.
  */
 esp_err_t ws_cmd_get_sys_info(const cJSON *payload, bool *notify);
+
+/*! \brief Handles the DEVICE_PAIRED command.
+ *
+ * Extracts the "device_id" from the JSON payload. If valid, triggers system indicators (LED and buzzer) and displays a
+ * temporary notification message on the UI indicating successful pairing.
+ *
+ * \param payload The JSON object containing the "device_id" string.
+ * \param notify  Pointer to a boolean flag. Set to true if a command status response should be sent, false to skip.
+ *
+ * \retval ESP_OK   On successful execution.
+ * \retval ESP_FAIL If an error occurred during execution.
+ */
+esp_err_t ws_cmd_device_paired(const cJSON *payload, bool *notify);
 
 /*! \brief Handles the START_PROJECTION command.
  *

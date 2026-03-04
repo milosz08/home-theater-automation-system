@@ -1,5 +1,7 @@
 #include "ws_cmd_handlers.h"
 #include "peripheral_control.h"
+#include "sys_ind.h"
+#include "ui.h"
 #include "ws_queue.h"
 
 #include "esp_app_desc.h"
@@ -33,6 +35,20 @@ esp_err_t ws_cmd_get_sys_info(const cJSON *payload, bool *notify)
   }
   cJSON_Delete(resp_root);
 
+  *notify = false;
+  return ESP_OK;
+}
+
+// user ----> system
+esp_err_t ws_cmd_device_paired(const cJSON *payload, bool *notify)
+{
+  const cJSON *device_id = cJSON_GetObjectItem(payload, "device_id");
+  if (cJSON_IsString(device_id) && (device_id->valuestring != NULL))
+  {
+    sys_ind_led_io_execution(3);
+    sys_ind_buzzer_sound(3, 100);
+    ui_show_split_temp_message("Device paired:", device_id->valuestring, 4000);
+  }
   *notify = false;
   return ESP_OK;
 }

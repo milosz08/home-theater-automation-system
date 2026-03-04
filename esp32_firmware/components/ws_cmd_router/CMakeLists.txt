@@ -14,5 +14,7 @@ idf_component_register(
     log
     json
     peripheral_control
+    sys_ind
+    ui
     ws_queue
 )
