@@ -28,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import pl.miloszgilga.htas.client.R
 import pl.miloszgilga.htas.client.composable.ConfirmationAlert
+import pl.miloszgilga.htas.client.viewmodel.AppUiState
 import pl.miloszgilga.htas.client.viewmodel.MainViewModel
 
 @Composable
@@ -39,7 +40,7 @@ fun FirmwareUpdateBanner(
   val latestVersion by viewModel.latestVersion.collectAsState()
 
   AnimatedVisibility(
-    visible = latestVersion != null,
+    visible = latestVersion != null && viewModel.uiState is AppUiState.Connected,
     enter = expandVertically(),
     exit = shrinkVertically(),
     modifier = modifier,
