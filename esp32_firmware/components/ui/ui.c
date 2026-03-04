@@ -209,6 +209,28 @@ void ui_show_temp_message(const char *text, uint32_t duration_ms)
   }
 }
 
+void ui_show_split_temp_message(const char *first_row, const char *second_row, uint32_t duration_ms)
+{
+  if (first_row == NULL || second_row == NULL || is_error_active) return;
+
+  char l0[17] = {0}, l1[17] = {0};
+  snprintf(l0, 17, "%-16s", first_row);
+  snprintf(l1, 17, "%-16s", second_row);
+
+  // display without persisting
+  lcd_driver_set_cursor(0, 0);
+  lcd_driver_print(l0);
+  lcd_driver_set_cursor(0, 1);
+  lcd_driver_print(l1);
+
+  if (ui_temp_msg_timer != NULL)
+  {
+    is_temp_active = true;
+    xTimerChangePeriod(ui_temp_msg_timer, pdMS_TO_TICKS(duration_ms), 0);
+    xTimerStart(ui_temp_msg_timer, 0);
+  }
+}
+
 void ui_show_temp_cmd_message(const char *text, uint32_t duration_ms)
 {
   char formatted_msg[33];

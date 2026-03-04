@@ -85,6 +85,18 @@ void ui_show_network_dashboard(const char *ip_str, const uint8_t *mac_addr);
  */
 void ui_show_temp_message(const char *text, uint32_t duration_ms);
 
+/*! \brief Shows a temporary split-line message on the LCD.
+ *
+ * Displays custom text independently on the first and second rows of the LCD for a specified duration. After
+ * `duration_ms` elapses, the previous screen content is automatically restored. The message will be ignored if an error
+ * screen is currently active.
+ *
+ * \param first_row   Text to display on the top row (max 16 chars, padded with spaces if shorter).
+ * \param second_row  Text to display on the bottom row (max 16 chars, padded with spaces if shorter).
+ * \param duration_ms Time in milliseconds to keep the message on screen.
+ */
+void ui_show_split_temp_message(const char *first_row, const char *second_row, uint32_t duration_ms);
+
 /*! \brief Shows a temporary command execution feedback.
  *
  * Similar to `ui_show_temp_message` but specifically styled for commands.
