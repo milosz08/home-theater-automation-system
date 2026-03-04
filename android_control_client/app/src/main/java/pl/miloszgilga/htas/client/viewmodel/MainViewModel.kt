@@ -195,8 +195,10 @@ class MainViewModel(
       return
     }
     val success = repository.sendAction(action, value)
-    if (success && isCooldownEnabled) {
-      startCooldown()
+    if (success) {
+      if (isCooldownEnabled) {
+        startCooldown()
+      }
       return
     }
     Log.w(TAG, "unable to send command: ${action.key}")
